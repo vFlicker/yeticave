@@ -25,3 +25,16 @@ function price_format($value) {
 
     return $rounded_value . $ruble_symbol;
 };
+
+function getTimer() {
+    date_default_timezone_set("Europe/Moscow");
+
+    $curtime = time();
+    $ts_midnight = strtotime('tomorrow');
+    $secs_to_midnight = $ts_midnight - $curtime;
+
+    $hours = floor($secs_to_midnight / 3600);
+    $minutes = floor(($secs_to_midnight % 3600) / 60);
+
+    return "$hours часов $minutes минут";
+};

@@ -2,28 +2,32 @@
 
 @font-face {
   font-family: "Open Sans";
-  src: url("../fonts/opensans-regular.woff2") format("woff2"), url("../fonts/opensans-regular.woff") format("woff");
+  src: url("../fonts/opensans-regular.woff2") format("woff2"),
+    url("../fonts/opensans-regular.woff") format("woff");
   font-style: normal;
   font-weight: 400;
 }
 
 @font-face {
   font-family: "Open Sans";
-  src: url("../fonts/opensans-bold.woff2") format("woff2"), url("../fonts/opensans-bold.woff") format("woff");
+  src: url("../fonts/opensans-bold.woff2") format("woff2"),
+    url("../fonts/opensans-bold.woff") format("woff");
   font-style: normal;
   font-weight: 700;
 }
 
 @font-face {
   font-family: "PT Sans";
-  src: url("../fonts/ptsans.woff2") format("woff2"), url("../fonts/ptsans.woff") format("woff");
+  src: url("../fonts/ptsans.woff2") format("woff2"),
+    url("../fonts/ptsans.woff") format("woff");
   font-style: normal;
   font-weight: 400;
 }
 
 @font-face {
   font-family: "PT Sans";
-  src: url("../fonts/ptsansbold.woff2") format("woff2"), url("../fonts/ptsansbold.woff") format("woff");
+  src: url("../fonts/ptsansbold.woff2") format("woff2"),
+    url("../fonts/ptsansbold.woff") format("woff");
   font-style: normal;
   font-weight: 700;
 }
@@ -765,7 +769,7 @@ h2 {
 }
 
 .form__item--small {
-  width: 160px
+  width: 160px;
 }
 
 .form__item--wide {
@@ -824,7 +828,7 @@ h2 {
   color: #f84646;
 }
 
-input:invalid .form__error{
+input:invalid .form__error {
   display: block;
 }
 
