@@ -1,10 +1,12 @@
 <?php
+
 $lot_name = $lot['lot-name'] ?? '';
 $category = $lot['category'] ?? 'Выберите категорию';
 $message  = $lot['message']  ?? '';
 $lot_rate = $lot['lot-rate'] ?? '';
 $lot_step = $lot['lot-step'] ?? '';
 $lot_date = $lot['lot-date'] ?? '';
+
 ?>
 
 <main>

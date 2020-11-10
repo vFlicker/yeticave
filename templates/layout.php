@@ -50,9 +50,7 @@
         </div>
     </header>
 
-    <main class="container">
-        <?= $page_content ?>
-    </main>
+    <?= $page_content ?>
 
     <footer class="main-footer">
         <nav class="nav">
