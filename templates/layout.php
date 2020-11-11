@@ -21,7 +21,10 @@
                 <input type="search" name="search" placeholder="Поиск лота">
                 <input class="main-header__search-btn" type="submit" name="find" value="Найти">
             </form>
+            
+            <?php if ($is_auth): ?>
             <a class="main-header__add-lot button" href="add.php">Добавить лот</a>
+            <?php endif; ?>
 
             <nav class="user-menu">
 
@@ -32,6 +35,7 @@
                 </div>
                 <div class="user-menu__logged">
                     <p><?= $user_name ?></p>
+                    <a href="logout.php">Выход</a>
                 </div>
 
                 <?php else: ?>
@@ -40,7 +44,7 @@
                         <a href="#">Регистрация</a>
                     </li>
                     <li class="user-menu__item">
-                        <a href="#">Вход</a>
+                        <a href="enter.php">Вход</a>
                     </li>
                 </ul>
 

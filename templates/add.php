@@ -7,6 +7,14 @@ $lot_rate = $lot['lot-rate'] ?? '';
 $lot_step = $lot['lot-step'] ?? '';
 $lot_date = $lot['lot-date'] ?? '';
 
+$lot_name_error = $errors['lot-name'] ?? '';
+$category_error = $errors['category'] ?? '';
+$message_error = $errors['message'] ?? '';
+$file_error = $errors['file'] ?? '';
+$lot_rate_error = $errors['lot-rate'] ?? '';
+$lot_step_error = $errors['lot-step'] ?? '';
+$lot_date_error = $errors['lot-date'] ?? '';
+
 ?>
 
 <main>
@@ -51,7 +59,7 @@ $lot_date = $lot['lot-date'] ?? '';
                     placeholder="Введите наименование лота"
                     value="<?= $lot_name ?>"
                 />
-                <span class="form__error"><?= $errors['lot-name'] ?? '' ?></span>
+                <span class="form__error"><?= $lot_name_error ?></span>
             </div>
             <div class="form__item <?= isset($errors['category']) ? 'form__item--invalid' : '' ?>">
                 <label for="category">Категория</label>
@@ -65,7 +73,7 @@ $lot_date = $lot['lot-date'] ?? '';
                     <option>Инструменты</option>
                     <option>Разное</option>
                 </select>
-                <span class="form__error"><?= $errors['category'] ?? '' ?></span>
+                <span class="form__error"><?= $category_error ?></span>
             </div>
         </div>
         <div class="form__item form__item--wide <?= isset($errors['message']) ? 'form__item--invalid' : '' ?>">
@@ -75,7 +83,7 @@ $lot_date = $lot['lot-date'] ?? '';
             name="message"
             placeholder="Напишите описание лота"><?= $message ?></textarea>
             <!-- required -->
-            <span class="form__error"><?= $errors['message'] ?? '' ?></span>
+            <span class="form__error"><?= $message_error ?></span>
         </div>
         <div class="form__item form__item--file <?= isset($errors['file']) ? 'form__item--invalid' : '' ?>">
             <!-- form__item--uploaded -->
@@ -102,7 +110,7 @@ $lot_date = $lot['lot-date'] ?? '';
                     <span>+ Добавить</span>
                 </label>
             </div>
-            <span class="form__error"><?= $errors['file'] ?? '' ?></span>
+            <span class="form__error"><?= $file_error ?></span>
         </div>
         <div class="form__container-three">
             <div class="form__item form__item--small <?= isset($errors['lot-rate']) ? 'form__item--invalid' : '' ?>">
@@ -113,9 +121,8 @@ $lot_date = $lot['lot-date'] ?? '';
                     name="lot-rate"
                     placeholder="0"
                     value="<?= $lot_rate ?>"
-
                 />
-                <span class="form__error"><?= $errors['lot-rate'] ?? '' ?></span>
+                <span class="form__error"><?= $lot_rate_error ?></span>
             </div>
             <div class="form__item form__item--small <?= isset($errors['lot-step']) ? 'form__item--invalid' : '' ?>">
                 <label for="lot-step">Шаг ставки</label>
@@ -125,9 +132,8 @@ $lot_date = $lot['lot-date'] ?? '';
                     name="lot-step"
                     placeholder="0"
                     value="<?= $lot_step ?>"
-
                 />
-                <span class="form__error"><?= $errors['lot-step'] ?? '' ?></span>
+                <span class="form__error"><?= $lot_step_error ?></span>
             </div>
             <div class="form__item <?= isset($errors['lot-date']) ? 'form__item--invalid' : '' ?>">
                 <label for="lot-date">Дата окончания торгов</label>
@@ -137,9 +143,8 @@ $lot_date = $lot['lot-date'] ?? '';
                     type="date"
                     name="lot-date"
                     value="<?= $lot_date ?>"
-
                 />
-                <span class="form__error"><?= $errors['lot-date'] ?? '' ?></span>
+                <span class="form__error"><?= $lot_date_error ?></span>
             </div>
         </div>
         <span class="form__error form__error--bottom"

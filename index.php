@@ -3,6 +3,11 @@ require_once('functions.php');
 require_once('data.php');
 require_once('config.php');
 
+if (isset($_SESSION['user'])) {
+    $user_name = $_SESSION['user']['name'];
+}
+
+
 $page_content = include_template('index.php', [
     'advertisement' => $advertisement
 ]);

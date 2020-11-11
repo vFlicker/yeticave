@@ -3,9 +3,19 @@ require_once('functions.php');
 require_once('data.php');
 require_once('config.php');
 
+if (!$is_auth) {
+    exit(http_response_code(404));
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $lot = $_POST;
     $lot_photo = $_FILES['lot-photo'];
+
+    if ($lot_photo['error']) {
+        $lot_photo = null;
+    } else {
+        $lot_photo = $_FILES['lot-photo'];
+    }
 
     $required = ['lot-name', 'category', 'message', 'lot-rate', 'lot-step', 'lot-date'];
     $errors = [];
@@ -41,10 +51,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if ($file_type !== 'image/jpeg') {
             $errors['file'] = 'Загрузите картинку в формате jpeg';
-        } else {
+        }
+        else {
             move_uploaded_file($tmp_name, $file_path . $file_name);
             $lot['file-path'] = 'uploads/' . $file_name;
         }
+    } else {
+        $errors['file'] = 'Загрузите картинку';
     }
 
     if (count($errors)) {
@@ -72,5 +85,3 @@ $page_layout = include_template('layout.php', [
     'user_name' => $user_name,
     'user_avatar' => $user_avatar
 ]);
-
-print($page_layout);

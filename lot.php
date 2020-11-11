@@ -41,7 +41,8 @@ if (!$lot) {
 }
 
 $page_content = include_template('lot.php', [
-    'lot' => $lot
+    'lot' => $lot,
+    'is_auth' => $is_auth
 ]);
 
 $page_layout = include_template('layout.php', [
