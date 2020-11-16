@@ -85,3 +85,5 @@ $page_layout = include_template('layout.php', [
     'user_name' => $user_name,
     'user_avatar' => $user_avatar
 ]);
+
+print($page_layout);
