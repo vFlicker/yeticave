@@ -39,14 +39,21 @@ function getTimer() {
   return "$hours часов $minutes минут";
 };
 
-function searchUserByEmail($email, $users) {
+function searchUserByEmail($email) {
+    require_once('init.php');
+
     $result = null;
-    foreach ($users as $user) {
-        if ($user['email'] == $email) {
-            $result = $user;
-        break;
-        }
+
+    $email = mysqli_real_escape_string($link, $email);
+    $sql = "SELECT * FROM `users` WHERE `email` = '$email'";
+    $sql_query = mysqli_query($link, $sql);
+    $comparation_result = mysqli_fetch_array ($sql_query);
+    
+    if ($comparation_result !== NULL) {
+        $result = $comparation_result;
     }
 
     return $result;
 }
+
+

@@ -74,31 +74,31 @@ VALUES
 
 
 /* Получить все категории */
-SELECT * 
-    FROM categories;
+-- SELECT * 
+--     FROM categories;
 
 /* Получить самые новые, открытые лоты. Каждый лот должен включать: название, стартовую цену, ссылку на изображение, шаг ставки, название категории, дата создания */
-SELECT title, start_price, url_image, step_price, c.name AS category, date_create
-    FROM lots l
-    JOIN categories c ON l.category_id = c.id
-    WHERE date_end > NOW() AND winner_id IS NULL
-    ORDER BY date_create DESC;
+-- SELECT title, start_price, url_image, step_price, c.name AS category, date_create
+--     FROM lots l
+--     JOIN categories c ON l.category_id = c.id
+--     WHERE date_end > NOW() AND winner_id IS NULL
+--     ORDER BY date_create DESC;
 
 /* Показать лот по его id. Получить также название категории, к которой принадлежит лот */
-SELECT l.id, title, c.name AS category
-    FROM lots l
-    JOIN categories c ON l.category_id = c.id
-    WHERE l.id = 3;
+-- SELECT l.id, title, c.name AS category
+--     FROM lots l
+--     JOIN categories c ON l.category_id = c.id
+--     WHERE l.id = 3;
 
 /* Обновить название лота по его идентификатору */
-UPDATE lots
-    SET title = 'Крепления'
-    WHERE id = 3;
+-- UPDATE lots
+--     SET title = 'Крепления'
+--     WHERE id = 3;
 
 /* Получить список самых свежих ставок для лота по его идентификатору */
-SELECT b.date_create, price, u.name, l.title
-    FROM bets b
-    JOIN users u ON b.user_id = u.id
-    JOIN lots l ON b.lot_id = l.id
-    WHERE l.id = 5
-    ORDER BY b.date_create DESC;
+-- SELECT b.date_create, price, u.name, l.title
+--     FROM bets b
+--     JOIN users u ON b.user_id = u.id
+--     JOIN lots l ON b.lot_id = l.id
+--     WHERE l.id = 5
+--     ORDER BY b.date_create DESC;

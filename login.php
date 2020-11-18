@@ -4,13 +4,20 @@ require_once('data.php');
 require_once('userdata.php');
 require_once('config.php');
 
+if (isset($_COOKIE['canLogin'])) {
+    setcookie('canLogin', '');
+    $canLogin = $_COOKIE['canLogin'];
+} else {
+    $canLogin = NULL;
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $form_enter = $_POST;
+    $form_login = $_POST;
 
     $required = ['email', 'password'];
     $errors = [];
 
-    foreach ($form_enter as $field => $value) {
+    foreach ($form_login as $field => $value) {
         if ($field == 'email') {
             if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
                 $errors[$field] = 'Email должен быть корректным';
@@ -21,8 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    if (!count($errors) and $user = searchUserByEmail($form_enter['email'], $users)) {
-        if (password_verify($form_enter['password'], $user['password'])) {
+    if (!count($errors) and $user = searchUserByEmail($form_login['email'], $users)) {
+        if (password_verify($form_login['password'], $user['password'])) {
             $_SESSION['user'] = $user;
         }
         else {
@@ -34,8 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (count($errors)) {
-        $page_content = include_template('enter.php', [
-            'form_enter' => $form_enter,
+        $page_content = include_template('login.php', [
+            'form_login' => $form_login,
             'errors' => $errors
         ]);
     }
@@ -51,7 +58,7 @@ else {
         ]);
     }
     else {
-        $page_content = include_template('enter.php', []);
+        $page_content = include_template('login.php', ['canLogin' => $canLogin]);
     }
 }
 

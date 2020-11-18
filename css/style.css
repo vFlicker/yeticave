@@ -822,6 +822,12 @@ h2 {
   background: #ffffff url("../img/date.svg") 326px 12px no-repeat;
 }
 
+.form-can-login {
+  display: block;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
 .form__error {
   display: none;
   font-size: 11px;
@@ -1238,3 +1244,35 @@ input:invalid .form__error {
 .rates__item--end {
   opacity: 0.4;
 }
+
+.wrapper {
+  background-color: #fff;
+  border-radius: 3px;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10px;
+}
+
+.circle {
+  margin: auto;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: pink;
+  opacity: 0;
+  transition: .3s ease;
+}
+
+.click {
+  cursor: pointer;
+}
+
+.click:hover + .circle {
+  opacity: 1;
+  visibility: hidden;
+  visibility: visible;
+}
+
