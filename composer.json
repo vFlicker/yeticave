@@ -1,0 +1,14 @@
+{
+    "name": "vflicker/yeticave",
+    "description": "HTML academy PHP, level 1",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Vladislav Flicker",
+            "email": "flickervladislav@gmail.com"
+        }
+    ],
+    "require": {
+        "swiftmailer/swiftmailer": "^6.0"
+    }
+}

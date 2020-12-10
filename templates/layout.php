@@ -14,21 +14,21 @@
         <div class="main-header__container container">
             <h1 class="visually-hidden">YetiCave</h1>
 
-            <a class="main-header__logo">
+            <a href="/" class="main-header__logo">
                 <img src="img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
             </a>
-            <form class="main-header__search" method="get" action="https://echo.htmlacademy.ru">
+
+            <form class="main-header__search" method="get" action="search.php">
                 <input type="search" name="search" placeholder="Поиск лота">
                 <input class="main-header__search-btn" type="submit" name="find" value="Найти">
             </form>
             
             <?php if ($is_auth): ?>
-            <a class="main-header__add-lot button" href="add.php">Добавить лот</a>
-            <?php endif; ?>
+            <a class="main-header__add-lot button" href="add-lot.php">Добавить лот</a>
 
+            <?php endif; ?>
             <nav class="user-menu">
 
-                <!-- здесь должен быть PHP код для показа аватара пользователя -->
                 <?php if ($is_auth): ?>
                 <div class="user-menu__image">
                     <img src="<?= $user_avatar ?>" width="40" height="40" alt="Пользователь">
@@ -47,11 +47,28 @@
                         <a href="login.php">Вход</a>
                     </li>
                 </ul>
-
                 <?php endif; ?>
 
             </nav>
         </div>
+
+        <?php 
+            isset($can_show_top_menu) ? $can_show_top_menu : $can_show_top_menu = true;
+            if ($can_show_top_menu): 
+        ?>
+        <nav class="nav">
+            <ul class="nav__list container">
+                <?php foreach ($nav_menu as $menu_item): ?>
+                <li class="nav__item">
+                    <a href="<?= "all-lots.php?id=$menu_item[id]" ?>">
+                        <?php print_r($menu_item['name']) ?>
+                    </a>
+                </li>
+                <?php endforeach; ?>
+            </ul>
+        </nav>
+        <?php endif; ?>
+
     </header>
 
     <?= $page_content ?>
@@ -59,9 +76,11 @@
     <footer class="main-footer">
         <nav class="nav">
             <ul class="nav__list container">
-                <?php foreach ($categories as $key): ?>
+                <?php foreach ($nav_menu as $menu_item): ?>
                 <li class="nav__item">
-                    <a href="all-lots.html"><?= $key; ?></a>
+                    <a href="<?= "all-lots.php?id=$menu_item[id]" ?>">
+                        <?php print_r($menu_item['name']) ?>
+                    </a>
                 </li>
                 <?php endforeach; ?>
             </ul>
@@ -105,7 +124,6 @@
                     </svg>
                 </a>
             </div>
-            <a class="main-footer__add-lot button" href="add-lot.html">Добавить лот</a>
             <div class="main-footer__developed-by">
                 <span class="visually-hidden">Разработано:</span>
                 <a class="logo-academy" href="https://htmlacademy.ru/intensive/php">HTML Academy

@@ -34,7 +34,13 @@
 
 /* Общее */
 
+html, body {
+  height: 100%;
+}
+
 body {
+  display: flex;
+  flex-direction: column;
   min-width: 1140px;
   background-color: #dbe6e9;
   font-family: "PT Sans", sans-serif;
@@ -42,6 +48,14 @@ body {
   font-size: 16px;
   line-height: 26px;
   color: #25434e;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+footer{
+  flex-shrink: 0;
 }
 
 a {
@@ -124,9 +138,8 @@ h2 {
 }
 
 /* Хедер */
-
 .main-header {
-  padding: 30px 0 29px;
+  padding-top: 29px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 }
 
@@ -137,6 +150,10 @@ h2 {
   -webkit-justify-content: flex-start;
   -ms-flex-pack: start;
   justify-content: flex-start;
+  -webkit-align-items: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  margin-bottom: 30px;
 }
 
 .main-header__logo {
@@ -559,20 +576,20 @@ h2 {
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  margin: 0;
+  margin: 0 -15px;
   padding: 0;
   list-style: none;
 }
 
-.lots__item {
-  width: 350px;
+.lots__item-wrapper {
+  -ms-flex: 0 0 33.333%;
+  flex: 0 0 33.333%;
+  margin-bottom: 30px;
+  padding: 0 15px;
+  box-sizing: border-box;
 }
 
 .lot {
-  margin-bottom: 30px;
   background-color: #ffffff;
 }
 
@@ -714,17 +731,30 @@ h2 {
   margin-right: 0;
 }
 
-.pagination-item-active a {
+.pagination-item--active a {
   color: #25434e;
   background-color: rgba(135, 146, 150, 0.1);
 }
 
-.pagination-item-active a:hover {
+.pagination-item--active a:hover {
   color: #25434e;
 }
 
-.pagination-item-active a:active {
+.pagination-item--active a:active {
   color: #25434e;
+}
+
+.pagination-item--disabled a {
+  color: rgba(135, 146, 150, 0.5);
+  cursor: default;
+}
+
+.pagination-item--disabled a:hover {
+  color: rgba(135, 146, 150, 0.5);
+}
+
+.pagination-item--disabled a:active {
+  color: rgba(135, 146, 150, 0.5);
 }
 
 /* Форма Регистрация + Добавление лота */
@@ -818,6 +848,10 @@ h2 {
   margin-bottom: 25px;
 }
 
+.form__input-file {
+  position: relative;
+}
+
 .form__input-date {
   background: #ffffff url("../img/date.svg") 326px 12px no-repeat;
 }
@@ -832,6 +866,10 @@ h2 {
   display: none;
   font-size: 11px;
   color: #f84646;
+}
+
+.form__error--bet {
+  position: absolute;
 }
 
 input:invalid .form__error {
@@ -1026,6 +1064,12 @@ input:invalid .form__error {
   align-self: flex-end;
 }
 
+.input-cost::-webkit-outer-spin-button,
+.input-cost::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 .lot-item__form {
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1097,7 +1141,9 @@ input:invalid .form__error {
 }
 
 .history__item td {
-  display: block;
+  display: flex;
+  align-items: center;
+  flex-basis: 33%;
   width: 33%;
 }
 

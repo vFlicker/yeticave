@@ -1,12 +1,11 @@
 <?php
+require_once(__DIR__ . '/inc/functions.php');
+require_once(__DIR__ . '/inc/config.php');
 
-$db = [
-    'host' => 'localhost',
-    'user' => 'root',
-    'password' => 'root',
-    'database' => 'yaticave'
-];
+$DB = mysqli_connect($db_config['host'], $db_config['user'], $db_config['password'], $db_config['database']);
+mysqli_set_charset($DB, 'utf-8');
 
-$link = mysqli_connect($db['host'], $db['user'], $db['password'], $db['database']);
-mysqli_set_charset($link, 'utf-8');
-
+if ($DB == false) {
+    $errorMsg = 'Ошибка подключения: ' . mysqli_connect_error();
+    die($errorMsg);
+}

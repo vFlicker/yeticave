@@ -10,4 +10,4 @@ if (isset($_SESSION['user'])) {
     $is_auth = true;
 }
 
-$user_avatar = 'img/user.jpg';
+$user_avatar = 'img/user.png';

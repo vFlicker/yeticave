@@ -9,8 +9,8 @@ USE yaticave;
 DROP TABLE IF EXISTS categories;
 CREATE TABLE categories (
     id                      INT AUTO_INCREMENT PRIMARY KEY,
-    name                    CHAR(64) NOT NULL UNIQUE
-    -- symbol_code             CHAR(32) NOT NULL UNIQUE
+    name                    CHAR(64) NOT NULL UNIQUE,
+    class_mod             CHAR(32) NOT NULL UNIQUE
 );
 
 CREATE INDEX c_name ON categories(name);
@@ -26,7 +26,7 @@ CREATE TABLE lots (
     start_price             INT NOT NULL,
     date_end                TIMESTAMP NOT NULL,
     step_price              INT NOT NULL,
-    likes                   INT,
+    fav_count               INT,
 
     user_id                 INT NOT NULL,
     winner_id               INT,
@@ -43,7 +43,7 @@ CREATE TABLE bets (
     id                      INT AUTO_INCREMENT PRIMARY KEY,
     date_create             TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     price                   INT NOT NULL,
-
+    
     user_id                 INT,
     lot_id                  INT
 );
@@ -56,7 +56,7 @@ CREATE TABLE users (
     email                   CHAR(64) NOT NULL UNIQUE,
     name                    CHAR(64) NOT NULL,
     password                CHAR(64) NOT NULL,
-    contacts                TEXT
+    contacts                TEXT(500)
 );
 
 -- CREATE INDEX u_name ON users(name);
