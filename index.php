@@ -8,7 +8,7 @@ $can_show_top_menu = false;
 $cur_page = $_GET['page'] ?? 1;
 $page_items = 6;
 
-$sql_count = "SELECT COUNT(*) as `count` FROM `lots`";
+$sql_count = "SELECT COUNT(*) AS `count` FROM `lots`";
 $sql_query_count = mysqli_query($DB, $sql_count);
 
 if ($sql_query_count) {
@@ -18,9 +18,8 @@ if ($sql_query_count) {
 
     $pages = range(1, $pages_count);
 
-    $sql = "SELECT l.id, `title`, `start_price`, `url_image`, `step_price`, c.name
-                AS `category`, `date_create`, `date_end` 
-                FROM lots l
+    $sql = "SELECT l.id, `title`, `url_image`, `start_price`, `step_price`, `date_end`, c.name AS `category` 
+                FROM `lots` l
                 JOIN `categories` c ON l.category_id = c.id
                 -- WHERE date_end > NOW() AND winner_id IS NULL
                 ORDER BY date_create DESC
@@ -28,8 +27,12 @@ if ($sql_query_count) {
                 OFFSET $offset";
 
     if ($sql_query = mysqli_query($DB, $sql)) {
+        $url = $_SERVER['REQUEST_URI'];
+        $url = explode('?page', $url)[0];
+        
         $lots = mysqli_fetch_all($sql_query, MYSQLI_ASSOC);
         $page_content = include_template('index.php', [
+            'url' => $url,
             'lots' => $lots, 
             'nav_menu' => $nav_menu,
             'pages' => $pages,
@@ -37,11 +40,11 @@ if ($sql_query_count) {
             'cur_page' => $cur_page
         ]);
     } else {
-        $page_content = include_template('error.php', ['error' => 'Ошибка','error_log' => mysqli_error($DB)]);
+        $page_content = include_template('error.php', ['error_title' => 'Ошибка','error_log' => mysqli_error($DB)]);
     }
 }
 else {
-    $page_content = include_template('error.php', ['error' => 'Ошибка','error_log' => mysqli_error($DB)]);
+    $page_content = include_template('error.php', ['error_title' => 'Ошибка', 'error_text' => mysqli_error($DB)]);
 }
 
 $page_layout = include_template('layout.php', [

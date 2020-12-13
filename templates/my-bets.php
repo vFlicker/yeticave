@@ -3,6 +3,13 @@
         <h2>Мои ставки</h2>
         <table class="rates__list">
             <tr class="rates__item">
+                <th class="rates__title rates__title--info">Наименование</th>
+                <th class="rates__title rates__title--category">Категория</th>
+                <th class="rates__title rates__title--timer">Окончание торгов</th>
+                <th class="rates__title rates__title--price">Цена</th>
+                <th class="rates__title rates__title--time">Время ставки</th>
+            </tr>
+            <tr class="rates__item">
                 <td class="rates__info">
                     <div class="rates__img">
                         <img src="img/rate1.jpg" width="54" height="40" alt="Сноуборд">

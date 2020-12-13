@@ -9,13 +9,13 @@ if (isset($_COOKIE['lot_history'])) {
     $cookies = json_decode($_COOKIE['lot_history']);
     $lots = implode(', ', $cookies);
 
-
     $cur_page = $_GET['page'] ?? 1;
     $page_items = 6;
 
-    $sql_count = "SELECT COUNT(*) as `count` 
+    $sql_count = "SELECT COUNT(*) AS `count` 
                     FROM `lots` 
-                    WHERE id IN ($lots)";
+                    WHERE `id` IN ($lots)";
+
     $sql_query_count = mysqli_query($DB, $sql_count);
 
     if ($sql_query_count) {
@@ -25,8 +25,7 @@ if (isset($_COOKIE['lot_history'])) {
 
         $pages = range(1, $pages_count);
 
-        $sql = "SELECT l.id, `title`, `description`, `url_image`, `start_price`, `step_price`, `date_end`, c.name
-                    AS `category` 
+        $sql = "SELECT l.id, `title`, `description`, `url_image`, `start_price`, `step_price`, `date_end`, c.name AS `category` 
                     FROM `lots` l
                     JOIN `categories` c ON l.category_id = c.id
                     WHERE l.id IN ($lots)
@@ -34,8 +33,12 @@ if (isset($_COOKIE['lot_history'])) {
                     OFFSET $offset";
 
         if ($sql_query = mysqli_query($DB, $sql)) {
+            $url = $_SERVER['REQUEST_URI'];
+            $url = explode('?page', $url)[0];
+
             $lots = mysqli_fetch_all($sql_query, MYSQLI_ASSOC);
             $page_content = include_template('history.php', [
+                'url' => $url,
                 'lots' => $lots, 
                 'nav_menu' => $nav_menu,
                 'pages' => $pages,
@@ -44,15 +47,15 @@ if (isset($_COOKIE['lot_history'])) {
             ]);
         }
         else {
-            $page_content = include_template('error.php', ['error' => 'Ошибка','error_log' => mysqli_error($DB)]);
+            $page_content = include_template('error.php', ['error_title' => 'Ошибка','error_log' => mysqli_error($DB)]);
         }
     }
     else {
-        $page_content = include_template('error.php', ['error' => 'Ошибка','error_log' => mysqli_error($DB)]);
+        $page_content = include_template('error.php', ['error_title' => 'Ошибка','error_log' => mysqli_error($DB)]);
     }
 }
 else {
-    $page_content = include_template('history.php', ['lots' => $lots, 'nav_menu' => $nav_menu,]);
+    $page_content = include_template('error.php', ['error_title' => 'Ваша история просмотров пуста']);
 }
 
 $page_layout = include_template('layout.php', [

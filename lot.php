@@ -53,7 +53,7 @@ if ($lot_id) {
     $sql_query_get_lot = mysqli_query($DB, $sql_get_lot);
 
     if (!$sql_query_get_lot) {
-        $page_content = include_template('error.php', ['error' => 'Ошибка', 'error_log' => mysqli_error($DB)]);
+        $page_content = include_template('error.php', ['error_title' => 'Ошибка', 'error_text' => mysqli_error($DB)]);
     }
 
     $sql_get_bets = "SELECT `date_create`, `price`, u.name AS `name` FROM `bets` b
@@ -63,7 +63,7 @@ if ($lot_id) {
     $sql_query_get_bets = mysqli_query($DB, $sql_get_bets);
 
     if (!$sql_query_get_bets) {
-        $page_content = include_template('error.php', ['error' => 'Ошибка', 'error_log' => mysqli_error($DB)]);
+        $page_content = include_template('error.php', ['error_title' => 'Ошибка', 'error_text' => mysqli_error($DB)]);
     }
     
     $sql_get_max_bet = "SELECT MAX(`price`) AS max_bet FROM `bets`
@@ -72,7 +72,7 @@ if ($lot_id) {
     $sql_query_max_bet = mysqli_query($DB, $sql_get_max_bet);
 
     if (!$sql_query_max_bet) {
-        $page_content = include_template('error.php', ['error' => 'Ошибка', 'error_log' => mysqli_error($DB)]);
+        $page_content = include_template('error.php', ['error_title' => 'Ошибка', 'error_text' => mysqli_error($DB)]);
     }
 
     if ($sql_query_get_lot && $sql_query_get_bets && $sql_query_max_bet) {
@@ -83,12 +83,12 @@ if ($lot_id) {
         if ($lot) {
             $page_content = include_template('lot.php', ['lot' => $lot, 'bets' => $bets, 'max_bet' => $max_bet, 'is_auth' => $is_auth]);
         } else {
-            $page_content = include_template('error.php', ['error' => 'Ошибка', 'error_log' => 'Данная страница не найдена.']);
+            $page_content = include_template('error.php', ['error_title' => 'Ошибка', 'error_text' => 'Данная страница не найдена.']);
         }
         
     }
 } else {
-    $page_content = include_template('error.php', ['error' => 'Ошибка', 'error_log' => 'Данная страница не найдена.']);
+    $page_content = include_template('error.php', ['error_title' => 'Ошибка', 'error_text' => 'Данная страница не найдена.']);
 }
 
 $page_layout = include_template('layout.php', [

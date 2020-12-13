@@ -5,7 +5,7 @@ require_once('nav_menu.php');
 
 if (!$DB) {
     $error = mysqli_connect_error();
-    $page_content = include_template('error.php', ['error' => 'Ошибка подключения',  'error_log' =>  $error]);
+    $page_content = include_template('error.php', ['error_title' => 'Ошибка подключения',  'error_log' =>  $error]);
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

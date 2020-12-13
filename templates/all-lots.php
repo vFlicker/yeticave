@@ -7,7 +7,9 @@
                 <li class="lots__item-wrapper">
                     <div class="lots__item lot">
                         <div class="lot__image">
-                            <img src="<?= $lot['url_image']; ?>" width="350" height="260" alt="Сноуборд">
+                            <a href="<?= "lot.php?id=$lot[id]" ?>">
+                                <img src="<?= $lot['url_image'] ?>" width="350" height="260" alt="<?= $lot['title']; ?>">
+                            </a>
                         </div>
                         <div class="lot__info">
                             <span class="lot__category"><?= $lot['category']; ?></span>
@@ -33,14 +35,8 @@
                 </li>
                 <?php endforeach ?>
             </ul>
-            <ul class="pagination-list">
-                <li class="pagination-item pagination-item-prev"><a>Назад</a></li>
-                <li class="pagination-item pagination-item--active"><a>1</a></li>
-                <li class="pagination-item"><a href="#">2</a></li>
-                <li class="pagination-item"><a href="#">3</a></li>
-                <li class="pagination-item"><a href="#">4</a></li>
-                <li class="pagination-item pagination-item-next"><a href="#">Вперед</a></li>
-            </ul>
+            
+            <?php require_once('_paggination.php') ?>
         </section>
     </div>
 </main>

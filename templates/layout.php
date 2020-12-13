@@ -24,38 +24,42 @@
             </form>
             
             <?php if ($is_auth): ?>
-            <a class="main-header__add-lot button" href="add-lot.php">Добавить лот</a>
-
+                <a class="main-header__add-lot button" href="add-lot.php">Добавить лот</a>
             <?php endif; ?>
-            <nav class="user-menu">
 
-                <?php if ($is_auth): ?>
-                <div class="user-menu__image">
-                    <img src="<?= $user_avatar ?>" width="40" height="40" alt="Пользователь">
+            <?php if ($is_auth): ?>
+                <div class="user-menu__wrapper">
+
+                    <button class="button__menu-open menu-open">
+                        <span class="menu-open__name"><?= $user_name ?></span>
+                        <img class="menu-open__image" src="<?= $user_avatar ?>" width="32" height="32" alt="Пользователь">
+                    </button>
+
+                    <nav class="user-menu user-menu--login">
+                        <a class="user-menu__bets" href="my-bets.php">Мои ставки</a>
+                        <a class="user-menu__bets" href="history.php">История</a>
+                        <a class="user-menu__logout" href="logout.php">Выход</a>
+                    </nav>
+
                 </div>
-                <div class="user-menu__logged">
-                    <p><?= $user_name ?></p>
-                    <a href="logout.php">Выход</a>
-                </div>
 
-                <?php else: ?>
-                <ul class="user-menu__list">
-                    <li class="user-menu__item">
-                        <a href="sign-up.php">Регистрация</a>
-                    </li>
-                    <li class="user-menu__item">
-                        <a href="login.php">Вход</a>
-                    </li>
-                </ul>
-                <?php endif; ?>
+            <?php else: ?>
+                <nav class="user-menu">
+                    <ul class="user-menu__list">
+                        <li class="user-menu__item">
+                            <a href="sign-up.php">Регистрация</a>
+                        </li>
+                        <li class="user-menu__item">
+                            <a href="login.php">Вход</a>
+                        </li>
+                    </ul>
+                </nav>
+            <?php endif; ?>
 
-            </nav>
         </div>
 
-        <?php 
-            isset($can_show_top_menu) ? $can_show_top_menu : $can_show_top_menu = true;
-            if ($can_show_top_menu): 
-        ?>
+        <?php isset($can_show_top_menu) ? $can_show_top_menu : $can_show_top_menu = true;
+        if ($can_show_top_menu): ?>
         <nav class="nav">
             <ul class="nav__list container">
                 <?php foreach ($nav_menu as $menu_item): ?>
@@ -87,7 +91,7 @@
         </nav>
         <div class="main-footer__bottom container">
             <div class="main-footer__copyright">
-                <p>© 2018, YetiCave</p>
+                <p>© 2020, YetiCave</p>
                 <p>Интернет-аукцион сноубордического и горнолыжного снаряжения</p>
             </div>
             <div class="main-footer__social social">
@@ -137,6 +141,7 @@
         </div>
     </footer>
 
+    <script src="js/main.js"></script>
 </body>
 
 </html>

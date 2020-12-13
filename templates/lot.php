@@ -18,8 +18,7 @@ $error = $_GET['error'] ?? null;
         <div class="lot-item__content">
             <div class="lot-item__left">
                 <div class="lot-item__image">
-                    <img src="<?= $image_url ?>" width="730" height="548" alt="Сноуборд" />
-
+                    <img src="<?= $image_url ?>" width="730" height="548" alt="<?= $lot['title']; ?>">
                 </div>
                 <p class="lot-item__category">
                     Категория: <span><?= $category ?></span>
