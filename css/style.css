@@ -984,6 +984,7 @@ h2 {
 
 .form__input-file {
   position: relative;
+  user-select: none;
 }
 
 .form__input-file label {
@@ -1057,8 +1058,8 @@ input::-webkit-inner-spin-button {
 
 .form__item--file label span {
   display: block;
-  width: 115px;
-  height: 110px;
+  width: 113px;
+  height: 113px;
   background-color: #45abde;
   color: #fff;
   font-size: 16px;
@@ -1083,19 +1084,51 @@ input::-webkit-inner-spin-button {
 
 .preview {
   display: none;
-  position: absolute;
+  width: 113px;
+  height: 113px;
+  position: relative;
+  background-color: #fff;
 }
 
 .preview__remove {
+  width: 36px;
+  height: 36px;
   position: absolute;
-  right: 0;
-  padding: 5px 10px;
-  font-size: 16px;
-  line-height: 16px;
-  color: #fff;
+  top: 2px;
+  right: -23px;
+  font-size: 0;
   border: none;
   background-color: transparent;
+  cursor: pointer;
 }
+
+.preview__remove::before,
+.preview__remove::after {
+  content: '';
+  height: 2px;
+  width: 19px;
+  position: absolute;
+  top: 8px;
+  right: 2px;
+  background-color: #fff;
+}
+
+.preview__remove-square {
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  right: -22px;
+  background-color: #000;
+}
+
+.preview__remove::before {
+  transform: rotate(45deg)
+}
+
+.preview__remove::after {
+  transform: rotate(-45deg)
+}
+
 
 .preview__img {
   width: 113px;
@@ -1105,10 +1138,15 @@ input::-webkit-inner-spin-button {
 .preview__img img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 
 .form__item--uploaded .preview {
   display: block;
+}
+
+.form__item--uploaded .form__input-file {
+  display: none;
 }
 
 /* Страница лота */
@@ -1122,9 +1160,7 @@ input::-webkit-inner-spin-button {
 }
 
 .lot-item__content {
-
   display: flex;
-
   justify-content: space-between;
 }
 
@@ -1439,15 +1475,15 @@ input::-webkit-inner-spin-button {
 }
 
 .rates__timer .timer {
-  width: 82px;
+  min-width: 94px;
 }
 
 .rates__timer .timer--win {
-  width: 112px;
+  max-width: 114px;
 }
 
 .rates__timer .timer--end {
-  width: 107px;
+  min-width: 107px;
 }
 
 .rates__price {

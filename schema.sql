@@ -13,7 +13,7 @@ CREATE TABLE categories (
     class_mod             CHAR(32) NOT NULL UNIQUE
 );
 
-CREATE INDEX c_name ON categories(name);
+CREATE INDEX c_id ON categories(id);
 
 
 DROP TABLE IF EXISTS lots;
@@ -33,10 +33,7 @@ CREATE TABLE lots (
     category_id             INT NOT NULL
 );
 
--- CREATE INDEX date_create ON lots(date_create);
--- CREATE INDEX lot_title ON lots(title);
--- CREATE INDEX date_end ON lots(date_end);
-
+CREATE INDEX date_create ON lots(date_create);
 
 DROP TABLE IF EXISTS bets;
 CREATE TABLE bets (
@@ -48,6 +45,7 @@ CREATE TABLE bets (
     lot_id                  INT
 );
 
+CREATE INDEX date_create ON bets(date_create);
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
@@ -59,4 +57,5 @@ CREATE TABLE users (
     contacts                TEXT(500)
 );
 
--- CREATE INDEX u_name ON users(name);
+CREATE INDEX u_name ON users(name);
+CREATE INDEX u_email ON users(email);

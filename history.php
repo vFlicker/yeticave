@@ -13,7 +13,7 @@ if (isset($_COOKIE['lot_history'])) {
     $page_items = 6;
 
     $sql_count = "SELECT COUNT(*) AS `count` 
-                    FROM `lots` 
+                    FROM `lots`
                     WHERE `id` IN ($lots)";
 
     $sql_query_count = mysqli_query($DB, $sql_count);
@@ -47,11 +47,11 @@ if (isset($_COOKIE['lot_history'])) {
             ]);
         }
         else {
-            $page_content = include_template('error.php', ['error_title' => 'Ошибка','error_log' => mysqli_error($DB)]);
+            $page_content = include_template('error.php', ['error_title' => 'Ошибка', 'error_log' => mysqli_error($DB)]);
         }
     }
     else {
-        $page_content = include_template('error.php', ['error_title' => 'Ошибка','error_log' => mysqli_error($DB)]);
+        $page_content = include_template('error.php', ['error_title' => 'Ошибка', 'error_log' => mysqli_error($DB)]);
     }
 }
 else {

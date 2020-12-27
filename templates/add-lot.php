@@ -25,13 +25,13 @@ $lot_date_error = $errors['lot-date'] ?? '';
         <h2>Добавление лота</h2>
         <div class="form__container-two">
             <div class="form__item <?= isset($errors['lot-name']) ? 'form__item--invalid' : '' ?>">
-                <label for="lot-name">Наименование</label>
+                <label for="lot-name">Наименование <sup>*</sup></label>
                 <input id="lot-name" type="text" name="lot-name" placeholder="Введите наименование лота"
                     value="<?= $lot_name ?>" />
                 <span class="form__error"><?= $lot_name_error ?></span>
             </div>
             <div class="form__item <?= isset($errors['category']) ? 'form__item--invalid' : '' ?>">
-                <label for="category">Категория</label>
+                <label for="category">Категория <sup>*</sup></label>
                 <select id="category" name="category">
                     <option selected><?= $category ?></option>
                     <option>Доски и лыжи</option>
@@ -45,23 +45,23 @@ $lot_date_error = $errors['lot-date'] ?? '';
             </div>
         </div>
         <div class="form__item form__item--wide <?= isset($errors['message']) ? 'form__item--invalid' : '' ?>">
-            <label for="message">Описание</label>
+            <label for="message">Описание <sup>*</sup></label>
             <textarea id="message" name="message" placeholder="Напишите описание лота"><?= $message ?></textarea>
             <!-- required -->
             <span class="form__error"><?= $message_error ?></span>
         </div>
         <div class="form__item form__item--file <?= isset($errors['file']) ? 'form__item--invalid' : '' ?>">
-            <!-- form__item--uploaded -->
-            <label>Изображение</label>
+            <label>Изображение <sup>*</sup></label>
             <div class="preview">
-                <button class="preview__remove" type="button">x</button>
+                <div class="preview__remove-square"></div>
+                <button class="preview__remove" type="button">Закрыть</button>
                 <div class="preview__img">
                     <img src="img/avatar.jpg" width="113" height="113" alt="Изображение лота" />
                 </div>
             </div>
             <div class="form__input-file">
-                <input class="visually-hidden" type="file" id="photo2" name="lot-photo" />
-                <label for="photo2">
+                <input class="visually-hidden" type="file" id="photo" name="lot-photo" />
+                <label for="photo">
                     <span>+ Добавить</span>
                 </label>
             </div>
@@ -69,18 +69,18 @@ $lot_date_error = $errors['lot-date'] ?? '';
         </div>
         <div class="form__container-three">
             <div class="form__item form__item--small <?= isset($errors['lot-rate']) ? 'form__item--invalid' : '' ?>">
-                <label for="lot-rate">Начальная цена</label>
+                <label for="lot-rate">Начальная цена <sup>*</sup></label>
                 <input id="lot-rate" type="number" min="0" name="lot-rate" placeholder="0" value="<?= $lot_rate ?>" />
                 <span class="form__error"><?= $lot_rate_error ?></span>
             </div>
             <div class="form__item form__item--small <?= isset($errors['lot-step']) ? 'form__item--invalid' : '' ?>">
-                <label for="lot-step">Шаг ставки</label>
+                <label for="lot-step">Шаг ставки <sup>*</sup></label>
                 <input id="lot-step" type="number" min="0" name="lot-step" placeholder="0" value="<?= $lot_step ?>" />
                 <span class="form__error"><?= $lot_step_error ?></span>
             </div>
             <div class="form__item <?= isset($errors['lot-date']) ? 'form__item--invalid' : '' ?>">
-                <label for="lot-date">Дата окончания торгов</label>
-                <input class="form__input-date" id="lot-date" type="date" name="lot-date" value="<?= $lot_date ?>" />
+                <label for="lot-date">Дата окончания торгов <sup>*</sup></label>
+                <input class="form__input-date flatpickr-input active" id="lot-date" type="text" name="lot-date" placeholder="Введите дату в формате ГГГГ-ММ-ДД" readonly="readonly">
                 <span class="form__error"><?= $lot_date_error ?></span>
             </div>
         </div>

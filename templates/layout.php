@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title><?= $title ?></title>
     <link href="css/normalize.min.css" rel="stylesheet">
+    <?= basename($_SERVER['PHP_SELF']) == 'add-lot.php' ? '<link href="css/flatpickr.min.css" rel="stylesheet">' : '' ?>
     <link href="css/style.css" rel="stylesheet">
 </head>
 
@@ -141,6 +142,7 @@
         </div>
     </footer>
 
+    <?= basename($_SERVER['PHP_SELF']) == 'add-lot.php' ? '<script src="js/flatpickr.js"></script>' : '' ?>
     <script src="js/main.js"></script>
 </body>
 

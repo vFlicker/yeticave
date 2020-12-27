@@ -22,7 +22,7 @@ if ($sql_query_count) {
                 FROM `lots` l
                 JOIN `categories` c ON l.category_id = c.id
                 -- WHERE date_end > NOW() AND winner_id IS NULL
-                ORDER BY date_create DESC
+                ORDER BY l.date_create DESC
                 LIMIT $page_items 
                 OFFSET $offset";
 

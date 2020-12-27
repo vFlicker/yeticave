@@ -326,7 +326,8 @@ function validate_form_add_lot($post) {
 
         if ($field == 'lot-date') {
             if (strtotime($value) <= strtotime(date("Y-m-d"))) {
-                $errors[$field] = 'Указанная дата больше текущей даты, хотя бы на один день';
+                // print_r(111);
+                $errors[$field] = 'Укажите дату больше текущей даты, хотя бы на один день';
             }
             if (empty($value)) {
                 $errors[$field] = 'Выберите дату';
@@ -334,11 +335,11 @@ function validate_form_add_lot($post) {
         }
 
         if ($field == 'lot-photo') {
-            if ($value['file_type'] !== 'image/jpeg') {
+            if ($value['file_type'] !== 'image/png' && $value['file_type'] !== 'image/jpeg' ) {
                 $errors['file'] = 'Неизвестный формат изображения';
             }
             if (empty($value)) {
-                $errors['file'] = 'Загрузите картинку в формате jpeg';
+                $errors['file'] = 'Загрузите картинку';
             }
         }
     }
@@ -445,9 +446,8 @@ function get_timer($date_create) {
     $hours = floor($time_has_passed / 3600);
     $minutes = floor(($time_has_passed % 3600) / 60);
     
-    return "$hours часов $minutes минуты назад";
+    return "$hours ч. $minutes мин. назад";
 };
-
 
 /**
  * Форматирует время до закрытия лота.
@@ -466,7 +466,6 @@ function formation_remaining_time($time) {
 
     return $time; 
 };
-
 
 /**
  * Показывает сколько осталось до закрытия лота.
@@ -493,4 +492,20 @@ function get_remaining_time($date_end) {
     ];
 
     return $time; 
+};
+
+/**
+ * Определяет окончены торги или нет.
+ *
+ * @param string $date_end Время закрытия лота.
+ * 
+ * @return bool Возвращает true если торни окончены.
+ */
+function bargaining_is_over($date_end) {
+    $curtime_ts = time();
+    $date_end_ts = strtotime($date_end);
+
+    if ($date_end_ts - $curtime_ts < 0) {
+        return true;
+    }
 };
