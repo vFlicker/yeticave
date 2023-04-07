@@ -469,26 +469,26 @@ h2 {
   stroke: #2590c6;
 }
 
-.logo-academy {
+.logo-github {
   display: flex;
   width: 118px;
   height: 40px;
   font-size: 0;
 }
 
-.logo-academy path {
+.logo-github path {
   transition: .1s;
 }
 
-.logo-academy:hover path {
+.logo-github:hover path {
   fill: #45abde;
 }
 
-.logo-academy:active path {
+.logo-github:active path {
   fill: #2590c6;
 }
 
-.logo-academy:focus {
+.logo-github:focus {
   outline-color: #45abde;
   outline-offset: 2px;
 }

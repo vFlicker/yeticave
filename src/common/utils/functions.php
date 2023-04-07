@@ -1,10 +1,10 @@
 <?php
 /**
  * Подключает шаблон, передает туда данные и возвращает итоговый HTML контент.
- * 
+ *
  * @param string $src Путь к файлу шаблона относительно папки templates.
  * @param array $data Ассоциативный массив с данными для шаблона.
- * 
+ *
  * @return string Итоговый HTML.
  */
 function include_template($src, $data) {
@@ -25,10 +25,10 @@ function include_template($src, $data) {
 };
 
 /**
- * Преобразует специмволы в HTML-сущности. 
- * 
+ * Преобразует специмволы в HTML-сущности.
+ *
  * @param array $post Данный из формы.
- * 
+ *
  * @return array Ассоциативный массив с преобразуемыми спецсимволами.
  */
 function esc_array($post) {
@@ -94,28 +94,10 @@ function db_get_prepare_stmt($db_connection, $sql, $data = []) {
 }
 
 /**
- * Форматирует цену товара, добавляет знака рубля в конце.
- *
- * @param int $value Цена.
- * 
- * @return string Готовый HTML.
- */
-function price_format($value) {
-    $rounded_value = ceil($value);
-    $ruble_symbol = '<b class="rub">р</b>';
-
-    if ($rounded_value  > 999) {
-        return number_format($rounded_value, 0, '', ' ') . $ruble_symbol;
-    }
-
-    return $rounded_value . $ruble_symbol;
-};
-
-/**
  * Идентифицирует пользователя по E-mail.
  *
  * @param string $email Проверяемая почта.
- * 
+ *
  * @return string Возвращает массив с данными пользователя.
  */
 function search_user_by_email($db_connection, $email) {
@@ -144,7 +126,7 @@ function search_user_by_email($db_connection, $email) {
  *
  * @param array $post Ассоциативный массив из POST запроса.
  * @param array $db_connection Данные подчклюения к БД.
- * 
+ *
  * @return array Массив с ошибками. При остусвтии ошибок возвращает пустой массив.
  */
 function validate_form_registration($db_connection, $post) {
@@ -211,7 +193,7 @@ function validate_form_registration($db_connection, $post) {
             }
         }
     }
-    
+
     return $errors;
 }
 
@@ -220,7 +202,7 @@ function validate_form_registration($db_connection, $post) {
  *
  * @param array $post Ассоциативный массив из POST запроса.
  * @param array $db_connection Данные подчклюения к БД.
- * 
+ *
  * @return array Массив с ошибками. При остусвтии ошибок возвращает пустой массив.
  */
 function validate_form_login($db_connection, $post) {
@@ -259,7 +241,7 @@ function validate_form_login($db_connection, $post) {
             else {
                 $errors['password'] = 'Неверный пароль';
             }
-        } 
+        }
     }
 
     return $errors;
@@ -270,7 +252,7 @@ function validate_form_login($db_connection, $post) {
  *
  * @param array $post Ассоциативный массив из POST запроса.
  * @param array $db_connection Данные подчклюения к БД.
- * 
+ *
  * @return array Массив с ошибками. При остусвтии ошибок возвращает пустой массив.
  */
 function validate_form_add_lot($post) {
@@ -374,7 +356,7 @@ function search_id_by_category($db_connection, $category) {
  *
  * @param int $price Текущая цена.
  * @param int $step Шаг ставки.
- * 
+ *
  * @return int Текст ошибки. При остусвтии ошибки возвращает null.
  */
 function get_min_bet($price, $step) {
@@ -388,7 +370,7 @@ function get_min_bet($price, $step) {
  *
  * @param array $post Ассоциативный массив из POST запроса.
  * @param array $db_connection Данные подчклюения к БД.
- * 
+ *
  * @return int Текст ошибки. При остусвтии ошибки возвращает null.
  */
 function validate_form_add_bet($db_connection, $post) {
@@ -410,7 +392,7 @@ function validate_form_add_bet($db_connection, $post) {
     }
 
     $lot = mysqli_fetch_ASSOC($sql_query);
-    
+
     $price = $lot['max_bet'] ?? $lot['start_price'];
     $step = $lot['step_price'];
 
@@ -433,7 +415,7 @@ function validate_form_add_bet($db_connection, $post) {
  * Показывает сколько времени прошло после добавления новой ставки.
  *
  * @param string $date_create Время добавления новой ставки.
- * 
+ *
  * @return string Сколько времени прошло.
  */
 function get_timer($date_create) {
@@ -445,7 +427,7 @@ function get_timer($date_create) {
 
     $hours = floor($time_has_passed / 3600);
     $minutes = floor(($time_has_passed % 3600) / 60);
-    
+
     return "$hours ч. $minutes мин. назад";
 };
 
@@ -453,7 +435,7 @@ function get_timer($date_create) {
  * Форматирует время до закрытия лота.
  *
  * @param int $time Час, минута, секунда.
- * 
+ *
  * @return string Правильный формат
  */
 function formation_remaining_time($time) {
@@ -464,14 +446,14 @@ function formation_remaining_time($time) {
         $time = "0$time";
     }
 
-    return $time; 
+    return $time;
 };
 
 /**
  * Показывает сколько осталось до закрытия лота.
  *
  * @param string $date_end Время закрытия лота.
- * 
+ *
  * @return array $time Массив из часов, минут, секунд.
  */
 function get_remaining_time($date_end) {
@@ -491,14 +473,14 @@ function get_remaining_time($date_end) {
         'seconds' => $seconds
     ];
 
-    return $time; 
+    return $time;
 };
 
 /**
  * Определяет окончены торги или нет.
  *
  * @param string $date_end Время закрытия лота.
- * 
+ *
  * @return bool Возвращает true если торни окончены.
  */
 function bargaining_is_over($date_end) {

@@ -3,6 +3,9 @@ import express from 'express';
 import ejsLayouts from 'express-ejs-layouts';
 import path from 'path';
 
+import { formatPrice } from './common';
+import { categories, lots } from './database';
+
 dotenv.config();
 
 const app = express();
@@ -19,7 +22,12 @@ app.set('layout', 'layouts/layout');
 app.use(ejsLayouts);
 
 app.get('/', (req, res) => {
-  res.render('pages/home', { title: 'Home' });
+  res.render('pages/home', {
+    title: 'Home',
+    categories,
+    lots,
+    helper: { formatPrice },
+  });
 });
 
 app.listen(port, () => {
