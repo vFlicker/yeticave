@@ -1,7 +1,7 @@
 <main>
     <div class="container">
         <section class="lots">
-            <h2>История просмотров</h2>
+            <h2>Результаты поиска по запросу «<span><?= $search ?></span>»</h2>
             <ul class="lots__list">
                 <?php foreach ($lots as $lot): ?>
                 <li class="lots__item-wrapper">
@@ -23,7 +23,7 @@
                                 <span class="lot__amount">Стартовая цена</span>
                                 <span class="lot__cost"><?= price_format($lot['start_price']) ?></span>
                             </div>
-                            
+
                             <?php $time = get_remaining_time($lot['date_end']); ?>
 
                             <div class="lot__timer timer <?= $time['hours'] < 12 ? 'timer--finishing' : '' ?> ">
@@ -35,8 +35,8 @@
                 </li>
                 <?php endforeach ?>
             </ul>
-        </section>
 
-        <?php require_once('_paggination.php') ?>
+            <?php require_once('_paggination.php') ?>
+        </section>
     </div>
 </main>

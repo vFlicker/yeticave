@@ -23,7 +23,7 @@
                                 <span class="lot__amount">Стартовая цена</span>
                                 <span class="lot__cost"><?= price_format($lot['start_price']); ?></span>
                             </div>
-                            
+
                             <?php $time = get_remaining_time($lot['date_end']); ?>
 
                             <div class="lot__timer timer <?= $time['hours'] < 12 ? 'timer--finishing' : '' ?> ">
@@ -35,7 +35,7 @@
                 </li>
                 <?php endforeach ?>
             </ul>
-            
+
             <?php require_once('_paggination.php') ?>
         </section>
     </div>

@@ -11,8 +11,8 @@
             </tr>
 
             <?php foreach ($my_bets as $bet): ?>
-                
-            <?php 
+
+            <?php
                 // $bet['winner_id'] == $_SESSION['user']['id'] ? $is_winner = true : $is_winner = false;
 
                 $time = get_remaining_time($bet['date_end']);
@@ -40,13 +40,13 @@
                     <?= $bet['category'] ?>
                 </td>
                 <td class="rates__timer">
-                    <div class="timer <?php 
+                    <div class="timer <?php
                         if ($end_timer) { echo('timer--end'); }
                         elseif ($red_timer) { echo('timer--finishing'); }
                         // elseif ($is_winner) { echo('timer--win'); }
                         else { echo(''); }
                     ?>">
-                        <?php 
+                        <?php
                             if ($end_timer) { echo('Торги окончены'); }
                             // elseif ($is_winner) { echo('Ставка выиграла'); }
                             else { echo($time['hours'] . ':' . $time['minutes'] . ':' . $time['seconds']); }
