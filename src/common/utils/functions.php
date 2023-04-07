@@ -449,32 +449,6 @@ function formation_remaining_time($time) {
     return $time;
 };
 
-/**
- * Показывает сколько осталось до закрытия лота.
- *
- * @param string $date_end Время закрытия лота.
- *
- * @return array $time Массив из часов, минут, секунд.
- */
-function get_remaining_time($date_end) {
-    date_default_timezone_set("Europe/Kiev");
-
-    $curtime_ts = time();
-    $date_end_ts = strtotime($date_end);
-    $time_left_ts = $date_end_ts - $curtime_ts;
-
-    $hours = formation_remaining_time(floor($time_left_ts / 3600));
-    $minutes = formation_remaining_time(floor(($time_left_ts % 3600) / 60));
-    $seconds = formation_remaining_time($time_left_ts % 60);
-
-    $time = [
-        'hours' => $hours,
-        'minutes' => $minutes,
-        'seconds' => $seconds
-    ];
-
-    return $time;
-};
 
 /**
  * Определяет окончены торги или нет.

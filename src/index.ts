@@ -3,7 +3,7 @@ import express from 'express';
 import ejsLayouts from 'express-ejs-layouts';
 import path from 'path';
 
-import { formatPrice } from './common';
+import { formatPrice, getHumanReadableTime } from './common';
 import { categories, lots } from './database';
 
 dotenv.config();
@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
     title: 'Home',
     categories,
     lots,
-    helper: { formatPrice },
+    helper: { formatPrice, getHumanReadableTime },
   });
 });
 

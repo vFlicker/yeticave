@@ -38,10 +38,8 @@
                 <span class="lot__cost"><%= helper.formatPrice(lot.price) %></span>
               </div>
 
-              <?php $time = get_remaining_time($lot['date_end']); ?>
-
               <div class="lot__timer timer <?= $time['hours'] < 12 ? 'timer--finishing' : '' ?> ">
-                <?= $time['hours'] . ':' . $time['minutes'] . ':' . $time['seconds'] ?>
+                <%= helper.getHumanReadableTime(lot.endDate); %>
               </div>
             </div>
           </div>
