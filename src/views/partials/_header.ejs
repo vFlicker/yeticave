@@ -3,7 +3,7 @@
       <h1 class="visually-hidden">YetiCave</h1>
 
       <a href="/" class="main-header__logo">
-          <img src="img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
+          <img src="/img/logo.svg" width="160" height="39" alt="YetiCave Logo">
       </a>
 
       <form class="main-header__search" method="get" action="search.php">
@@ -20,13 +20,14 @@
 
               <button class="button__menu-open menu-open">
                   <span class="menu-open__name"><?= $user_name ?></span>
-                  <img class="menu-open__image" src="<?= $user_avatar ?>" width="32" height="32" alt="Пользователь">
+                  <!-- TODO: uncomment this -->
+                  <!-- <img class="menu-open__image" src="<?= $user_avatar ?>" width="32" height="32" alt="User avatar"> -->
               </button>
 
               <nav class="user-menu user-menu--login">
-                  <a class="user-menu__bets" href="my-bets.php">Мои ставки</a>
-                  <a class="user-menu__bets" href="history.php">История</a>
-                  <a class="user-menu__logout" href="logout.php">Выход</a>
+                  <a class="user-menu__bets" href="my-bets.php">My bets</a>
+                  <a class="user-menu__bets" href="history.php">History</a>
+                  <a class="user-menu__logout" href="logout.php">Logout</a>
               </nav>
 
           </div>
@@ -35,10 +36,10 @@
           <nav class="user-menu">
               <ul class="user-menu__list">
                   <li class="user-menu__item">
-                      <a href="sign-up.php">Регистрация</a>
+                      <a href="sign-up.php">Register</a>
                   </li>
                   <li class="user-menu__item">
-                      <a href="login.php">Вход</a>
+                      <a href="login.php">Login</a>
                   </li>
               </ul>
           </nav>

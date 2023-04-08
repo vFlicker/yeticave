@@ -1,2 +1,2 @@
 export * from './date';
-export * from './formatPrice';
+export * from './price';

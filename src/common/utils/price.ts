@@ -7,3 +7,5 @@ export const formatPrice = (price: number) => {
 
   return formattedPrice;
 };
+
+export const getMinRate = (price: number, step: number) => price + step;

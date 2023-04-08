@@ -352,20 +352,6 @@ function search_id_by_category($db_connection, $category) {
 }
 
 /**
- * Получить минимально доступную ставку.
- *
- * @param int $price Текущая цена.
- * @param int $step Шаг ставки.
- *
- * @return int Текст ошибки. При остусвтии ошибки возвращает null.
- */
-function get_min_bet($price, $step) {
-    $sum = $price + $step;
-
-    return $sum;
-}
-
-/**
  * Валидирует форму добавления ставки.
  *
  * @param array $post Ассоциативный массив из POST запроса.
