@@ -1,6 +1,6 @@
 <main>
   <form class="form form--add-lot container <%= hasErrors ? 'form--invalid' : '' %>" enctype="multipart/form-data"
-    action="/add" method="post">
+    action="/lots/add" method="post">
     <h2>Add a lot</h2>
     <div class="form__container-two">
       <div class="form__item <%= errors.hasOwnProperty('name') ? 'form__item--invalid' : '' %>">
