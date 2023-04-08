@@ -1,68 +1,62 @@
-/* Открытие меню в шапке сайте */
-(function() {
-    const $button = document.querySelector('.button__menu-open');
-    const $action = document.querySelector('.user-menu--login');
+(() => {
+  /* Menu toggler */
+  const buttonElement = document.querySelector('.button__menu-open');
+  const actionElement = document.querySelector('.user-menu--login');
 
-    const onMenuClick = function(evt) {
-        evt.preventDefault();
-        $button.classList.toggle('menu-open--active');
-        $action.classList.toggle('user-menu--active');
-    }
+  const onButtonClick = () => {
+    buttonElement.classList.toggle('menu-open--active');
+    actionElement.classList.toggle('user-menu--active');
+  }
 
-    if ($action) {
-        $button.addEventListener('click', onMenuClick);
-    }
+  if (actionElement) buttonElement.addEventListener('click', onButtonClick);
 })();
 
+(() => {
+  /* Date picker */
+  const datePickerElement = document.querySelector('#date-picker');
 
-/* Подключение календарика */
-flatpickr('#lot-date', {
-    enableTime: false,
-    dateFormat: "Y-m-d",
-    locale: "ru"
-});
+  if (datePickerElement) {
+    flatpickr(datePickerElement, {
+      enableTime: false,
+      dateFormat: "Y-m-d",
+      locale: "ru"
+    });
+  }
+})();
 
+(() => {
+  /* Lot preview */
+  const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
-/* Превью лота*/
-(function() {
-    const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+  const wrapperElement = document.querySelector('.form__item--file');
+  const previewElement = wrapperElement.querySelector('.preview img');
+  const chooseFileElement = wrapperElement.querySelector('.form__input-file input[type=file]');
+  const closeButtonElement = wrapperElement.querySelector('.preview__remove');
 
-    const formItemFileWrapper = document.querySelector('.form__item--file');
-    const formItemFile = formItemFileWrapper.querySelector('.form__input-file');
-    const preview = formItemFileWrapper.querySelector('.preview img');
-    const buttonClose = formItemFileWrapper.querySelector('.preview__remove');
-    let fileChooser = formItemFileWrapper.querySelector('.form__input-file input[type=file]');
+  const onFileChange = () => {
+    const file = chooseFileElement.files[0];
+    const fileName = file.name.toLowerCase();
 
-    const onFileChooserClick = function() {
-        const file = fileChooser.files[0];
-        const fileName = file.name.toLowerCase();
+    const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
 
-        const matches = FILE_TYPES.some(function (it) {
-            return fileName.endsWith(it);
-        });
+    if (matches) {
+      const reader = new FileReader();
 
-        if (matches) {
-            const reader = new FileReader();
+      reader.addEventListener('load', () => {
+        wrapperElement.classList.add('form__item--uploaded');
+        previewElement.src = reader.result;
+      });
 
-            reader.addEventListener('load', function () {
-                formItemFileWrapper.classList.add('form__item--uploaded');
-                preview.src = reader.result;
-            });
-
-            reader.readAsDataURL(file);
-        }
+      reader.readAsDataURL(file);
     }
+  }
 
-    onbuttonCloseClick = function(evt) {
-        evt.preventDefault();
+  const onCloseButtonClick = () => {
+    wrapperElement.classList.remove('form__item--uploaded');
+    chooseFileElement.value = '';
+    previewElement.src = '';
+  }
 
-        formItemFileWrapper.classList.remove('form__item--uploaded');
-        fileChooser.remove();
-
-        formItemFile.prepend(fileChooser);
-        fileChooser.addEventListener('change', onFileChooserClick);
-    }
-    
-    fileChooser.addEventListener('change', onFileChooserClick);
-    buttonClose.addEventListener('click', onbuttonCloseClick);
+  chooseFileElement.addEventListener('change', onFileChange);
+  closeButtonElement.addEventListener('click', onCloseButtonClick);
 })();
