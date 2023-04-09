@@ -1,12 +1,23 @@
 import { Request, Response } from 'express';
+import Joi from 'joi';
 
 // TODO: use injection
 import { formatPrice, getMinRate } from '../common';
 // TODO: use injection
 import { categories, lots } from '../database';
 
+type FormData = {
+  name: string;
+  category: string;
+  description: string;
+  price: number;
+  step: number;
+  endDate: string;
+};
+
+// TODO: add middleware for validation
 export class LotController {
-  public addGet = (req: Request, res: Response) => {
+  public addGet = (_: Request, res: Response) => {
     const lot = {
       name: '',
       description: '',
@@ -33,12 +44,12 @@ export class LotController {
   public addPost = (req: Request, res: Response) => {
     const { body, file } = req;
 
-    // validate
-    const errors = this.validateAddLotForm(body);
-    const hasErrors = Object.keys(errors).length > 0;
+    const errors = this.validateForm(body, file?.mimetype);
+    const image = `/img/uploads/${file?.filename}`;
+    const lot = { ...body, image };
 
-    if (Object.keys(errors).length > 0) {
-      const lot = { ...body, image: '' };
+    if (errors) {
+      const hasErrors = Boolean(errors);
 
       return res.render('pages/lot/add', {
         title: 'Add lot',
@@ -53,7 +64,19 @@ export class LotController {
       });
     }
 
-    console.log('all is ok');
+    // TODO: remove it
+    lot.id = Date.now();
+
+    // TODO: add res.redirect('/lots/:id')
+    res.render('pages/lot/lot', {
+      title: lot.title,
+      categories,
+      lot,
+      helper: {
+        formatPrice,
+        getMinRate,
+      },
+    });
   };
 
   public getById = (req: Request, res: Response) => {
@@ -74,80 +97,43 @@ export class LotController {
     });
   };
 
-  private validateAddLotForm(post: any) {
-    const errors = {} as any;
+  private validateForm(data: FormData, image?: string) {
+    const formDataErrors = this.validateFormDate(data);
+    const imageErrors = this.validateImage(image);
 
-    for (const field in post) {
-      const value = post[field];
-      const max_length_of_lot_name = 255;
+    const errors = { ...formDataErrors, ...imageErrors };
 
-      if (field === 'name') {
-        if (value === '') {
-          errors[field] = 'Введите наименование лота';
-        }
-        if (value.length > max_length_of_lot_name) {
-          errors[
-            field
-          ] = `Длина наименования лота не должна превышать ${max_length_of_lot_name} символов`;
-        }
-      }
+    if (Object.keys(errors).length > 0) return errors;
+  }
 
-      if (field === 'category') {
-        if (value === 'Выберите категорию') {
-          errors[field] = 'Выберите категорию';
-        }
-      }
+  private validateFormDate(data: FormData) {
+    const schema = Joi.object({
+      name: Joi.string().min(3).max(255).required(),
+      category: Joi.string().required(),
+      description: Joi.string().required(),
+      price: Joi.number().min(1).required(),
+      step: Joi.number().min(1).required(),
+      endDate: Joi.date().iso().greater('now'),
+    });
 
-      if (field === 'description') {
-        if (value === '') {
-          errors[field] = 'Напишите описание лота';
-        }
-      }
+    const { error } = schema.validate(data, { abortEarly: false });
 
-      if (field === 'price') {
-        if (isNaN(value)) {
-          errors[field] = 'Цена должна быть числом';
-        }
-        if (value < 0) {
-          errors[field] = 'Цена должна быть больше 0';
-        }
-        if (value === '') {
-          errors[field] = 'Введите начальную цену';
-        }
-      }
+    if (error) {
+      const errors: Record<string, string> = {};
 
-      if (field === 'step') {
-        if (isNaN(value)) {
-          errors[field] = 'Ставка должена быть числом';
-        }
-        if (value < 0) {
-          errors[field] = 'Ставка должена быть больше 0';
-        }
-        if (value === '') {
-          errors[field] = 'Введите вашу ставку';
-        }
-      }
+      error.details.forEach((detail) => {
+        errors[detail.context!.key!] = detail.message;
+      });
 
-      if (field === 'endDate') {
-        if (new Date(value) <= new Date()) {
-          errors[field] =
-            'Укажите дату больше текущей даты, хотя бы на один день';
-        }
-        if (value === '') {
-          errors[field] = 'Выберите дату';
-        }
-      }
-
-      if (field === 'image') {
-        if (value.type !== 'image/png' && value.type !== 'image/jpeg') {
-          errors['file'] = 'Неизвестный формат изображения';
-        }
-        if (value === '') {
-          errors['file'] = 'Загрузите картинку';
-        }
-      }
+      return errors;
     }
+  }
 
-    return errors;
+  private validateImage(mimetype?: string) {
+    const imageMimeTypes = ['image/jpeg', 'image/png'];
+
+    if (!mimetype || !imageMimeTypes.indexOf(mimetype)) {
+      return { image: 'Invalid image, must be a jpg, jpeg or png image' };
+    }
   }
 }

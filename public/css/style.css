@@ -988,8 +988,43 @@ h2 {
 }
 
 .form__input-file label {
+  display: inline-block;
   margin: 0;
-  position: relative;
+  cursor: pointer;
+}
+
+.form__input-file img {
+  display: none;
+}
+
+.form__add-button {
+  display: block;
+  width: 113px;
+  height: 113px;
+  background-color: #45abde;
+  color: #fff;
+  font-size: 40px;
+  text-align: center;
+  font-weight: 400;
+  padding: 40px 0;
+  transition: background-color 0.1s;
+}
+
+.form__add-button:hover,
+.form__add-button:focus {
+  background-color: #47b5ec;
+}
+
+.form__add-button:active {
+  background-color: #2590c6;
+}
+
+.form__input-file--selected .form__add-button {
+  display: none;
+}
+
+.form__input-file--selected img {
+  display: block;
 }
 
 .form-can-login {
@@ -1056,93 +1091,8 @@ input::-webkit-inner-spin-button {
   background-image: none;
 }
 
-.form__item--file label span {
-  display: block;
-  width: 113px;
-  height: 113px;
-  background-color: #45abde;
-  color: #fff;
-  font-size: 40px;
-  text-align: center;
-  font-weight: 400;
-  padding: 40px 0;
-  cursor: pointer;
-  transition: background-color 0.1s;
-}
-
-.form__item--file label span:hover,
-.form__item--file label span:focus {
-  background-color: #47b5ec;
-}
-
-.form__item--file label span:active  {
-  background-color: #2590c6;
-}
-
 .form__item--uploaded {
   position: relative;
-}
-
-.preview {
-  display: none;
-  width: 113px;
-  height: 113px;
-  position: relative;
-  background-color: #fff;
-}
-
-.preview__remove {
-  width: 36px;
-  height: 36px;
-  position: absolute;
-  top: 2px;
-  right: -23px;
-  font-size: 0;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-}
-
-.preview__remove::before,
-.preview__remove::after {
-  content: '';
-  height: 2px;
-  width: 19px;
-  position: absolute;
-  top: 8px;
-  right: 2px;
-  background-color: #fff;
-}
-
-.preview__remove-square {
-  width: 22px;
-  height: 22px;
-  position: absolute;
-  right: -22px;
-  background-color: #000;
-}
-
-.preview__remove::before {
-  transform: rotate(45deg)
-}
-
-.preview__remove::after {
-  transform: rotate(-45deg)
-}
-
-
-.preview__img {
-  width: 113px;
-  height: 113px;
-}
-
-.preview__img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.form__item--uploaded .preview {
   display: block;
 }
 

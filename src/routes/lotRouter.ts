@@ -1,12 +1,13 @@
 import express from 'express';
-import multer from 'multer';
 
-import { LotController } from '../controllers/lotController';
+import { LotController } from '../controllers/LotController';
+import { DiskStorageService } from '../services/DiskStorageService';
 
 export const lotRouter = express.Router();
 const lotController = new LotController();
-const upload = multer({ dest: 'uploads/' });
+const diskStorage = new DiskStorageService('public/img/uploads');
+const fileUploader = diskStorage.createFileUploader();
 
 lotRouter.get('/add', lotController.addGet);
-lotRouter.post('/add', upload.single('lot'), lotController.addPost);
+lotRouter.post('/add', fileUploader.single('lot-image'), lotController.addPost);
 lotRouter.get('/:id', lotController.getById);

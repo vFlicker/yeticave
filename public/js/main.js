@@ -28,10 +28,9 @@
   /* Lot preview */
   const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
-  const wrapperElement = document.querySelector('.form__item--file');
-  const previewElement = wrapperElement.querySelector('.preview img');
-  const chooseFileElement = wrapperElement.querySelector('.form__input-file input[type=file]');
-  const closeButtonElement = wrapperElement.querySelector('.preview__remove');
+  const wrapperElement = document.querySelector('.form__input-file');
+  const previewElement = wrapperElement.querySelector('img');
+  const chooseFileElement = wrapperElement.querySelector('input[type=file]');
 
   const onFileChange = () => {
     const file = chooseFileElement.files[0];
@@ -43,7 +42,7 @@
       const reader = new FileReader();
 
       reader.addEventListener('load', () => {
-        wrapperElement.classList.add('form__item--uploaded');
+        wrapperElement.classList.add('form__input-file--selected');
         previewElement.src = reader.result;
       });
 
@@ -51,12 +50,5 @@
     }
   }
 
-  const onCloseButtonClick = () => {
-    wrapperElement.classList.remove('form__item--uploaded');
-    chooseFileElement.value = '';
-    previewElement.src = '';
-  }
-
   chooseFileElement.addEventListener('change', onFileChange);
-  closeButtonElement.addEventListener('click', onCloseButtonClick);
 })();
