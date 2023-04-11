@@ -1,13 +1,18 @@
+import cookies from 'cookie-parser';
 import dotenv from 'dotenv';
 import express from 'express';
 import ejsLayouts from 'express-ejs-layouts';
 import path from 'path';
 
-import { lotRouter, mainRouter } from './routes';
+import { HISTORY_PREFIX, LOTS_PREFIX, ROOT_PREFIX } from './common';
+import { historyRouter, lotRouter, mainRouter } from './routes';
 
 dotenv.config();
 
 const app = express();
+
+// Set cookies
+app.use(cookies());
 
 // Static Files
 app.use(express.static('public'));
@@ -19,8 +24,9 @@ app.set('layout', 'layouts/layout');
 app.use(ejsLayouts);
 
 // Add routing
-app.use('/', mainRouter);
-app.use('/lots', lotRouter);
+app.use(ROOT_PREFIX, mainRouter);
+app.use(HISTORY_PREFIX, historyRouter);
+app.use(LOTS_PREFIX, lotRouter);
 
 app.get('*', (_, res) => {
   res.status(404).send('Not Found');

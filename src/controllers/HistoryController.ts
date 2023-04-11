@@ -6,16 +6,20 @@ import {
   getLotPath,
   getTimeLeft,
   isTimeFinishing,
+  LOT_HISTORY_COOKIE,
 } from '../common';
 // TODO: use injection
 import { categories, lots } from '../database';
 
-export class HomeController {
-  public indexPage = (_: Request, res: Response) => {
-    res.render('pages/home', {
-      title: 'Home',
+export class HistoryController {
+  public indexPage = (req: Request, res: Response) => {
+    const lotsSet = new Set(req.cookies[LOT_HISTORY_COOKIE]);
+    const historyLots = lots.filter(({ id }) => lotsSet.has(id));
+
+    res.render('pages/history', {
+      title: 'History',
       categories,
-      lots,
+      lots: historyLots,
       helper: {
         formatPrice,
         getTimeLeft,

@@ -29,26 +29,29 @@
   const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
   const wrapperElement = document.querySelector('.form__input-file');
-  const previewElement = wrapperElement.querySelector('img');
-  const chooseFileElement = wrapperElement.querySelector('input[type=file]');
 
-  const onFileChange = () => {
-    const file = chooseFileElement.files[0];
-    const fileName = file.name.toLowerCase();
+  if (wrapperElement) {
+    const previewElement = wrapperElement.querySelector('img');
+    const chooseFileElement = wrapperElement.querySelector('input[type=file]');
 
-    const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+    const onFileChange = () => {
+      const file = chooseFileElement.files[0];
+      const fileName = file.name.toLowerCase();
 
-    if (matches) {
-      const reader = new FileReader();
+      const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
 
-      reader.addEventListener('load', () => {
-        wrapperElement.classList.add('form__input-file--selected');
-        previewElement.src = reader.result;
-      });
+      if (matches) {
+        const reader = new FileReader();
 
-      reader.readAsDataURL(file);
+        reader.addEventListener('load', () => {
+          wrapperElement.classList.add('form__input-file--selected');
+          previewElement.src = reader.result;
+        });
+
+        reader.readAsDataURL(file);
+      }
     }
-  }
 
-  chooseFileElement.addEventListener('change', onFileChange);
+    chooseFileElement.addEventListener('change', onFileChange);
+  }
 })();

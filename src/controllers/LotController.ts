@@ -5,6 +5,7 @@ import Joi from 'joi';
 import { formatPrice, getMinRate } from '../common';
 // TODO: use injection
 import { categories, lots } from '../database';
+import { createLotHistoryCookie } from '../middlewares';
 
 type FormData = {
   name: string;
@@ -17,7 +18,7 @@ type FormData = {
 
 // TODO: add middleware for validation
 export class LotController {
-  public addGet = (_: Request, res: Response) => {
+  public newLotPage = (_: Request, res: Response) => {
     const lot = {
       name: '',
       description: '',
@@ -41,7 +42,7 @@ export class LotController {
     });
   };
 
-  public addPost = (req: Request, res: Response) => {
+  public addNewLot = (req: Request, res: Response) => {
     const { body, file } = req;
 
     const errors = this.validateForm(body, file?.mimetype);
@@ -79,23 +80,26 @@ export class LotController {
     });
   };
 
-  public getById = (req: Request, res: Response) => {
-    const { id } = req.params;
-    const index = Number(id) - 1;
-    const lot = lots[index];
+  public lotPage = [
+    createLotHistoryCookie,
+    (req: Request, res: Response) => {
+      const { id } = req.params;
+      const index = Number(id) - 1;
+      const lot = lots[index];
 
-    if (!lot) return res.status(404).send('what???');
+      if (!lot) return res.status(404).send('what???');
 
-    res.render('pages/lot/lot', {
-      title: lot.title,
-      categories,
-      lot,
-      helper: {
-        formatPrice,
-        getMinRate,
-      },
-    });
-  };
+      res.render('pages/lot/lot', {
+        title: lot.title,
+        categories,
+        lot,
+        helper: {
+          formatPrice,
+          getMinRate,
+        },
+      });
+    },
+  ];
 
   private validateForm(data: FormData, image?: string) {
     const formDataErrors = this.validateFormDate(data);

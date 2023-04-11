@@ -1,4 +1,5 @@
 import {
+  HOURS_PER_DAY,
   MILLISECONDS_PER_SECOND,
   SECONDS_PER_HOUR,
   SECONDS_PER_MINUTE,
@@ -16,6 +17,10 @@ const getTimeDiff = (time1: Timestamp, time2: Timestamp) => {
   const time2InSeconds = new Date(time2).getTime() / MILLISECONDS_PER_SECOND;
 
   return time2InSeconds - time1InSeconds;
+};
+
+export const convertDayToMilliseconds = (days: number) => {
+  return days * HOURS_PER_DAY * SECONDS_PER_HOUR * MILLISECONDS_PER_SECOND;
 };
 
 export const getTimeLeft = (endDate: Timestamp) => {
