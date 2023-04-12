@@ -1,17 +1,3 @@
-<?php
-
-$title = $lot['title'] ?? '';
-$image_url = $lot['url_image'] ?? '';
-$description = $lot['description'] ?? '';
-$category = $lot['category'] ?? '';
-$price = $max_bet ?? $lot['start_price'];
-$step_price = $lot['step_price'] ?? '';
-$id = $lot['id'] ?? '';
-
-$error = $_GET['error'] ?? null;
-
-?>
-
 <main>
   <section class="lot-item container">
     <h2><%= lot.title %></h2>
@@ -27,8 +13,8 @@ $error = $_GET['error'] ?? null;
           <%= lot.description %>
         </p>
       </div>
+      <% if (isAuth) { %>
       <div class="lot-item__right">
-        <?php if ($is_auth): ?>
         <div class="lot-item__state">
           <div class="lot-item__timer timer">10:54:12</div>
           <div class="lot-item__cost-state">
@@ -51,7 +37,8 @@ $error = $_GET['error'] ?? null;
             <button type="submit" class="button">Make a bet</button>
           </form>
         </div>
-        <?php endif; ?>
+        <% } %>
+
         <div class="history">
           <h3>History of rates (<span>10</span>)</h3>
           <table class="history__list">

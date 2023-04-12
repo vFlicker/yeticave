@@ -83,7 +83,23 @@ export class UserController {
         });
       }
 
-      return res.redirect(ROOT_PREFIX);
+      req.session.regenerate(() => {
+        req.session.user = foundUser;
+
+        req.session.save(() => {
+          res.redirect(ROOT_PREFIX);
+        });
+      });
+    });
+  };
+
+  public logout = (req: Request, res: Response) => {
+    req.session.user = null;
+
+    req.session.save(() => {
+      req.session.regenerate(() => {
+        res.redirect(ROOT_PREFIX);
+      });
     });
   };
 

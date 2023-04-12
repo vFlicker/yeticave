@@ -7,3 +7,4 @@ export const ROOT_PREFIX = '/';
 export const HISTORY_PREFIX = '/history';
 export const LOTS_PREFIX = '/lots';
 export const SIGN_IN_PREFIX = '/sign-in';
+export const LOGOUT_PREFIX = '/logout';

@@ -5,7 +5,7 @@ import Joi from 'joi';
 import { formatPrice, getMinRate } from '../common';
 // TODO: use injection
 import { categories, lots } from '../database';
-import { createLotHistoryCookie } from '../middlewares';
+import { createLotHistoryCookie, requireAuth } from '../middlewares';
 
 type FormData = {
   name: string;
@@ -18,29 +18,32 @@ type FormData = {
 
 // TODO: add middleware for validation
 export class LotController {
-  public newLotPage = (_: Request, res: Response) => {
-    const lot = {
-      name: '',
-      description: '',
-      category: '',
-      image: '',
-      price: '',
-      step: '',
-      endDate: '',
-    };
+  public newLotPage = [
+    requireAuth,
+    (_: Request, res: Response) => {
+      const lot = {
+        name: '',
+        description: '',
+        category: '',
+        image: '',
+        price: '',
+        step: '',
+        endDate: '',
+      };
 
-    res.render('pages/lot/add', {
-      title: 'Add lot',
-      categories,
-      lot,
-      errors: [],
-      hasErrors: false,
-      helper: {
-        formatPrice,
-        getMinRate,
-      },
-    });
-  };
+      res.render('pages/lot/add', {
+        title: 'Add lot',
+        categories,
+        lot,
+        errors: [],
+        hasErrors: false,
+        helper: {
+          formatPrice,
+          getMinRate,
+        },
+      });
+    },
+  ];
 
   public addNewLot = (req: Request, res: Response) => {
     const { body, file } = req;

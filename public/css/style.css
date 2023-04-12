@@ -293,7 +293,7 @@ h2 {
   display: flex;
   align-items: center;
   min-height: 64px;
-  padding: 0 20px 0 8px;
+  padding: 0 20px 0 20px;
   position: relative;
   background-color: transparent;
   border: none;
@@ -1096,6 +1096,7 @@ input::-webkit-inner-spin-button {
 
 .lot-item__right {
   width: 350px;
+  margin-bottom: 34px;
 }
 
 .lot-item__image {
@@ -1211,10 +1212,6 @@ input::-webkit-inner-spin-button {
   align-self: flex-end;
   padding: 6px 20px 7px;
   height: 38px;
-}
-
-.history {
-  margin-top: 34px;
 }
 
 .history h3 {

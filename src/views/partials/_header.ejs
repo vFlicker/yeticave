@@ -11,28 +11,22 @@
       <input class="main-header__search-btn" type="submit" name="find" value="Найти">
     </form>
 
-    <?php if ($is_auth): ?>
+    <% if (isAuth) { %>
     <a class="main-header__add-lot button" href="/lots/add">Add lot</a>
-    <?php endif; ?>
 
-    <?php if ($is_auth): ?>
     <div class="user-menu__wrapper">
-
       <button class="button__menu-open menu-open">
-        <span class="menu-open__name"><?= $user_name ?></span>
-        <!-- TODO: uncomment this -->
-        <!-- <img class="menu-open__image" src="<?= $user_avatar ?>" width="32" height="32" alt="User avatar"> -->
+        <span class="menu-open__name"><%= user.name %></span>
+        <img class="menu-open__image" src="<%= user.avatar %>" width="32" height="32" alt="User avatar">
       </button>
 
       <nav class="user-menu user-menu--login">
         <a class="user-menu__bets" href="my-bets.php">My bets</a>
         <a class="user-menu__bets" href="/history">History</a>
-        <a class="user-menu__logout" href="logout.php">Logout</a>
+        <a class="user-menu__logout" href="/logout">Logout</a>
       </nav>
-
     </div>
-
-    <?php else: ?>
+    <% } else { %>
     <nav class="user-menu">
       <ul class="user-menu__list">
         <li class="user-menu__item">
@@ -43,7 +37,7 @@
         </li>
       </ul>
     </nav>
-    <?php endif; ?>
+    <% } %>
 
   </div>
 
