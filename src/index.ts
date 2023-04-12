@@ -1,3 +1,4 @@
+import bodyParser from 'body-parser';
 import cookies from 'cookie-parser';
 import dotenv from 'dotenv';
 import express from 'express';
@@ -5,11 +6,15 @@ import ejsLayouts from 'express-ejs-layouts';
 import path from 'path';
 
 import { HISTORY_PREFIX, LOTS_PREFIX, ROOT_PREFIX } from './common';
-import { historyRouter, lotRouter, mainRouter } from './routes';
+import { historyRouter, lotRouter, mainRouter, userRouter } from './routes';
 
 dotenv.config();
 
 const app = express();
+
+// Parser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 
 // Set cookies
 app.use(cookies());
@@ -25,6 +30,7 @@ app.use(ejsLayouts);
 
 // Add routing
 app.use(ROOT_PREFIX, mainRouter);
+app.use(ROOT_PREFIX, userRouter);
 app.use(HISTORY_PREFIX, historyRouter);
 app.use(LOTS_PREFIX, lotRouter);
 

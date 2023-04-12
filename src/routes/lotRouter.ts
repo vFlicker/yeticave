@@ -1,8 +1,8 @@
 import express from 'express';
 
 import { ADD_PARAMETER_NAME, ID_PARAMETER } from '../common';
-import { LotController } from '../controllers/LotController';
-import { DiskStorageService } from '../services/DiskStorageService';
+import { LotController } from '../controllers';
+import { DiskStorageService } from '../services';
 
 export const lotRouter = express.Router();
 const lotController = new LotController();

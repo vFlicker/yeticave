@@ -2,11 +2,11 @@ import { NextFunction, Request, Response } from 'express';
 
 import { convertDayToMilliseconds, LOT_HISTORY_COOKIE } from '../common';
 
-export function createLotHistoryCookie(
+export const createLotHistoryCookie = (
   req: Request,
   res: Response,
   next: NextFunction,
-) {
+) => {
   const { id } = req.params;
 
   const expire = Date.now() + convertDayToMilliseconds(30);
@@ -26,4 +26,4 @@ export function createLotHistoryCookie(
   });
 
   next();
-}
+};

@@ -399,9 +399,6 @@ h2 {
   background-color: #e7f3ff;
   outline: none;
 }
-
-
-/* Футер */
 .main-footer {
   margin-top: 120px;
   background-color: #fff;
@@ -494,8 +491,6 @@ h2 {
 }
 
 
-/* Навигация */
-
 .main-header .nav {
   background-color: #fff;
   border-top: 1px solid #dce1e6;
@@ -562,8 +557,6 @@ h2 {
   padding: 23px 0;
 }
 
-
-/* Главная. Промо блок */
 .promo {
   padding: 58px 0 35px;
   background: url("../img/promo-bg.png") 3px 17px no-repeat;
@@ -666,8 +659,6 @@ h2 {
   transition: transform .1s;
 }
 
-
-/* Список лотов */
 .lots {
   padding-top: 50px;
 }
@@ -825,8 +816,6 @@ h2 {
   display: none;
 }
 
-
-/* Пагинация */
 .pagination-list {
 
   display: flex;
@@ -892,8 +881,6 @@ h2 {
   color: rgba(135, 146, 150, 0.5);
 }
 
-
-/* Форма Регистрация + Добавление лота */
 .form {
   padding-top: 51px;
 }
@@ -940,10 +927,6 @@ h2 {
 
 .form__item--wide {
   width: 730px;
-}
-
-.form__item--last {
-  margin-bottom: 65px;
 }
 
 .form .button {
@@ -1027,12 +1010,6 @@ h2 {
   display: block;
 }
 
-.form-can-login {
-  display: block;
-  margin-bottom: 15px;
-  font-size: 16px;
-}
-
 .form__error {
   display: none;
   margin-left: 3px;
@@ -1040,21 +1017,21 @@ h2 {
   color: #e61b00;
 }
 
+.form__error-message {
+  display: none;
+  color: #e61b00;
+  margin-bottom: 10px;
+}
+
+.form--invalid .form__error-message {
+  display: block;
+}
+
 .form__error--bet {
   position: absolute;
 }
 
 input:invalid .form__error {
-  display: block;
-}
-
-.form__error--bottom {
-  display: none;
-  margin-bottom: 15px;
-  font-size: 16px;
-}
-
-.form--invalid .form__error--bottom {
   display: block;
 }
 
@@ -1099,8 +1076,6 @@ input::-webkit-inner-spin-button {
 .form__item--uploaded .form__input-file {
   display: none;
 }
-
-/* Страница лота */
 
 .lot-item {
   padding-top: 50px;
@@ -1238,8 +1213,6 @@ input::-webkit-inner-spin-button {
   height: 38px;
 }
 
-/* История ставок */
-
 .history {
   margin-top: 34px;
 }
@@ -1279,8 +1252,6 @@ input::-webkit-inner-spin-button {
   font-weight: 700;
 }
 
-
-/* Мои ставки */
 .rates {
   padding-top: 50px;
 }
@@ -1496,8 +1467,6 @@ input::-webkit-inner-spin-button {
   visibility: visible;
 }
 
-
-/* Секция с ошибками */
 .section-error {
   display: flex;
   flex-direction: column;

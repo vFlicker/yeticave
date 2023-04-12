@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { ROOT_PREFIX } from '../common';
-import { HomeController } from '../controllers/HomeController';
+import { HomeController } from '../controllers';
 
 export const mainRouter = express.Router();
 const homeController = new HomeController();

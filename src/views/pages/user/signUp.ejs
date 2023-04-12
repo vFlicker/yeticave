@@ -35,7 +35,7 @@ $message_error = $errors['message'] ?? '';
             <textarea id="message" name="message" placeholder="Напишите как с вами связаться"><?= $message ?></textarea>
             <span class="form__error"><?= $message_error ?></span>
         </div>
-        <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>
+        <div class='form__error-message'><%= errors.message %></div>
         <button type="submit" class="button">Зарегистрироваться</button>
         <a class="text-link" href="login.php">Уже есть аккаунт</a>
     </form>

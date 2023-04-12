@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { ROOT_PREFIX } from '../common';
-import { HistoryController } from '../controllers/HistoryController';
+import { HistoryController } from '../controllers';
 
 export const historyRouter = express.Router();
 const historyController = new HistoryController();

@@ -75,3 +75,21 @@ export const lots = [
     endDate: '2023-04-08T17:17:03.305Z',
   },
 ];
+
+export const users = [
+  {
+    email: 'user1@mail.com',
+    name: 'User 1',
+    password: '$2b$10$LxgZDTuX9zLGBpWjcu0T4uhymIKaMDciUFGTRrVLYnmlcvwMfPKOG',
+  },
+  {
+    email: 'user2@mail.com',
+    name: 'User 2',
+    password: '$2b$10$y.c8PTYujKQkGkOQXQq9m.MW6PCpfM.Pzes0jM9sN6E1l8q07tzm6',
+  },
+  {
+    email: 'user3@mail.com',
+    name: 'User 3',
+    password: '$2b$10$Qr1fyONIbD/f/I/BkuvNIOOgtxn6M9.pXgYswMIQSxIljAAhvSPx2',
+  },
+];
