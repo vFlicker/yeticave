@@ -1,0 +1,7 @@
+<% categories.forEach(function(category) { %>
+<li class="category">
+  <a href="<%= getLotCategoryPath(category.name) %>">
+    <%= category.name %>
+  </a>
+</li>
+<% }); %>

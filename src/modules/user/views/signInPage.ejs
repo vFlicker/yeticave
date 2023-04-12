@@ -1,0 +1,17 @@
+<main class="login">
+  <form class="form container <%= hasErrors ? 'form--invalid' : '' %>" action="/login" method="post">
+    <h2>Login</h2>
+    <div class="form__item <%= errors.hasOwnProperty('email') ? 'form__item--invalid' : '' %>">
+      <label for="email">E-mail <sup>*</sup></label>
+      <input id="email" type="text" name="email" placeholder="Enter e-mail" value="<%= user.email %>">
+      <span class="form__error"><%= errors.email %></span>
+    </div>
+    <div class="form__item form__item--last <%= errors.hasOwnProperty('password') ? 'form__item--invalid' : '' %>">
+      <label for="password">Password <sup>*</sup></label>
+      <input id="password" type="text" name="password" placeholder="Enter password" value="<%= user.password %>">
+      <span class="form__error"><%= errors.password %></span>
+    </div>
+    <div class='form__error-message'><%= errors.message %></div>
+    <button type="submit" class="button">Login</button>
+  </form>
+</main>

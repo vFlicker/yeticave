@@ -6,27 +6,25 @@ import ejsLayouts from 'express-ejs-layouts';
 import session from 'express-session';
 import path from 'path';
 
-import { HISTORY_PREFIX, LOTS_PREFIX, ROOT_PREFIX } from './common';
-import { authenticateUser, defaultTemplateVariables } from './middlewares';
-import { historyRouter, lotRouter, mainRouter, userRouter } from './routes';
+import {
+  authenticateUser,
+  defaultTemplateVariables,
+  ROOT_PREFIX,
+} from './common';
+import { historyRouter } from './modules/history';
+import { homeRouter } from './modules/home';
+import { lotRouter } from './modules/lot';
+import { User, userRouter } from './modules/user';
 
-dotenv.config();
-
-const app = express();
-
-type User = {
-  avatar: string;
-  name: string;
-  email: string;
-  password: string;
-};
-
-// Augment express-session with a custom SessionData object
 declare module 'express-session' {
   interface SessionData {
     user: User | null;
   }
 }
+
+dotenv.config();
+
+const app = express();
 
 // Parser
 app.use(bodyParser.json());
@@ -53,15 +51,18 @@ app.use(express.static('public'));
 
 // Set view engine
 app.set('view engine', 'ejs');
-app.set('views', path.resolve(__dirname, 'views'));
-app.set('layout', 'layouts/layout');
+app.set('views', [
+  path.resolve(__dirname, 'common', 'views'),
+  path.resolve(__dirname, 'modules'),
+]);
+app.set('layout', 'layouts/layout.ejs');
 app.use(ejsLayouts);
 
 // Add routing
-app.use(ROOT_PREFIX, mainRouter);
+app.use(ROOT_PREFIX, homeRouter);
 app.use(ROOT_PREFIX, userRouter);
-app.use(HISTORY_PREFIX, historyRouter);
-app.use(LOTS_PREFIX, lotRouter);
+app.use(ROOT_PREFIX, historyRouter);
+app.use(ROOT_PREFIX, lotRouter);
 
 app.get('*', (_, res) => {
   res.status(404).send('Not Found');

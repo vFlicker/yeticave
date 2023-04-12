@@ -1,0 +1,14 @@
+<main>
+  <div class="container">
+    <section class="lots">
+      <h2>History</h2>
+      <ul class="lots__list">
+        <% lots.forEach(function(lot) { %>
+        <%- include('../../../common/views/partials/card.ejs', { lot }) %>
+        <% }); %>
+      </ul>
+    </section>
+
+    <?php require_once('_paggination.php') ?>
+  </div>
+</main>

@@ -1,0 +1,58 @@
+<header class="main-header">
+  <div class="main-header__container container">
+    <h1 class="visually-hidden">YetiCave</h1>
+
+    <a href="/" class="main-header__logo">
+      <img src="/img/logo.svg" width="160" height="39" alt="YetiCave Logo">
+    </a>
+
+    <form class="main-header__search" method="get" action="search.php">
+      <input type="search" name="search" placeholder="Find lot">
+      <input class="main-header__search-btn" type="submit" name="find" value="Найти">
+    </form>
+
+    <% if (isAuth) { %>
+    <a class="main-header__add-lot button" href="/lots/new">Add new lot</a>
+
+    <div class="user-menu__wrapper">
+      <button class="button__menu-open menu-open">
+        <span class="menu-open__name"><%= user.name %></span>
+        <img class="menu-open__image" src="<%= user.avatar %>" width="32" height="32" alt="User avatar">
+      </button>
+
+      <nav class="user-menu user-menu--login">
+        <a class="user-menu__bets" href="my-bets.php">My bets</a>
+        <a class="user-menu__bets" href="/history">History</a>
+        <a class="user-menu__logout" href="/logout">Logout</a>
+      </nav>
+    </div>
+    <% } else { %>
+    <nav class="user-menu">
+      <ul class="user-menu__list">
+        <li class="user-menu__item">
+          <a href="/login">Login</a>
+        </li>
+        <li class="user-menu__item">
+          <a href="sign-up.php">Register</a>
+        </li>
+      </ul>
+    </nav>
+    <% } %>
+
+  </div>
+
+  <% if (canShowTomMenu) { %>
+  <nav class="nav">
+    <ul class="nav__list container">
+      <% categories.forEach(function(category) { %>
+      <li class="nav__item">
+        <a href="<%= getLotCategoryPath(category.name) %>">
+          <%= category.name %>
+        </a>
+      </li>
+      <% }); %>
+    </ul>
+  </nav>
+  <% } %>
+
+</header>

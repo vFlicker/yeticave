@@ -1,0 +1,14 @@
+<main>
+  <div class="container">
+    <section class="lots">
+      <h2>All lots in the category <span>«<%= name %>»</span></h2>
+      <ul class="lots__list">
+        <% lots.forEach(function(lot) { %>
+        <%- include('../../../common/views/partials/card.ejs', { lot }) %>
+        <% }); %>
+      </ul>
+
+      <?php require_once('_paggination.php') ?>
+    </section>
+  </div>
+</main>
