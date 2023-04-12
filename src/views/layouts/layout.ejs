@@ -2,12 +2,8 @@
 
 <body>
   <%- include('../partials/_header.ejs') %>
-
   <%- body %>
-
   <%- include('../partials/_footer.ejs') %>
-
-  <?= basename($_SERVER['PHP_SELF']) == 'add-lot.php' ? '<script src="js/flatpickr.js"></script>' : '' ?>
 
   <%- include('../partials/_scripts.ejs') %>
 </body>

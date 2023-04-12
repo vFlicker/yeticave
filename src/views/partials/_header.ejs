@@ -12,7 +12,7 @@
     </form>
 
     <% if (isAuth) { %>
-    <a class="main-header__add-lot button" href="/lots/add">Add lot</a>
+    <a class="main-header__add-lot button" href="/lots/new">Add new lot</a>
 
     <div class="user-menu__wrapper">
       <button class="button__menu-open menu-open">
@@ -41,19 +41,18 @@
 
   </div>
 
-  <?php isset($can_show_top_menu) ? $can_show_top_menu : $can_show_top_menu = true;
-  if ($can_show_top_menu): ?>
+  <% if (canShowTomMenu) { %>
   <nav class="nav">
     <ul class="nav__list container">
-      <?php foreach ($nav_menu as $menu_item): ?>
+      <% categories.forEach(function(category) { %>
       <li class="nav__item">
-        <a href="<?= "all-lots.php?id=$menu_item[id]" ?>">
-          <?php print_r($menu_item['name']) ?>
+        <a href="<%= getLotCategoryPath(category.name) %>">
+          <%= category.name %>
         </a>
       </li>
-      <?php endforeach; ?>
+      <% }); %>
     </ul>
   </nav>
-  <?php endif; ?>
+  <% } %>
 
 </header>

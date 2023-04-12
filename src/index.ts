@@ -7,7 +7,7 @@ import session from 'express-session';
 import path from 'path';
 
 import { HISTORY_PREFIX, LOTS_PREFIX, ROOT_PREFIX } from './common';
-import { authenticateUser } from './middlewares';
+import { authenticateUser, defaultTemplateVariables } from './middlewares';
 import { historyRouter, lotRouter, mainRouter, userRouter } from './routes';
 
 dotenv.config();
@@ -44,7 +44,9 @@ app.use(
   }),
 );
 
+// middlewares
 app.use(authenticateUser);
+app.use(defaultTemplateVariables);
 
 // Static Files
 app.use(express.static('public'));

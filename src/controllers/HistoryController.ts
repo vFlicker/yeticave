@@ -9,7 +9,7 @@ import {
   LOT_HISTORY_COOKIE,
 } from '../common';
 // TODO: use injection
-import { categories, lots } from '../database';
+import { lots } from '../database';
 
 export class HistoryController {
   public indexPage = (req: Request, res: Response) => {
@@ -17,8 +17,7 @@ export class HistoryController {
     const historyLots = lots.filter(({ id }) => lotsSet.has(id));
 
     res.render('pages/history', {
-      title: 'History',
-      categories,
+      pageTitle: 'History',
       lots: historyLots,
       helper: {
         formatPrice,

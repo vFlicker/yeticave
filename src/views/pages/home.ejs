@@ -4,9 +4,9 @@
     <p class="promo__text">In our online auction you will find the most exclusive snowboard and ski equipment.</p>
     <ul class="promo__list">
       <% categories.forEach(function(category) { %>
-      <li class="promo__item promo__item--<?= $menu_item['class_mod'] ?>">
-        <a class="promo__link" href="<?= "all-lots.php?id=$menu_item[id]" ?>">
-          <%= category %>
+      <li class="promo__item promo__item--<%= category.name.toLowerCase() %>">
+        <a class="promo__link" href="<%= getLotCategoryPath(category.name) %>">
+          <%= category.name %>
         </a>
       </li>
       <% }); %>
@@ -18,7 +18,7 @@
     </div>
     <ul class="lots__list">
       <% lots.forEach(function(lot) { %>
-        <%- include('../partials/_card.ejs', { lot }) %>
+      <%- include('../partials/_card.ejs', { lot }) %>
       <% }); %>
     </ul>
 

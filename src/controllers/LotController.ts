@@ -2,7 +2,13 @@ import { Request, Response } from 'express';
 import Joi from 'joi';
 
 // TODO: use injection
-import { formatPrice, getMinRate } from '../common';
+import {
+  formatPrice,
+  getLotPath,
+  getMinRate,
+  getTimeLeft,
+  isTimeFinishing,
+} from '../common';
 // TODO: use injection
 import { categories, lots } from '../database';
 import { createLotHistoryCookie, requireAuth } from '../middlewares';
@@ -31,8 +37,8 @@ export class LotController {
         endDate: '',
       };
 
-      res.render('pages/lot/add', {
-        title: 'Add lot',
+      res.render('pages/lot/new', {
+        pageTitle: 'Add new lot',
         categories,
         lot,
         errors: [],
@@ -55,8 +61,8 @@ export class LotController {
     if (errors) {
       const hasErrors = Boolean(errors);
 
-      return res.render('pages/lot/add', {
-        title: 'Add lot',
+      return res.render('pages/lot/new', {
+        pageTitle: 'Add new lot',
         categories,
         lot,
         errors,
@@ -73,7 +79,7 @@ export class LotController {
 
     // TODO: add res.redirect('/lots/:id')
     res.render('pages/lot/lot', {
-      title: lot.title,
+      pageTitle: lot.title,
       categories,
       lot,
       helper: {
@@ -83,7 +89,7 @@ export class LotController {
     });
   };
 
-  public lotPage = [
+  public lotByIdPage = [
     createLotHistoryCookie,
     (req: Request, res: Response) => {
       const { id } = req.params;
@@ -93,7 +99,7 @@ export class LotController {
       if (!lot) return res.status(404).send('what???');
 
       res.render('pages/lot/lot', {
-        title: lot.title,
+        pageTitle: lot.title,
         categories,
         lot,
         helper: {
@@ -103,6 +109,27 @@ export class LotController {
       });
     },
   ];
+
+  public lotsByCategoryPage = (req: Request, res: Response) => {
+    const { name } = req.params;
+    const filteredLots = lots.filter(({ category }) => {
+      return category.name.toLowerCase() === name;
+    });
+
+    if (!filteredLots) return res.status(404).send('what???');
+
+    res.render('pages/lot/lotList', {
+      pageTitle: name,
+      name,
+      lots: filteredLots,
+      helper: {
+        formatPrice,
+        getTimeLeft,
+        isTimeFinishing,
+        getLotPath,
+      },
+    });
+  };
 
   private validateForm(data: FormData, image?: string) {
     const formDataErrors = this.validateFormDate(data);

@@ -1,6 +1,11 @@
 import express from 'express';
 
-import { ADD_PARAMETER_NAME, ID_PARAMETER } from '../common';
+import {
+  CATEGORY_PARAMETER_NAME,
+  ID_PARAMETER,
+  NAME_PARAMETER,
+  NEW_PARAMETER_NAME,
+} from '../common';
 import { LotController } from '../controllers';
 import { DiskStorageService } from '../services';
 
@@ -9,10 +14,14 @@ const lotController = new LotController();
 const diskStorage = new DiskStorageService('public/img/uploads');
 const fileUploader = diskStorage.createFileUploader();
 
-lotRouter.get(ADD_PARAMETER_NAME, lotController.newLotPage);
+lotRouter.get(NEW_PARAMETER_NAME, lotController.newLotPage);
 lotRouter.post(
-  ADD_PARAMETER_NAME,
+  NEW_PARAMETER_NAME,
   fileUploader.single('lot-image'),
   lotController.addNewLot,
 );
-lotRouter.get(ID_PARAMETER, lotController.lotPage);
+lotRouter.get(ID_PARAMETER, lotController.lotByIdPage);
+lotRouter.get(
+  `${CATEGORY_PARAMETER_NAME}${NAME_PARAMETER}`,
+  lotController.lotsByCategoryPage,
+);

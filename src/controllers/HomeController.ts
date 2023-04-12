@@ -8,14 +8,14 @@ import {
   isTimeFinishing,
 } from '../common';
 // TODO: use injection
-import { categories, lots } from '../database';
+import { lots } from '../database';
 
 export class HomeController {
   public indexPage = (_: Request, res: Response) => {
     res.render('pages/home', {
-      title: 'Home',
-      categories,
+      pageTitle: 'Home',
       lots,
+      canShowTomMenu: false,
       helper: {
         formatPrice,
         getTimeLeft,

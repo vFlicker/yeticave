@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import Joi from 'joi';
 
 import { ROOT_PREFIX } from '../common';
-import { categories, users } from '../database';
+import { users } from '../database';
 
 type SingInData = {
   email: string;
@@ -18,8 +18,7 @@ export class UserController {
     };
 
     res.render('pages/user/signIn', {
-      title: 'Login',
-      categories,
+      pageTitle: 'Login',
       user,
       errors: [],
       hasErrors: false,
@@ -31,6 +30,7 @@ export class UserController {
   public signIn = (req: Request, res: Response) => {
     const { body } = req;
 
+    const pageTitle = 'Login';
     const errors = this.validateFormSingIn(body);
     const user = { ...body };
 
@@ -38,8 +38,7 @@ export class UserController {
       const hasErrors = Boolean(errors);
 
       return res.render('pages/user/signIn', {
-        title: 'Login',
-        categories,
+        pageTitle,
         user,
         errors,
         hasErrors,
@@ -56,8 +55,7 @@ export class UserController {
       };
 
       return res.render('pages/user/signIn', {
-        title: 'Login',
-        categories,
+        pageTitle,
         user,
         errors,
         hasErrors: true,
@@ -73,8 +71,7 @@ export class UserController {
         };
 
         return res.render('pages/user/signIn', {
-          title: 'Login',
-          categories,
+          pageTitle,
           user,
           errors,
           hasErrors: true,

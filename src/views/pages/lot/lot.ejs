@@ -26,7 +26,8 @@
               Minimum bet &ndash;&nbsp;<span><%= helper.formatPrice(helper.getMinRate(lot.price, lot.step)) %></span>
             </div>
           </div>
-          <form class="lot-item__form <?= isset($error) ? 'form--invalid' : '' ?>" action="lot.php" method="post">
+          <!-- TODO: add form -->
+          <!-- <form class="lot-item__form <?= isset($error) ? 'form--invalid' : '' ?>" action="lot.php" method="post">
             <div class="lot-item__form-item <?= isset($error) ? 'form__item--invalid' : '' ?>">
               <label for="cost">Your bet</label>
               <input id="lot_id" name="lot_id" value="<%= lot.id %>" type="hidden">
@@ -35,11 +36,12 @@
               <span class="form__error form__error--bet"><?= $error ?></span>
             </div>
             <button type="submit" class="button">Make a bet</button>
-          </form>
+          </form> -->
         </div>
         <% } %>
 
-        <div class="history">
+        <!-- TODO: add history -->
+        <!-- <div class="history">
           <h3>History of rates (<span>10</span>)</h3>
           <table class="history__list">
             <?php foreach ($bets as $bet): ?>
@@ -50,7 +52,7 @@
             </tr>
             <?php endforeach ?>
           </table>
-        </div>
+        </div> -->
       </div>
     </div>
   </section>

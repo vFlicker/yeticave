@@ -1,6 +1,6 @@
 <main>
   <form class="form form--add-lot container <%= hasErrors ? 'form--invalid' : '' %>" enctype="multipart/form-data"
-    action="/lots/add" method="post">
+    action="/lots/new" method="post">
     <h2>Add a lot</h2>
     <div class="form__container-two">
       <div class="form__item <%= errors.hasOwnProperty('name') ? 'form__item--invalid' : '' %>">
@@ -11,8 +11,8 @@
       <div class="form__item <%= errors.hasOwnProperty('category') ? 'form__item--invalid' : '' %>">
         <label for="category">Category <sup>*</sup></label>
         <select id="category" name="category">
-          <% categories.forEach(function(category, index) { %>
-          <option><%= category %></option>
+          <% categories.forEach(function(category) { %>
+          <option><%= category.name %></option>
           <% }); %>
         </select>
         <span class="form__error"><%= errors.category %></span>
