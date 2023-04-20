@@ -1,15 +1,5 @@
 USE yaticave;
 
-INSERT INTO categories (name, class_mod)
-VALUES
-    ('Доски и лыжи', 'boards'),
-    ('Крепления', 'attachment'),
-    ('Ботинки', 'boots'),
-    ('Одежда', 'clothing'),
-    ('Инструменты', 'tools'),
-    ('Разное', 'other');
-
-
 INSERT INTO lots (date_create, title, description, url_image, start_price, date_end, step_price, fav_count, user_id, winner_id, category_id)
 VALUES
 (
