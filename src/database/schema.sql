@@ -9,8 +9,8 @@ CREATE TABLE category (
 DROP TABLE IF EXISTS app_user;
 CREATE TABLE app_user (
   user_id INT GENERATED ALWAYS AS IDENTITY,
-  email VARCHAR(255) NOT NULL,
   user_name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
   user_password VARCHAR(64) NOT NULL,
   avatar_url VARCHAR(255) NOT NULL DEFAULT '/img/user.png',
   create_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -60,7 +60,8 @@ CREATE TABLE bet (
       ON DELETE CASCADE
 );
 
-INSERT INTO category (category_name)
+INSERT INTO
+  category (category_name)
 VALUES
   ('Boards'),
   ('Attachment'),
