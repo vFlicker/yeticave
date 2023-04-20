@@ -7,6 +7,9 @@
   "private": true,
   "scripts": {
     "start:prod": "ts-node ./src/index.ts",
+    "docker:build": "docker-compose up -V --build",
+    "docker:start": "docker-compose up",
+    "docker:stop": "docker-compose down",
     "start:dev": "ts-node-dev ./src/index.ts",
     "lint": "eslint \"src/**/*.ts\" --fix"
   },
