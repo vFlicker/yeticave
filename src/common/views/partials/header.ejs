@@ -46,8 +46,8 @@
     <ul class="nav__list container">
       <% categories.forEach(function(category) { %>
       <li class="nav__item">
-        <a href="<%= getLotCategoryPath(category.name) %>">
-          <%= category.name %>
+        <a href="<%= getLotCategoryPath(category) %>">
+          <%= category %>
         </a>
       </li>
       <% }); %>

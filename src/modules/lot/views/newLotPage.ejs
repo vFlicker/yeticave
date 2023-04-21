@@ -12,7 +12,7 @@
         <label for="category">Category <sup>*</sup></label>
         <select id="category" name="category">
           <% categories.forEach(function(category) { %>
-          <option><%= category.name %></option>
+          <option><%= category %></option>
           <% }); %>
         </select>
         <span class="form__error"><%= errors.category %></span>

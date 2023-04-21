@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import Joi from 'joi';
 
 import {
-  categories,
   formatPrice,
   getLotPath,
   getMinRate,
@@ -38,7 +37,6 @@ export class LotController {
 
       res.render(getView(__dirname, 'lotPage'), {
         pageTitle: lot.title,
-        categories,
         lot,
         helper: {
           formatPrice,
@@ -86,7 +84,6 @@ export class LotController {
 
       res.render(getView(__dirname, 'newLotPage'), {
         pageTitle: 'Add new lot',
-        categories,
         lot,
         errors: [],
         hasErrors: false,
@@ -110,7 +107,6 @@ export class LotController {
 
       return res.render(getView(__dirname, 'newLotPage'), {
         pageTitle: 'Add new lot',
-        categories,
         lot,
         errors,
         hasErrors,
@@ -127,7 +123,6 @@ export class LotController {
     // TODO: add res.redirect('/lots/:id')
     res.render(getView(__dirname, 'lotPage'), {
       pageTitle: lot.title,
-      categories,
       lot,
       helper: {
         formatPrice,
