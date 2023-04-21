@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { categories } from '../../database';
+import { categories } from '../../common';
 import { getLotCategoryPath } from '../utils';
 
 export const defaultTemplateVariables = (

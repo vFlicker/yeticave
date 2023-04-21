@@ -2,8 +2,7 @@ import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import Joi from 'joi';
 
-import { getView, ROOT_PREFIX } from '../../common';
-import { users } from '../../database';
+import { getView, ROOT_PREFIX, users } from '../../common';
 
 type SingInData = {
   email: string;

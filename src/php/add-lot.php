@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $lot["lot-rate"], $lot["lot-date"], $lot["lot-step"],  $_SESSION["user"]["id"], "$cetegory_id"]);
 
         $result = mysqli_stmt_execute($stmt);
-        
+
         if ($result) {
             $lot_id = mysqli_insert_id($DB);
             header("Location: lot.php?id=" . $lot_id);

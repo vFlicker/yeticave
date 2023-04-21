@@ -6,8 +6,8 @@ import {
   getTimeLeft,
   getView,
   isTimeFinishing,
+  lots,
 } from '../../common';
-import { lots } from '../../database';
 
 export class HomeController {
   public getHomePage = (_: Request, res: Response) => {

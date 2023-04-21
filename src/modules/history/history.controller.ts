@@ -8,7 +8,7 @@ import {
   isTimeFinishing,
   LOT_HISTORY_COOKIE_KEY,
 } from '../../common';
-import { lots } from '../../database';
+import { lots } from '../../common';
 
 export class HistoryController {
   public getHistoryPage = (req: Request, res: Response) => {

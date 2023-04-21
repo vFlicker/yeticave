@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import Joi from 'joi';
 
 import {
+  categories,
+  DatabaseService,
   formatPrice,
   getLotPath,
   getMinRate,
@@ -9,9 +11,9 @@ import {
   getView,
   isTimeFinishing,
   lotHistoryCookie,
+  lots,
+  requireAuth,
 } from '../../common';
-import { requireAuth } from '../../common';
-import { categories, lots } from '../../database';
 
 type FormData = {
   name: string;
