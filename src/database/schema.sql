@@ -59,13 +59,3 @@ CREATE TABLE bet (
       REFERENCES lot(lot_id)
       ON DELETE CASCADE
 );
-
-INSERT INTO
-  category (category_name)
-VALUES
-  ('Boards'),
-  ('Attachment'),
-  ('Boots'),
-  ('Clothing'),
-  ('Tools'),
-  ('Other');

@@ -8,16 +8,18 @@ import {
   isTimeFinishing,
   LOT_HISTORY_COOKIE_KEY,
 } from '../../common';
-import { lots } from '../../common';
+import { LotModel } from '../lot/lot.model';
 
 export class HistoryController {
-  public getHistoryPage = (req: Request, res: Response) => {
-    const lotsSet = new Set(req.cookies[LOT_HISTORY_COOKIE_KEY]);
-    const historyLots = lots.filter(({ id }) => lotsSet.has(id));
+  public getHistoryPage = async (req: Request, res: Response) => {
+    const ids = JSON.parse(req.cookies[LOT_HISTORY_COOKIE_KEY]);
+
+    const lotModel = new LotModel();
+    const lots = await lotModel.getLotsByIds(ids);
 
     res.render(getView(__dirname, 'historyPage'), {
       pageTitle: 'History',
-      lots: historyLots,
+      lots,
       helper: {
         formatPrice,
         getTimeLeft,

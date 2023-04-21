@@ -6,11 +6,14 @@ import {
   getTimeLeft,
   getView,
   isTimeFinishing,
-  lots,
 } from '../../common';
+import { LotModel } from '../lot/lot.model';
 
 export class HomeController {
-  public getHomePage = (_: Request, res: Response) => {
+  public getHomePage = async (_: Request, res: Response) => {
+    const lotModel = new LotModel();
+    const lots = await lotModel.getUnfinishedLots();
+
     res.render(getView(__dirname, 'homePage'), {
       pageTitle: 'Home',
       lots,

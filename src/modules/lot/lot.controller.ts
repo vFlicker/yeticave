@@ -3,7 +3,6 @@ import Joi from 'joi';
 
 import {
   categories,
-  DatabaseService,
   formatPrice,
   getLotPath,
   getMinRate,
@@ -11,9 +10,9 @@ import {
   getView,
   isTimeFinishing,
   lotHistoryCookie,
-  lots,
   requireAuth,
 } from '../../common';
+import { LotModel } from './lot.model';
 
 type FormData = {
   name: string;
@@ -28,11 +27,13 @@ type FormData = {
 export class LotController {
   public getLotPage = [
     lotHistoryCookie,
-    (req: Request, res: Response) => {
+    async (req: Request, res: Response) => {
       const { id } = req.params;
-      const index = Number(id) - 1;
-      const lot = lots[index];
 
+      const lotModel = new LotModel();
+      const lot = await lotModel.getLotById(id);
+
+      // TODO: page error
       if (!lot) return res.status(404).send('what???');
 
       res.render(getView(__dirname, 'lotPage'), {
@@ -47,18 +48,20 @@ export class LotController {
     },
   ];
 
-  public getLotsByCategoryPage = (req: Request, res: Response) => {
+  public getLotsByCategoryPage = async (req: Request, res: Response) => {
     const { name } = req.params;
-    const filteredLots = lots.filter(({ category }) => {
-      return category.name.toLowerCase() === name;
-    });
 
-    if (!filteredLots) return res.status(404).send('what???');
+    const ss = new LotModel();
+    const lots = await ss.getLotsByCategory(
+      name[0].toLocaleUpperCase() + name.slice(1),
+    );
+
+    if (!lots) return res.status(404).send('what???');
 
     res.render(getView(__dirname, 'lotsByCategoryPage'), {
       pageTitle: name,
       name,
-      lots: filteredLots,
+      lots,
       helper: {
         formatPrice,
         getTimeLeft,

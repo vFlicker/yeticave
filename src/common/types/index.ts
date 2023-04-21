@@ -1,1 +1,1 @@
-export * from './date.type';
+export * from './common.type';

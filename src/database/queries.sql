@@ -1,4 +1,14 @@
 INSERT INTO
+  category (category_name)
+VALUES
+  ('Boards'),
+  ('Attachment'),
+  ('Boots'),
+  ('Clothing'),
+  ('Tools'),
+  ('Other');
+
+INSERT INTO
   app_user(user_name, email, user_password, contacts)
 VALUES
   (
