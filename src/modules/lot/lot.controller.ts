@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import Joi from 'joi';
 
 import {
   formatPrice,
@@ -12,6 +11,7 @@ import {
   requireAuth,
 } from '../../common';
 import { LotModel } from './lot.model';
+import { createNewLotSchema } from './schemas';
 
 type FormData = {
   name: string;
@@ -49,8 +49,8 @@ export class LotController {
   public getLotsByCategoryPage = async (req: Request, res: Response) => {
     const { name } = req.params;
 
-    const ss = new LotModel();
-    const lots = await ss.getLotsByCategory(
+    const lotModel = new LotModel();
+    const lots = await lotModel.getLotsByCategory(
       name[0].toLocaleUpperCase() + name.slice(1),
     );
 
@@ -141,15 +141,7 @@ export class LotController {
   }
 
   private validateFormDate(data: FormData) {
-    const schema = Joi.object({
-      name: Joi.string().min(3).max(255).required(),
-      category: Joi.string().required(),
-      description: Joi.string().required(),
-      price: Joi.number().min(1).required(),
-      step: Joi.number().min(1).required(),
-      endDate: Joi.date().iso().greater('now'),
-    });
-
+    const schema = createNewLotSchema();
     const { error } = schema.validate(data, { abortEarly: false });
 
     if (error) {

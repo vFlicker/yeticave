@@ -1,8 +1,9 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
-import Joi from 'joi';
 
-import { getView, ROOT_PREFIX, users } from '../../common';
+import { getView, ROOT_PREFIX } from '../../common';
+import { createUserValidateSchema } from './schemas';
+import { UserModel } from './user.model';
 
 type SingInData = {
   email: string;
@@ -26,8 +27,10 @@ export class UserController {
     });
   };
 
-  public sendSignInForm = (req: Request, res: Response) => {
+  public sendSignInForm = async (req: Request, res: Response) => {
     const { body } = req;
+
+    const userModel = new UserModel();
 
     const pageTitle = 'Login';
     const errors = this.validateFormSingIn(body);
@@ -46,7 +49,7 @@ export class UserController {
       });
     }
 
-    const foundUser = users.find(({ email }) => email === user.email);
+    const foundUser = await userModel.getUserByEmail(user.email);
 
     if (!foundUser) {
       const errors = {
@@ -100,11 +103,7 @@ export class UserController {
   };
 
   private validateFormSingIn(data: SingInData) {
-    const schema = Joi.object({
-      email: Joi.string().email().max(64).required(),
-      password: Joi.string().min(8),
-    });
-
+    const schema = createUserValidateSchema();
     const { error } = schema.validate(data, { abortEarly: false });
 
     if (error) {
