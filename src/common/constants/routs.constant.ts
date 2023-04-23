@@ -5,5 +5,5 @@ export const LOT_PAGE = '/lots/:id';
 export const NEW_LOT_PAGE = '/lots/new';
 export const LOTS_BY_CATEGORY_PAGE = '/lots/category/:name';
 export const SIGN_IN_PAGE = '/login';
-export const SIGN_OUT_PAGE = '/sign-out';
+export const SIGN_UP_PAGE = '/register';
 export const LOGOUT_PAGE = '/logout';
