@@ -21,7 +21,9 @@ type SingUpData = {
 };
 
 export class UserController {
-  public getSignInPage = (_: Request, res: Response) => {
+  public getSignInPage = (req: Request, res: Response) => {
+    if (req.session.user) return res.redirect(ROOT_PREFIX);
+
     const user = {
       email: '',
       password: '',
@@ -127,14 +129,14 @@ export class UserController {
 
     const pageTitle = 'Register';
     const errors = this.validateSingUpForm(body);
-    const user = { ...body } as SingUpData;
+    const formData = { ...body } as SingUpData;
 
     if (errors) {
       const hasErrors = Boolean(errors);
 
       return res.render(getView(__dirname, 'signUpPage'), {
         pageTitle,
-        user,
+        user: formData,
         errors,
         hasErrors,
         canLogin: false,
@@ -142,7 +144,10 @@ export class UserController {
       });
     }
 
-    const { name, email, password, contacts } = user;
+    const { name, email, password, contacts } = formData;
+
+    // TODO: check user email uniq
+
     const passwordHash = await bcrypt.hash(password, 10);
     await userModel.create({ name, email, password: passwordHash, contacts });
 

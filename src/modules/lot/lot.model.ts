@@ -126,6 +126,7 @@ export class LotModel {
       (${placeholders})
     RETURNING lot_id`;
 
+    // TODO: handle errors
     const { rows } = await databaseService.query(sql, [
       categoryId,
       userId,

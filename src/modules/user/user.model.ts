@@ -38,6 +38,7 @@ export class UserModel {
     VALUES
       (${placeholders})`;
 
+    // TODO: handle errors
     await databaseService.query(sql, [name, email, password, contacts]);
   }
 }

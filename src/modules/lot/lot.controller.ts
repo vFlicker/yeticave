@@ -100,14 +100,14 @@ export class LotController {
 
     const errors = this.validateForm(body, file?.mimetype);
     const image = `/img/uploads/${file?.filename}`;
-    const lot = { ...body, image };
+    const formData = { ...body, image };
 
     if (errors) {
       const hasErrors = Boolean(errors);
 
       return res.render(getView(__dirname, 'newLotPage'), {
         pageTitle: 'Add new lot',
-        lot,
+        lot: formData,
         errors,
         hasErrors,
         helper: {
@@ -121,7 +121,9 @@ export class LotController {
 
     if (session.user) {
       const { id } = session.user;
-      const lotId = await lotModel.addLot(lot, id);
+
+      // TODO: handle errors
+      const lotId = await lotModel.addLot(formData, id);
 
       res.redirect(`/lots/${lotId}`);
     }
