@@ -95,8 +95,8 @@ export class LotController {
     },
   ];
 
-  public sendNewLotPageForm = (req: Request, res: Response) => {
-    const { body, file } = req;
+  public sendNewLotPageForm = async (req: Request, res: Response) => {
+    const { body, file, session } = req;
 
     const errors = this.validateForm(body, file?.mimetype);
     const image = `/img/uploads/${file?.filename}`;
@@ -117,18 +117,14 @@ export class LotController {
       });
     }
 
-    // TODO: remove it
-    lot.id = Date.now();
+    const lotModel = new LotModel();
 
-    // TODO: add res.redirect('/lots/:id')
-    res.render(getView(__dirname, 'lotPage'), {
-      pageTitle: lot.title,
-      lot,
-      helper: {
-        formatPrice,
-        getMinRate,
-      },
-    });
+    if (session.user) {
+      const { id } = session.user;
+      const lotId = await lotModel.addLot(lot, id);
+
+      res.redirect(`/lots/${lotId}`);
+    }
   };
 
   private validateForm(data: FormData, image?: string) {
@@ -155,10 +151,10 @@ export class LotController {
     }
   }
 
-  private validateImage(mimetype?: string) {
+  private validateImage(mimetype = '') {
     const imageMimeTypes = ['image/jpeg', 'image/png'];
 
-    if (!mimetype || !imageMimeTypes.indexOf(mimetype)) {
+    if (imageMimeTypes.indexOf(mimetype) === -1) {
       return { image: 'Invalid image, must be a jpg, jpeg or png image' };
     }
   }

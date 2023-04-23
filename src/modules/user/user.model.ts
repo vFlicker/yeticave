@@ -1,4 +1,4 @@
-import { DatabaseService } from '../../common';
+import { createPlaceholders, DatabaseService } from '../../common';
 
 type SingUpData = {
   email: string;
@@ -31,10 +31,12 @@ export class UserModel {
     const databaseService = DatabaseService.getInstance();
     const { name, email, password, contacts } = data;
 
+    const placeholders = createPlaceholders(Object.keys(data).length);
+
     const sql = `INSERT INTO
       app_user(user_name, email, user_password, contacts)
     VALUES
-      ($1, $2, $3, $4)`;
+      (${placeholders})`;
 
     await databaseService.query(sql, [name, email, password, contacts]);
   }
