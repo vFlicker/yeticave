@@ -11,7 +11,7 @@
       <div class="form__item <%= errors.hasOwnProperty('category') ? 'form__item--invalid' : '' %>">
         <label for="category">Category <sup>*</sup></label>
         <select id="category" name="category">
-          <% categories.forEach(function(category) { %>
+          <% categories.forEach((category) => { %>
           <option><%= category %></option>
           <% }); %>
         </select>

@@ -779,7 +779,7 @@ h2 {
 
 .timer {
   position: relative;
-  padding: 6px 8px 5px 25px;
+  padding: 6px 8px 5px 28px;
   background-color: #879296;
   font-size: 13px;
   line-height: 18px;
@@ -804,11 +804,13 @@ h2 {
 .timer--win {
   padding: 6px 8px 5px 8px;
   background-color: #fff;
+  text-align: center;
   color: #25354e;
 }
 
 .timer--end {
   padding: 6px 8px 5px 8px;
+  text-align: center;
 }
 
 .timer--win::before,
@@ -1109,6 +1111,7 @@ input::-webkit-inner-spin-button {
 }
 
 .lot-item__image img {
+  object-fit: contain;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -1130,9 +1133,14 @@ input::-webkit-inner-spin-button {
   font-weight: 400;
 }
 
-.lot-item__state {
+.bet {
   padding: 30px;
   background-color: #fff;
+}
+
+.lot-item__right .bet {
+  margin-bottom: 20px;
+
 }
 
 .lot-item__timer {
@@ -1144,14 +1152,16 @@ input::-webkit-inner-spin-button {
 }
 
 .lot-item__cost-state {
-
   display: flex;
-
-  justify-content: space-between;
+  flex-direction: column;
 }
 
 .lot-item__amount {
   font-size: 13px;
+}
+
+.lot-item__rate {
+  margin-bottom: 6px;
 }
 
 .lot-item__cost {
@@ -1163,19 +1173,13 @@ input::-webkit-inner-spin-button {
   font-weight: 700;
 }
 
-.lot-item__min-cost {
-  -webkit-align-self: flex-end;
-  -ms-flex-item-align: end;
-  align-self: flex-end;
-}
-
 .input-cost::-webkit-outer-spin-button,
 .input-cost::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.lot-item__form {
+.bet__form {
 
   display: flex;
 
@@ -1183,17 +1187,17 @@ input::-webkit-inner-spin-button {
   margin-top: 17px;
 }
 
-.lot-item__form-item {
+.bet__form-item {
   margin: 0;
 }
 
-.lot-item__form-item label {
+.bet__form-item label {
   display: block;
   font-size: 13px;
   line-height: 21px;
 }
 
-.lot-item__form-item input {
+.bet__form-item input {
   display: block;
   width: 130px;
   padding: 5px 7px;
@@ -1202,16 +1206,21 @@ input::-webkit-inner-spin-button {
   border-radius: 4px;
 }
 
-.lot-item__form-item input:focus {
+.bet__form-item input:focus {
   outline-color: #45abde;
 }
 
-.lot-item__form .button {
+.bet__form .button {
   -webkit-align-self: flex-end;
   -ms-flex-item-align: end;
   align-self: flex-end;
   padding: 6px 20px 7px;
   height: 38px;
+}
+
+.history {
+  width: 100%;
+  max-width: 320px;
 }
 
 .history h3 {
@@ -1221,32 +1230,34 @@ input::-webkit-inner-spin-button {
   font-weight: 700;
 }
 
+.history__list {
+  width: 100%;
+}
+
 .history__item {
-
   display: flex;
-
   justify-content: space-between;
   padding: 6px 20px;
-  min-width: 310px;
   background-color: #fff;
   border-bottom: 1px solid #dce1e6;
   font-size: 13px;
   font-weight: 400;
 }
 
-.history__item td {
-  display: flex;
-  align-items: center;
-  flex-basis: 33%;
-  width: 33%;
+.history__name {
+  max-width: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.history__time {
+  min-width: 94px;
 }
 
 .history__item:last-child {
   border-bottom: none;
-}
-
-.history__name {
-  font-weight: 700;
 }
 
 .rates {

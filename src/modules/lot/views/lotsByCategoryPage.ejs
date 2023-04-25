@@ -3,7 +3,7 @@
     <section class="lots">
       <h2>All lots in the category <span>«<%= name %>»</span></h2>
       <ul class="lots__list">
-        <% lots.forEach(function(lot) { %>
+        <% lots.forEach((lot) => { %>
         <%- include('../../../common/views/partials/card.ejs', { lot }) %>
         <% }); %>
       </ul>

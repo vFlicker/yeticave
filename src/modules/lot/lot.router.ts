@@ -17,9 +17,10 @@ lotRouter.get(NEW_LOT_PAGE, lotController.getNewLotPage);
 lotRouter.post(
   NEW_LOT_PAGE,
   fileUploader.single('lot-image'),
-  lotController.sendNewLotPageForm,
+  lotController.sendNewLotForm,
 );
 lotRouter.get(LOT_PAGE, lotController.getLotPage);
+lotRouter.post(LOT_PAGE, lotController.sendNewBetForm);
 lotRouter.get(LOTS_BY_CATEGORY_PAGE, lotController.getLotsByCategoryPage);
 
 export default lotRouter;

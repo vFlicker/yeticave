@@ -18,8 +18,8 @@ $sql = "SELECT l.title, u.contacts, l.url_image, c.name AS category, l.date_end,
             JOIN `categories` c ON l.category_id = c.id
             JOIN `users` u ON l.user_id = u.id
             WHERE b.user_id = '$user_id' AND b.price = (
-                SELECT MAX(b2.price) 
-                FROM bets AS b2 
+                SELECT MAX(b2.price)
+                FROM bets AS b2
                 WHERE b2.user_id = b.user_id AND b2.lot_id = l.id
             )
             ORDER BY b.date_create DESC";

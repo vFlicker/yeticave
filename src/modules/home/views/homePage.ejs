@@ -3,7 +3,7 @@
     <h2 class="promo__title">Need staff for the skating rink?</h2>
     <p class="promo__text">In our online auction you will find the most exclusive snowboard and ski equipment.</p>
     <ul class="promo__list">
-      <% categories.forEach(function(category) { %>
+      <% categories.forEach((category) => { %>
       <li class="promo__item promo__item--<%= category.toLowerCase() %>">
         <a class="promo__link" href="<%= getLotCategoryPath(category) %>">
           <%= category %>
@@ -17,7 +17,7 @@
       <h2>Open lots</h2>
     </div>
     <ul class="lots__list">
-      <% lots.forEach(function(lot) { %>
+      <% lots.forEach((lot) => { %>
       <%- include('../../../common/views/partials/card.ejs', { lot }) %>
       <% }); %>
     </ul>

@@ -11,6 +11,7 @@ import {
   defaultTemplateVariables,
   ROOT_PREFIX,
 } from './common';
+import { betRouter } from './modules/bet';
 import { historyRouter } from './modules/history';
 import { homeRouter } from './modules/home';
 import { lotRouter } from './modules/lot';
@@ -63,6 +64,7 @@ app.use(ROOT_PREFIX, homeRouter);
 app.use(ROOT_PREFIX, userRouter);
 app.use(ROOT_PREFIX, historyRouter);
 app.use(ROOT_PREFIX, lotRouter);
+app.use(ROOT_PREFIX, betRouter);
 
 app.get('*', (_, res) => {
   res.status(404).send('Not Found');

@@ -15,44 +15,43 @@
       </div>
       <% if (isAuth) { %>
       <div class="lot-item__right">
-        <div class="lot-item__state">
+        <div class="bet">
           <div class="lot-item__timer timer">10:54:12</div>
           <div class="lot-item__cost-state">
             <div class="lot-item__rate">
               <span class="lot-item__amount">Current price</span>
-              <span class="lot-item__cost"><%= lot.price %></span>
+              <span class="lot-item__cost"><%= helper.formatPrice(Math.max(lot.price, maxPrice)) %></span>
             </div>
             <div class="lot-item__min-cost">
-              Minimum bet &ndash;&nbsp;<span><%= helper.formatPrice(helper.getMinRate(lot.price, lot.step)) %></span>
+              Minimum step &ndash;&nbsp;<span><%= helper.formatPrice(lot.step) %></span>
             </div>
           </div>
-          <!-- TODO: add form -->
-          <!-- <form class="lot-item__form <?= isset($error) ? 'form--invalid' : '' ?>" action="lot.php" method="post">
-            <div class="lot-item__form-item <?= isset($error) ? 'form__item--invalid' : '' ?>">
+          <!-- TODO: change route -->
+          <form action="/lots/<%= lot.id %>" method="post" class="bet__form <%= hasErrors ? 'form--invalid' : '' %>">
+            <div class="bet__form-item <%= errors.hasOwnProperty('price') ? 'form__item--invalid' : '' %>">
               <label for="cost">Your bet</label>
-              <input id="lot_id" name="lot_id" value="<%= lot.id %>" type="hidden">
-              <input id="cost" class="input-cost" type="number" name="cost"
-                placeholder="<%= helper.getMinRate(lot.price, lot.step) %>">
-              <span class="form__error form__error--bet"><?= $error ?></span>
+              <input id="lot_id" name="lotId" value="<%= lot.id %>" type="hidden">
+              <input id="cost" class="input-cost" type="number" name="price"
+                placeholder="<%= helper.getMinRate(Math.max(lot.price, maxPrice), lot.step) %>">
+              <span class="form__error form__error--bet"><%= errors.price %></span>
             </div>
             <button type="submit" class="button">Make a bet</button>
-          </form> -->
+          </form>
         </div>
         <% } %>
 
-        <!-- TODO: add history -->
-        <!-- <div class="history">
-          <h3>History of rates (<span>10</span>)</h3>
+        <div class="history">
+          <h3>History of rates (<span><%= bets.length %></span>)</h3>
           <table class="history__list">
-            <?php foreach ($bets as $bet): ?>
+            <% bets.forEach((bet) => { %>
             <tr class="history__item">
-              <td class="history__name"><?= $bet['name'] ?></td>
-              <td class="history__price"><?= $bet['price'] . ' руб.' ?></td>
-              <td class="history__time"><?= get_timer($bet['date_create']) ?></td>
+              <td class="history__name"><%= bet.userName %></td>
+              <td class="history__price"><%= helper.formatPrice(bet.price) %></td>
+              <td class="history__time"><%= helper.getTimeAgo(bet.createDate) %></td>
             </tr>
-            <?php endforeach ?>
+            <% }) %>
           </table>
-        </div> -->
+        </div>%>
       </div>
     </div>
   </section>

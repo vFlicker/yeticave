@@ -1,7 +1,7 @@
 <footer class="main-footer">
   <nav class="nav">
     <ul class="nav__list container">
-      <% categories.forEach(function(category) { %>
+      <% categories.forEach((category) =>{ %>
       <li class="nav__item">
         <a href="<%= getLotCategoryPath(category) %>">
           <%= category %>

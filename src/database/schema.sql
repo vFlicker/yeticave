@@ -49,6 +49,7 @@ CREATE TABLE bet (
   lot_id INT NOT NULL,
   price INT NOT NULL,
   create_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  is_winner BOOLEAN DEFAULT FALSE,
   PRIMARY KEY(bet_id),
   CONSTRAINT fk_bet_user
     FOREIGN KEY(user_id)
