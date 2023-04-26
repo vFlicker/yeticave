@@ -870,16 +870,18 @@ h2 {
   color: #25354e;
 }
 
-.pagination-item--disabled a {
+.pagination-item .link--disabled {
   color: rgba(135, 146, 150, 0.5);
   cursor: default;
+  user-select: none;
+  pointer-events: none;
 }
 
-.pagination-item--disabled a:hover {
+.pagination-item .link--disabled:hover {
   color: rgba(135, 146, 150, 0.5);
 }
 
-.pagination-item--disabled a:active {
+.pagination-item .link--disabled:active {
   color: rgba(135, 146, 150, 0.5);
 }
 

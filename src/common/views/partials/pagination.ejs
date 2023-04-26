@@ -1,35 +1,20 @@
-<?php if ($pages_count > 1): ?>
-    <ul class="pagination-list">
+<% if (pagesCount > 1) { %>
+<ul class="pagination-list">
+  <li class="pagination-item pagination-item-prev">
+    <a href="<%= currentPage > 1 ? `?page=${currentPage - 1}` : '' %>" class="link <%= currentPage === 1 ? 'link--disabled' : '' %>">Prev</a>
+  </li>
 
-        <li class="pagination-item pagination-item-prev <?= $cur_page <= 1 ? 'pagination-item--disabled' : '' ?>">
-            <?php if ($is_get): ?>
-                <a <?= $cur_page > 1 ? 'href=' . "$url" . '&page=' . ($cur_page - 1) : '' ?>>Назад</a>
-            <?php else: ?>
-                <a <?= $cur_page > 1 ? 'href=' . "$url" . '?page=' . ($cur_page - 1) : '' ?>>Назад</a>
-            <?php endif; ?>
-        </li>
+  <% pages.forEach((page) => { %>
+  <li class="pagination-item <%= page === currentPage ? 'pagination-item--active' : '' %>">
+    <a href="<%= `?page=${page}`%>">
+      <%= page %>
+    </a>
+  </li>
+  <% }) %>
 
-        <?php foreach ($pages as $page): ?>
-            <li class="pagination-item <?= $page == $cur_page ? 'pagination-item--active' : '' ?>">
-            <?php if ($is_get): ?>
-                <a href="<?= "$url&page=$page" ?>">
-                    <?= $page ?>
-                </a>
-            <?php else: ?>
-                <a href="<?= "$url?page=$page" ?>">
-                    <?= $page ?>
-                </a>
-            <?php endif; ?>
-            </li>
-        <?php endforeach ?>
-
-        <li class="pagination-item pagination-item-next <?= $cur_page >= $pages_count ? 'pagination-item--disabled' : '' ?>">
-            <?php if ($is_get): ?>
-                <a <?= $cur_page < $pages_count ? 'href=' . "$url" . '&page=' . ($cur_page + 1) : '' ?>>Вперед</a>
-            <?php else: ?>
-                <a <?= $cur_page < $pages_count ? 'href=' . "$url" . '?page=' . ($cur_page + 1) : '' ?>>Вперед</a>
-            <?php endif; ?>
-        </li>
-
-    </ul>
-<?php endif; ?>
+  <li
+    class="pagination-item pagination-item-next">
+    <a href="<%= currentPage < pagesCount ? `?page=${currentPage + 1}` : '' %>" class="link <%= currentPage === pagesCount ? 'link--disabled' : '' %>">Next</a>
+  </li>
+</ul>
+<% } %>

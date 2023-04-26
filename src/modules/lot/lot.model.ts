@@ -101,7 +101,7 @@ export class LotModel {
     return rows;
   }
 
-  public async getUnfinishedLots() {
+  public async getUnfinishedLots(limit: number, offset: number) {
     const databaseService = DatabaseService.getInstance();
 
     const sql = `SELECT
@@ -117,10 +117,25 @@ export class LotModel {
       lot
     INNER JOIN category USING(category_id)
     WHERE end_date > NOW()
-    ORDER BY create_date DESC`;
+    ORDER BY create_date DESC
+    LIMIT $1
+    OFFSET $2`;
+
+    const { rows } = await databaseService.query(sql, [limit, offset]);
+    return rows;
+  }
+
+  public async getUnfinishedLotsCount() {
+    const databaseService = DatabaseService.getInstance();
+
+    const sql = `SELECT
+      COUNT(*) as count
+    FROM
+      lot
+    WHERE end_date > NOW()`;
 
     const { rows } = await databaseService.query(sql);
-    return rows;
+    return rows[0].count;
   }
 
   public async addLot(lot: Lot, userId: string): Promise<Id> {
