@@ -9,3 +9,4 @@ export const SIGN_IN_PAGE = '/login';
 export const SIGN_UP_PAGE = '/register';
 export const LOGOUT_PAGE = '/logout';
 export const MY_BET_PAGE = '/my-bets';
+export const SEARCH_PAGE = '/search';

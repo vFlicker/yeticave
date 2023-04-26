@@ -110,3 +110,8 @@ VALUES
   (3, 6, 6000),
   (2, 5, 8000),
   (3, 5, 8400);
+
+ALTER TABLE lot ADD COLUMN ts tsvector
+  GENERATED ALWAYS AS (to_tsvector('english', title)) STORED;
+
+CREATE INDEX ts_idx ON lot USING GIN (ts);

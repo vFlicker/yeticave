@@ -15,6 +15,7 @@ import { betRouter } from './modules/bet';
 import { historyRouter } from './modules/history';
 import { homeRouter } from './modules/home';
 import { lotRouter } from './modules/lot';
+import { searchRouter } from './modules/search';
 import { User, userRouter } from './modules/user';
 
 declare module 'express-session' {
@@ -65,6 +66,7 @@ app.use(ROOT_PREFIX, userRouter);
 app.use(ROOT_PREFIX, historyRouter);
 app.use(ROOT_PREFIX, lotRouter);
 app.use(ROOT_PREFIX, betRouter);
+app.use(ROOT_PREFIX, searchRouter);
 
 app.get('*', (_, res) => {
   res.status(404).send('Not Found');

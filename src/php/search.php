@@ -1,6 +1,6 @@
 <?php
 require_once('config.php');
-require_once('init.php'); 
+require_once('init.php');
 require_once('nav_menu.php');
 
 $lots = [];
@@ -22,13 +22,13 @@ if($search) {
     $result = mysqli_stmt_get_result($stmt);
 
     if ($result) {
-        $items_count = mysqli_fetch_assoc($result)['count'];    
+        $items_count = mysqli_fetch_assoc($result)['count'];
         $pages_count = ceil($items_count / $page_items);
         $offset = ($cur_page - 1) * $page_items;
 
         $pages = range(1, $pages_count);
 
-        $sql = "SELECT l.id, `title`, `description`, `url_image`, `start_price`, `step_price`, `date_end`, c.name AS `category` 
+        $sql = "SELECT l.id, `title`, `description`, `url_image`, `start_price`, `step_price`, `date_end`, c.name AS `category`
                     FROM `lots` l
                     JOIN `categories` c ON l.category_id = c.id
                     WHERE MATCH(`title`, `description`) AGAINST(?)
@@ -50,7 +50,7 @@ if($search) {
                 'is_get' => $is_get,
                 'url' => $url,
                 'search' => $search,
-                'lots' => $lots, 
+                'lots' => $lots,
                 'nav_menu' => $nav_menu,
                 'pages' => $pages,
                 'pages_count' => $pages_count,
@@ -62,7 +62,7 @@ if($search) {
             }
         }
     }
-} 
+}
 else {
     $page_content = include_template('error.php', ['error_title' => 'По вашему запросу ничего не найдено']);
 }
