@@ -1,9 +1,11 @@
 import bodyParser from 'body-parser';
 import cookies from 'cookie-parser';
 import dotenv from 'dotenv';
+import ejs from 'ejs';
 import express from 'express';
 import ejsLayouts from 'express-ejs-layouts';
 import session from 'express-session';
+import nodemailer from 'nodemailer';
 import path from 'path';
 
 import {
@@ -67,6 +69,50 @@ app.use(ROOT_PREFIX, historyRouter);
 app.use(ROOT_PREFIX, lotRouter);
 app.use(ROOT_PREFIX, betRouter);
 app.use(ROOT_PREFIX, searchRouter);
+
+const transporter = nodemailer.createTransport({
+  host: process.env.MAILER_HOST,
+  port: Number(process.env.MAILER_PORT),
+  secure: process.env.MAILER_SECURE === 'true',
+  auth: {
+    user: process.env.MAILER_USER,
+    pass: process.env.MAILER_PASS,
+  },
+  tls: {
+    rejectUnauthorized: process.env.MAILER_REJECTUNAUTHORIZED === 'true',
+  },
+});
+
+app.get('/send-email', (_, res) => {
+  const messagePath = path.resolve(
+    __dirname,
+    'common',
+    'views',
+    'messages',
+    'email.ejs',
+  );
+  ejs.renderFile(
+    messagePath,
+    { name: 'Vlad', lotId: 3, title: 'Lot name' },
+    (err, data) => {
+      if (err) {
+        console.log(err);
+      } else {
+        const mailOptions = {
+          from: process.env.MAILER_USER,
+          to: 'flickervladislav@yandex.com',
+          subject: 'You won. YatiCave auction.',
+          html: data,
+        };
+
+        transporter.sendMail(mailOptions, (error) => {
+          if (error) console.log({ error });
+          res.send(`send email success`);
+        });
+      }
+    },
+  );
+});
 
 app.get('*', (_, res) => {
   res.status(404).send('Not Found');

@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { LOT_HISTORY_COOKIE_KEY } from '../constants';
 import { convertDayToMilliseconds } from '../utils';
 
+// TODO: now for each user we have the same history. Fix it.
 export const lotHistoryCookie = (
   req: Request,
   res: Response,

@@ -18,6 +18,7 @@ export class HomeController {
     const offset = (currentPage - 1) * NUMBER_ITEMS_PER_PAGE;
 
     const lotModel = new LotModel();
+    // TODO: user object instead value
     const lotCount = await lotModel.getUnfinishedLotsCount();
     const lots = await lotModel.getUnfinishedLots(
       NUMBER_ITEMS_PER_PAGE,
