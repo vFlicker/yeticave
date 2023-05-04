@@ -1,23 +1,25 @@
 import { Request, Response } from 'express';
 
 import {
+  BaseController,
   formatPrice,
   getLotPath,
   getTimeLeft,
-  getView,
   isTimeFinishing,
   LOT_HISTORY_COOKIE_KEY,
 } from '../../common';
 import { LotModel } from '../lot/lot.model';
 
-export class HistoryController {
+export class HistoryController extends BaseController {
+  protected dirname = __dirname;
+
   public getHistoryPage = async (req: Request, res: Response) => {
     const ids = JSON.parse(req.cookies[LOT_HISTORY_COOKIE_KEY]);
 
     const lotModel = new LotModel();
     const lots = await lotModel.getLotsByIds(ids);
 
-    res.render(getView(__dirname, 'historyPage'), {
+    this.render(res, 'historyPage', {
       pageTitle: 'History',
       lots,
       helper: {

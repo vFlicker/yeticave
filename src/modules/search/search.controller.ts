@@ -1,10 +1,10 @@
 import { RequestHandler, Response } from 'express';
 
 import {
+  BaseController,
   formatPrice,
   getLotPath,
   getTimeLeft,
-  getView,
   isTimeFinishing,
 } from '../../common';
 import { LotModel } from '../lot/lot.model';
@@ -14,7 +14,9 @@ type ReqQuery = {
 };
 
 // TODO: add middleware for validation query
-export class SearchController {
+export class SearchController extends BaseController {
+  protected dirname = __dirname;
+
   public getSearchPage: RequestHandler<any, any, any, ReqQuery> = async (
     req,
     res: Response,
@@ -22,7 +24,7 @@ export class SearchController {
     const lotModel = new LotModel();
     const lots = await lotModel.getLotsByText(req.query.text);
 
-    res.render(getView(__dirname, 'searchPage'), {
+    this.render(res, 'searchPage', {
       pageTitle: 'Find lot',
       search: req.query.text,
       lots,

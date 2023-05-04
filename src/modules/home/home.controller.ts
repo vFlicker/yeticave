@@ -1,17 +1,19 @@
 import { Request, Response } from 'express';
 
 import {
+  BaseController,
   formatPrice,
   getLotPath,
   getTimeLeft,
-  getView,
   isTimeFinishing,
 } from '../../common';
 import { LotModel } from '../lot/lot.model';
 
 const NUMBER_ITEMS_PER_PAGE = 3;
 
-export class HomeController {
+export class HomeController extends BaseController {
+  protected dirname = __dirname;
+
   public getHomePage = async (req: Request, res: Response) => {
     const page = req.query.page as string;
     const currentPage = page ? Number(page) : 1;
@@ -27,7 +29,7 @@ export class HomeController {
 
     const length = Math.ceil(Number(lotCount) / NUMBER_ITEMS_PER_PAGE);
 
-    res.render(getView(__dirname, 'homePage'), {
+    this.render(res, 'homePage', {
       pageTitle: 'Home',
       lots,
       canShowTomMenu: false,

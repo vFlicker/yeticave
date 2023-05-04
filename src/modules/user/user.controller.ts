@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 
-import { getView, ROOT_PREFIX, SIGN_IN_PAGE } from '../../common';
+import { BaseController, ROOT_PREFIX, SIGN_IN_PAGE } from '../../common';
 import {
   createUserValidateSchema,
   registerUserValidateSchema,
@@ -20,16 +20,18 @@ type SingUpData = {
   contacts: string;
 };
 
-export class UserController {
+export class UserController extends BaseController {
+  protected dirname = __dirname;
+
   public getSignInPage = (req: Request, res: Response) => {
-    if (req.session.user) return res.redirect(ROOT_PREFIX);
+    if (req.session.user) return this.redirect(res, ROOT_PREFIX);
 
     const user = {
       email: '',
       password: '',
     };
 
-    res.render(getView(__dirname, 'signInPage'), {
+    this.render(res, 'signInPage', {
       pageTitle: 'Login',
       user,
       errors: [],
@@ -51,7 +53,7 @@ export class UserController {
     if (errors) {
       const hasErrors = Boolean(errors);
 
-      return res.render(getView(__dirname, 'signInPage'), {
+      return this.render(res, 'signInPage', {
         pageTitle,
         user,
         errors,
@@ -68,7 +70,7 @@ export class UserController {
         message: 'Invalid email or password',
       };
 
-      return res.render(getView(__dirname, 'signInPage'), {
+      return this.render(res, 'signInPage', {
         pageTitle,
         user,
         errors,
@@ -84,7 +86,7 @@ export class UserController {
           message: 'Invalid email or password',
         };
 
-        return res.render(getView(__dirname, 'signInPage'), {
+        return this.render(res, 'signInPage', {
           pageTitle,
           user,
           errors,
@@ -98,7 +100,7 @@ export class UserController {
         req.session.user = foundUser;
 
         req.session.save(() => {
-          res.redirect(ROOT_PREFIX);
+          this.redirect(res, ROOT_PREFIX);
         });
       });
     });
@@ -112,7 +114,7 @@ export class UserController {
       message: '',
     };
 
-    res.render(getView(__dirname, 'signUpPage'), {
+    this.render(res, 'signUpPage', {
       pageTitle: 'Register',
       user,
       errors: [],
@@ -134,7 +136,7 @@ export class UserController {
     if (errors) {
       const hasErrors = Boolean(errors);
 
-      return res.render(getView(__dirname, 'signUpPage'), {
+      return this.render(res, 'signUpPage', {
         pageTitle,
         user: formData,
         errors,
@@ -151,7 +153,7 @@ export class UserController {
     const passwordHash = await bcrypt.hash(password, 10);
     await userModel.create({ name, email, password: passwordHash, contacts });
 
-    res.redirect(SIGN_IN_PAGE);
+    this.redirect(res, SIGN_IN_PAGE);
   };
 
   public logout = (req: Request, res: Response) => {
@@ -159,7 +161,7 @@ export class UserController {
 
     req.session.save(() => {
       req.session.regenerate(() => {
-        res.redirect(ROOT_PREFIX);
+        this.redirect(res, ROOT_PREFIX);
       });
     });
   };

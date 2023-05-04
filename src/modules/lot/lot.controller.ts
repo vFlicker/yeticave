@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 
 import {
+  BaseController,
   formatPrice,
   getLotPath,
   getMinRate,
   getTimeAgo,
   getTimeLeft,
-  getView,
   isTimeFinishing,
   lotHistoryCookie,
   requireAuth,
@@ -25,11 +25,13 @@ type FormData = {
 };
 
 // TODO: add middleware for validation
-export class LotController {
+export class LotController extends BaseController {
+  protected dirname = __dirname;
+
   public getLotPage = [
     lotHistoryCookie,
     async (req: Request, res: Response) => {
-      const { id } = req.params;
+      const id = this.getParam(req, 'id');
 
       const lotModel = new LotModel();
       const betModel = new BetModel();
@@ -40,7 +42,7 @@ export class LotController {
       // TODO: page error
       if (!lot) return res.status(404).send('what???');
 
-      res.render(getView(__dirname, 'lotPage'), {
+      this.render(res, 'lotPage', {
         pageTitle: lot.title,
         bets: allBets,
         maxPrice,
@@ -74,7 +76,7 @@ export class LotController {
     if (errors) {
       const hasErrors = Boolean(errors);
 
-      return res.render(getView(__dirname, 'lotPage'), {
+      return this.render(res, 'lotPage', {
         pageTitle: lot.title,
         bets: allBets,
         maxPrice,
@@ -101,12 +103,13 @@ export class LotController {
 
       await betModel.addNew(betData);
 
-      res.redirect(`/lots/${lot.id}`);
+      const path = `/lots/${lot.id}`;
+      this.redirect(res, path);
     }
   };
 
   public getLotsByCategoryPage = async (req: Request, res: Response) => {
-    const { name } = req.params;
+    const name = this.getParam(req, 'name');
 
     const lotModel = new LotModel();
     const lots = await lotModel.getLotsByCategory(
@@ -115,7 +118,7 @@ export class LotController {
 
     if (!lots) return res.status(404).send('what???');
 
-    res.render(getView(__dirname, 'lotsByCategoryPage'), {
+    this.render(res, 'lotsByCategoryPage', {
       pageTitle: name,
       name,
       lots,
@@ -141,7 +144,7 @@ export class LotController {
         endDate: '',
       };
 
-      res.render(getView(__dirname, 'newLotPage'), {
+      this.render(res, 'newLotPage', {
         pageTitle: 'Add new lot',
         lot,
         errors: [],
@@ -164,7 +167,7 @@ export class LotController {
     if (errors) {
       const hasErrors = Boolean(errors);
 
-      return res.render(getView(__dirname, 'newLotPage'), {
+      return this.render(res, 'newLotPage', {
         pageTitle: 'Add new lot',
         lot: formData,
         errors,
@@ -184,7 +187,8 @@ export class LotController {
       // TODO: handle errors
       const lotId = await lotModel.addLot(formData, id);
 
-      res.redirect(`/lots/${lotId}`);
+      const path = `/lots/${lotId}`;
+      this.redirect(res, path);
     }
   };
 

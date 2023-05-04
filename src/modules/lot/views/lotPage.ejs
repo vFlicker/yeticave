@@ -26,7 +26,8 @@
               Minimum step &ndash;&nbsp;<span><%= helper.formatPrice(lot.step) %></span>
             </div>
           </div>
-          <!-- TODO: change route -->
+          <!-- TODO: 1. change route -->
+          <!-- TODO: 2. Hide "your bet" input, if you are lot creator -->
           <form action="/lots/<%= lot.id %>" method="post" class="bet__form <%= hasErrors ? 'form--invalid' : '' %>">
             <div class="bet__form-item <%= errors.hasOwnProperty('price') ? 'form__item--invalid' : '' %>">
               <label for="cost">Your bet</label>
