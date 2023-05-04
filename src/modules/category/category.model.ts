@@ -8,7 +8,7 @@ export class CategoryModel {
       category_name as category
     FROM category`;
 
-    const { rows } = await databaseService.query(sql);
+    const { rows } = await databaseService.getDB().query(sql);
     return rows.map((item) => item.category);
   }
 
@@ -20,7 +20,7 @@ export class CategoryModel {
     FROM category
     WHERE category_name = $1`;
 
-    const { rows } = await databaseService.query(sql, [name]);
+    const { rows } = await databaseService.getDB().query(sql, [name]);
     return rows[0].id;
   }
 }

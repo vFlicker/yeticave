@@ -1,1 +1,1 @@
-export { default as betRouter } from './bet.router';
+export { betRouter } from './bet.router';

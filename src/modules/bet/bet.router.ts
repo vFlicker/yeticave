@@ -1,11 +1,12 @@
-import express from 'express';
-
+import { Router } from '../../app';
 import { MY_BET_PAGE } from '../../common';
 import { BetController } from './bet.controller';
 
-const betRouter = express.Router();
-const betController = new BetController();
-
-betRouter.get(MY_BET_PAGE, betController.getMyBetsPage);
-
-export default betRouter;
+export const betRouter: Router = [
+  {
+    path: MY_BET_PAGE,
+    method: 'get',
+    className: BetController,
+    action: 'getMyBetsPage',
+  },
+];

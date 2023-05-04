@@ -31,7 +31,7 @@ export class BetModel {
       ON bet.user_id = app_user.user_id
     WHERE bet.user_id = $1`;
 
-    const { rows } = await databaseService.query(sql, [id]);
+    const { rows } = await databaseService.getDB().query(sql, [id]);
     return rows;
   }
 
@@ -48,7 +48,7 @@ export class BetModel {
     WHERE lot_id = $1
     ORDER BY bet.create_date DESC`;
 
-    const { rows } = await databaseService.query(sql, [id]);
+    const { rows } = await databaseService.getDB().query(sql, [id]);
     return rows;
   }
 
@@ -65,7 +65,7 @@ export class BetModel {
     // JOIN `bets` b ON l.id = b.lot_id
     // WHERE l.id = '$id'";
 
-    const { rows } = await databaseService.query(sql, [id]);
+    const { rows } = await databaseService.getDB().query(sql, [id]);
     return rows[0].price;
   }
 
@@ -82,7 +82,7 @@ export class BetModel {
       ($1, $2, $3)`;
 
     const { userId, lotId, price } = betData;
-    const { rows } = await databaseService.query(sql, [userId, lotId, price]);
+    const { rows } = await databaseService.getDB().query(sql, [userId, lotId, price]);
 
     return rows;
   }

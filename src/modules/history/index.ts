@@ -1,1 +1,1 @@
-export { default as historyRouter } from './history.router';
+export { historyRouter } from './history.router';

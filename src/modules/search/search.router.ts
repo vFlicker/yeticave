@@ -1,11 +1,12 @@
-import express from 'express';
-
+import { Router } from '../../app';
 import { SEARCH_PAGE } from '../../common';
 import { SearchController } from './search.controller';
 
-const searchRouter = express.Router();
-const lotController = new SearchController();
-
-searchRouter.get(SEARCH_PAGE, lotController.getSearchPage);
-
-export default searchRouter;
+export const searchRouter: Router = [
+  {
+    path: SEARCH_PAGE,
+    method: 'get',
+    className: SearchController,
+    action: 'getSearchPage',
+  },
+];

@@ -23,7 +23,7 @@ export class UserModel {
     WHERE
       email = $1`;
 
-    const { rows } = await databaseService.query(sql, [email]);
+    const { rows } = await databaseService.getDB().query(sql, [email]);
     return rows[0];
   }
 
@@ -39,6 +39,6 @@ export class UserModel {
       (${placeholders})`;
 
     // TODO: handle errors
-    await databaseService.query(sql, [name, email, password, contacts]);
+    await databaseService.getDB().query(sql, [name, email, password, contacts]);
   }
 }

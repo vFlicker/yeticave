@@ -1,1 +1,1 @@
-export { default as searchRouter } from './search.router';
+export { searchRouter } from './search.router';

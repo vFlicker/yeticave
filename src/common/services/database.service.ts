@@ -1,35 +1,22 @@
-import dotenv from 'dotenv';
-import { Pool, QueryConfig, QueryResult } from 'pg';
-
-dotenv.config();
+import { Pool, PoolConfig } from 'pg';
 
 export class DatabaseService {
   private static instance: DatabaseService;
   private pool: Pool;
 
-  private constructor() {
-    this.pool = new Pool({
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE_NAME,
-      port: Number(process.env.DB_PORT),
-    });
+  private constructor(config?: PoolConfig) {
+    this.pool = new Pool(config);
   }
 
-  public static getInstance(): DatabaseService {
+  public static getInstance(config?: PoolConfig): DatabaseService {
     if (!DatabaseService.instance) {
-      DatabaseService.instance = new DatabaseService();
+      DatabaseService.instance = new DatabaseService(config);
     }
 
     return DatabaseService.instance;
   }
 
-  public async query(
-    text: string | QueryConfig<any>,
-    params?: any,
-  ): Promise<QueryResult<any>> {
-    const res = await this.pool.query(text, params);
-    return res;
+  public getDB(): Pool {
+    return this.pool;
   }
 }

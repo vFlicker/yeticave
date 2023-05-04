@@ -29,7 +29,7 @@ export class LotModel {
     INNER JOIN category USING(category_id)
     WHERE lot_id = $1`;
 
-    const { rows } = await databaseService.query(sql, [id]);
+    const { rows } = await databaseService.getDB().query(sql, [id]);
     return rows[0];
   }
 
@@ -51,7 +51,7 @@ export class LotModel {
     WHERE ts @@ phraseto_tsquery('english', $1)
     ORDER BY create_date DESC`;
 
-    const { rows } = await databaseService.query(sql, [text]);
+    const { rows } = await databaseService.getDB().query(sql, [text]);
     return rows;
   }
 
@@ -73,7 +73,7 @@ export class LotModel {
     WHERE category_name = $1
     ORDER BY create_date DESC`;
 
-    const { rows } = await databaseService.query(sql, [category]);
+    const { rows } = await databaseService.getDB().query(sql, [category]);
     return rows;
   }
 
@@ -97,7 +97,7 @@ export class LotModel {
     WHERE lot_id IN (${placeholders})
     ORDER BY create_date DESC`;
 
-    const { rows } = await databaseService.query(sql, ids);
+    const { rows } = await databaseService.getDB().query(sql, ids);
     return rows;
   }
 
@@ -121,7 +121,7 @@ export class LotModel {
     LIMIT $1
     OFFSET $2`;
 
-    const { rows } = await databaseService.query(sql, [limit, offset]);
+    const { rows } = await databaseService.getDB().query(sql, [limit, offset]);
     return rows;
   }
 
@@ -134,7 +134,7 @@ export class LotModel {
       lot
     WHERE end_date > NOW()`;
 
-    const { rows } = await databaseService.query(sql);
+    const { rows } = await databaseService.getDB().query(sql);
     return rows[0].count;
   }
 
@@ -164,16 +164,18 @@ export class LotModel {
     RETURNING lot_id`;
 
     // TODO: handle errors
-    const { rows } = await databaseService.query(sql, [
-      categoryId,
-      userId,
-      name,
-      image,
-      description,
-      price,
-      step,
-      endDate,
-    ]);
+    const { rows } = await databaseService
+      .getDB()
+      .query(sql, [
+        categoryId,
+        userId,
+        name,
+        image,
+        description,
+        price,
+        step,
+        endDate,
+      ]);
 
     return rows[0].lot_id as Id;
   }

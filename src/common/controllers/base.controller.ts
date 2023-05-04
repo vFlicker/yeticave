@@ -1,8 +1,18 @@
 import { NextFunction, Request, Response } from 'express';
 import path from 'path';
 
+import { ModelFactoryService } from '../services';
+
 export class BaseController {
+  // TODO: Can I fix it?
+  [key: string]: any;
+
   protected dirname = '';
+  protected modelFactoryService: ModelFactoryService;
+
+  constructor(modelFactoryService: ModelFactoryService) {
+    this.modelFactoryService = modelFactoryService;
+  }
 
   public redirect(res: Response, path: string) {
     res.redirect(path);

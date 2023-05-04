@@ -1,15 +1,36 @@
-import express from 'express';
-
+import { Router } from '../../app';
 import { LOGOUT_PAGE, SIGN_IN_PAGE, SIGN_UP_PAGE } from '../../common';
 import { UserController } from './user.controller';
 
-const userRouter = express.Router();
-const userController = new UserController();
-
-userRouter.get(SIGN_IN_PAGE, userController.getSignInPage);
-userRouter.post(SIGN_IN_PAGE, userController.sendSignInForm);
-userRouter.get(SIGN_UP_PAGE, userController.getSignUpPage);
-userRouter.post(SIGN_UP_PAGE, userController.sendSignUpForm);
-userRouter.get(LOGOUT_PAGE, userController.logout);
-
-export default userRouter;
+export const userRouter: Router = [
+  {
+    path: SIGN_IN_PAGE,
+    method: 'get',
+    className: UserController,
+    action: 'getSignInPage',
+  },
+  {
+    path: SIGN_IN_PAGE,
+    method: 'post',
+    className: UserController,
+    action: 'sendSignInForm',
+  },
+  {
+    path: SIGN_UP_PAGE,
+    method: 'get',
+    className: UserController,
+    action: 'getSignUpPage',
+  },
+  {
+    path: SIGN_UP_PAGE,
+    method: 'post',
+    className: UserController,
+    action: 'sendSignUpForm',
+  },
+  {
+    path: LOGOUT_PAGE,
+    method: 'get',
+    className: UserController,
+    action: 'logout',
+  },
+];

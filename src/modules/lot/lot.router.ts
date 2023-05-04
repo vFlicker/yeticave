@@ -1,26 +1,45 @@
-import express from 'express';
-
+import { Router } from '../../app';
 import {
-  DiskStorageService,
+  // DiskStorageService,
   LOT_PAGE,
   LOTS_BY_CATEGORY_PAGE,
   NEW_LOT_PAGE,
 } from '../../common';
 import { LotController } from './lot.controller';
 
-const lotRouter = express.Router();
-const lotController = new LotController();
-const diskStorage = new DiskStorageService('public/img/uploads');
-const fileUploader = diskStorage.createFileUploader();
+// const diskStorage = new DiskStorageService('public/img/uploads');
+// const fileUploader = diskStorage.createFileUploader();
 
-lotRouter.get(NEW_LOT_PAGE, lotController.getNewLotPage);
-lotRouter.post(
-  NEW_LOT_PAGE,
-  fileUploader.single('lot-image'),
-  lotController.sendNewLotForm,
-);
-lotRouter.get(LOT_PAGE, lotController.getLotPage);
-lotRouter.post(LOT_PAGE, lotController.sendNewBetForm);
-lotRouter.get(LOTS_BY_CATEGORY_PAGE, lotController.getLotsByCategoryPage);
-
-export default lotRouter;
+export const lotRouter: Router = [
+  {
+    path: NEW_LOT_PAGE,
+    method: 'get',
+    className: LotController,
+    action: 'getNewLotPage',
+  },
+  {
+    path: NEW_LOT_PAGE,
+    method: 'post',
+    className: LotController,
+    action: 'sendNewLotForm',
+    // middlewares: [fileUploader.single('lot-image')],
+  },
+  {
+    path: LOT_PAGE,
+    method: 'get',
+    className: LotController,
+    action: 'getLotPage',
+  },
+  {
+    path: LOT_PAGE,
+    method: 'post',
+    className: LotController,
+    action: 'sendNewBetForm',
+  },
+  {
+    path: LOTS_BY_CATEGORY_PAGE,
+    method: 'get',
+    className: LotController,
+    action: 'getLotsByCategoryPage',
+  },
+];

@@ -1,1 +1,1 @@
-export { default as lotRouter } from './lot.router';
+export { lotRouter } from './lot.router';
