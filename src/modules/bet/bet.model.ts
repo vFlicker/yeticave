@@ -1,4 +1,5 @@
 import { DatabaseService, Id } from '../../common';
+import { BaseModel } from '../../framework';
 
 type BetData = {
   userId: Id;
@@ -6,7 +7,7 @@ type BetData = {
   price: number;
 };
 
-export class BetModel {
+export class BetModel extends BaseModel {
   public async getAllByUserId(id: Id) {
     const databaseService = DatabaseService.getInstance();
 
@@ -82,7 +83,9 @@ export class BetModel {
       ($1, $2, $3)`;
 
     const { userId, lotId, price } = betData;
-    const { rows } = await databaseService.getDB().query(sql, [userId, lotId, price]);
+    const { rows } = await databaseService
+      .getDB()
+      .query(sql, [userId, lotId, price]);
 
     return rows;
   }

@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 
 import {
-  BaseController,
   formatPrice,
   getLotPath,
   getMinRate,
@@ -11,6 +10,7 @@ import {
   lotHistoryCookie,
   requireAuth,
 } from '../../common';
+import { BaseController } from '../../framework';
 import { BetModel } from '../bet/bet.model';
 import { LotModel } from './lot.model';
 import { createNewBetSchema, createNewLotSchema } from './schemas';

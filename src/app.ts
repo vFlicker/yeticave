@@ -6,12 +6,8 @@ import expressEjsLayouts from 'express-ejs-layouts';
 import session from 'express-session';
 import path from 'path';
 
-import {
-  authenticateUser,
-  BaseController,
-  defaultTemplateVariables,
-  ModelFactoryService,
-} from './common';
+import { authenticateUser, defaultTemplateVariables } from './common';
+import { ModelFactoryService, Router } from './framework';
 import { User } from './modules/user';
 
 declare module 'express-session' {
@@ -20,15 +16,6 @@ declare module 'express-session' {
   }
 }
 
-type Route = {
-  path: string;
-  method: 'get' | 'post';
-  className: typeof BaseController;
-  action: string;
-};
-
-export type Router = Route[];
-
 export class App {
   app: Express;
 
@@ -36,14 +23,14 @@ export class App {
     dotenv.config();
     this.app = express();
 
-    this.setup('App class');
+    this.setup();
   }
 
-  public setRoutes(routes: Router, modelFactoryService: ModelFactoryService) {
+  public setRoutes(routes: Router, modelFactory: ModelFactoryService): void {
     for (const route of routes) {
       const { path, action, className, method } = route;
 
-      const controller = new className(modelFactoryService);
+      const controller = new className(modelFactory);
       this.app[method](path, controller[action]);
     }
   }
@@ -55,36 +42,12 @@ export class App {
     this.app.listen(port, () => console.log(text));
   }
 
-  private setup(className: string) {
-    console.log(`setup ${className}`);
+  private setup() {
+    this.setupParsers();
+    this.setupSession();
+    this.applyMiddlewares();
+    this.setupViewEngine();
 
-    // Parser
-    this.app.use(bodyParser.json());
-    this.app.use(bodyParser.urlencoded());
-
-    // Set cookies
-    this.app.use(cookieParser());
-    // Set session
-    this.app.use(
-      session({
-        secret: 'keyboard cat',
-        resave: false,
-        saveUninitialized: true,
-      }),
-    );
-    // middlewares
-    this.app.use(authenticateUser);
-    this.app.use(defaultTemplateVariables);
-    // Static Files
-    this.app.use(express.static('public'));
-    // Set view engine
-    this.app.set('view engine', 'ejs');
-    this.app.set('views', [
-      path.resolve(__dirname, 'common', 'views'),
-      path.resolve(__dirname, 'modules'),
-    ]);
-    this.app.set('layout', 'layouts/layout.ejs');
-    this.app.use(expressEjsLayouts);
     // const transporter = nodemailer.createTransport({
     //   host: process.env.MAILER_HOST,
     //   port: Number(process.env.MAILER_PORT),
@@ -129,5 +92,40 @@ export class App {
     // this.app.get('*', (_, res) => {
     //   res.status(404).send('Not Found');
     // });
+  }
+
+  private setupParsers() {
+    this.app.use(bodyParser.json());
+    this.app.use(bodyParser.urlencoded());
+    this.app.use(cookieParser());
+  }
+
+  private setupSession() {
+    this.app.use(
+      session({
+        secret: 'keyboard cat',
+        resave: false,
+        saveUninitialized: true,
+      }),
+    );
+  }
+
+  private applyMiddlewares() {
+    this.app.use(authenticateUser);
+    this.app.use(defaultTemplateVariables);
+  }
+
+  private setupViewEngine() {
+    this.app.use(express.static('public'));
+    this.app.use(expressEjsLayouts);
+
+    this.app.set('view engine', 'ejs');
+
+    this.app.set('views', [
+      path.resolve(__dirname, 'common', 'views'),
+      path.resolve(__dirname, 'modules'),
+    ]);
+
+    this.app.set('layout', 'layouts/layout.ejs');
   }
 }

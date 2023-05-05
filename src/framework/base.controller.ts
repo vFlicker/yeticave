@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import path from 'path';
 
-import { ModelFactoryService } from '../services';
+import { ModelFactoryService } from './modelFactory.service';
 
 export class BaseController {
   // TODO: Can I fix it?

@@ -1,9 +1,10 @@
-import { DatabaseService, ModelFactoryService } from '../services';
+import { IDatabaseService } from './interfaces';
+import { ModelFactoryService } from './modelFactory.service';
 
 export class BaseModel {
   [key: string]: unknown;
 
-  public databaseService: DatabaseService | null = null;
+  public databaseService: IDatabaseService | null = null;
   protected modelFactoryService: ModelFactoryService | null = null;
 
   public static tableName: string;
@@ -23,7 +24,7 @@ export class BaseModel {
     return this;
   }
 
-  public setDb(databaseService: DatabaseService): this {
+  public setDb(databaseService: IDatabaseService): this {
     this.databaseService = databaseService;
     return this;
   }

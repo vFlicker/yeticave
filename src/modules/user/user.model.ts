@@ -1,4 +1,5 @@
 import { createPlaceholders, DatabaseService } from '../../common';
+import { BaseModel } from '../../framework';
 
 type SingUpData = {
   email: string;
@@ -7,7 +8,7 @@ type SingUpData = {
   contacts: string;
 };
 
-export class UserModel {
+export class UserModel extends BaseModel {
   public async getUserByEmail(email: string) {
     const databaseService = DatabaseService.getInstance();
 

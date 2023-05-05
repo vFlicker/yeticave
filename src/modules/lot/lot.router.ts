@@ -1,4 +1,4 @@
-import { Router } from '../../app';
+import { Router } from '../../framework';
 import {
   // DiskStorageService,
   LOT_PAGE,

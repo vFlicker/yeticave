@@ -1,4 +1,5 @@
 import { createPlaceholders, DatabaseService, Id } from '../../common';
+import { BaseModel } from '../../framework';
 import { CategoryModel } from '../category/category.model';
 
 type Lot = {
@@ -11,7 +12,7 @@ type Lot = {
   endDate: string;
 };
 
-export class LotModel {
+export class LotModel extends BaseModel {
   public async getLotById(id: Id) {
     const databaseService = DatabaseService.getInstance();
 

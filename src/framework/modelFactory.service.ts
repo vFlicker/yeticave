@@ -1,16 +1,16 @@
-import { BaseModel } from '../models';
-import { DatabaseService } from './database.service';
+import { BaseModel } from './base.model';
+import { IDatabaseService } from './interfaces';
 
 export class ModelFactoryService {
   private static instance: ModelFactoryService;
-  protected databaseService: DatabaseService;
+  protected databaseService: IDatabaseService;
 
-  private constructor(databaseService: DatabaseService) {
+  private constructor(databaseService: IDatabaseService) {
     this.databaseService = databaseService;
   }
 
   public static getInstance(
-    databaseService: DatabaseService,
+    databaseService: IDatabaseService,
   ): ModelFactoryService {
     if (!ModelFactoryService.instance) {
       ModelFactoryService.instance = new ModelFactoryService(databaseService);

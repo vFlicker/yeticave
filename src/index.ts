@@ -1,5 +1,6 @@
 import { App } from './app';
-import { databaseConfig, DatabaseService, ModelFactoryService } from './common';
+import { databaseConfig, DatabaseService } from './common';
+import { ModelFactoryService } from './framework';
 import { betRouter } from './modules/bet';
 import { historyRouter } from './modules/history';
 import { homeRouter } from './modules/home';

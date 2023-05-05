@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 
 import {
-  BaseController,
   formatPrice,
   getLotPath,
   getTimeLeft,
   isTimeFinishing,
 } from '../../common';
+import { BaseController } from '../../framework';
 import { LotModel } from '../lot/lot.model';
 
 const NUMBER_ITEMS_PER_PAGE = 3;

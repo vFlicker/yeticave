@@ -1,4 +1,4 @@
-import { Router } from '../../app';
+import { Router } from '../../framework';
 import { SEARCH_PAGE } from '../../common';
 import { SearchController } from './search.controller';
 

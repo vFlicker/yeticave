@@ -1,4 +1,4 @@
-import { Router } from '../../app';
+import { Router } from '../../framework';
 import { HISTORY_PAGE } from '../../common';
 import { HistoryController } from './history.controller';
 

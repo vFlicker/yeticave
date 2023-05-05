@@ -1,6 +1,8 @@
 import { Pool, PoolConfig } from 'pg';
 
-export class DatabaseService {
+import { IDatabaseService } from '../../framework';
+
+export class DatabaseService implements IDatabaseService {
   private static instance: DatabaseService;
   private pool: Pool;
 

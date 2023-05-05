@@ -1,6 +1,7 @@
 import { DatabaseService } from '../../common';
+import { BaseModel } from '../../framework';
 
-export class CategoryModel {
+export class CategoryModel extends BaseModel {
   public async getAllCategories() {
     const databaseService = DatabaseService.getInstance();
 

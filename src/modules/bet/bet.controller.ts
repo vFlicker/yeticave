@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 
 import {
-  BaseController,
   formatPrice,
   getTimeAgo,
   getTimeLeft,
@@ -10,6 +9,7 @@ import {
   requireAuth,
   ROOT_PREFIX,
 } from '../../common';
+import { BaseController } from '../../framework';
 import { BetModel } from './bet.model';
 
 // TODO: add middleware for validation

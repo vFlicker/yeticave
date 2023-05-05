@@ -1,7 +1,8 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 
-import { BaseController, ROOT_PREFIX, SIGN_IN_PAGE } from '../../common';
+import { ROOT_PREFIX, SIGN_IN_PAGE } from '../../common';
+import { BaseController } from '../../framework';
 import {
   createUserValidateSchema,
   registerUserValidateSchema,

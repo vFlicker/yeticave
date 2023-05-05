@@ -1,4 +1,4 @@
-import { Router } from '../../app';
+import { Router } from '../../framework';
 import { LOGOUT_PAGE, SIGN_IN_PAGE, SIGN_UP_PAGE } from '../../common';
 import { UserController } from './user.controller';
 

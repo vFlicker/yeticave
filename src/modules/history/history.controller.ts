@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
 
 import {
-  BaseController,
   formatPrice,
   getLotPath,
   getTimeLeft,
   isTimeFinishing,
   LOT_HISTORY_COOKIE_KEY,
 } from '../../common';
+import { BaseController } from '../../framework';
 import { LotModel } from '../lot/lot.model';
 
 export class HistoryController extends BaseController {

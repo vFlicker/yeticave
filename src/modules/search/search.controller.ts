@@ -1,12 +1,12 @@
 import { RequestHandler, Response } from 'express';
 
 import {
-  BaseController,
   formatPrice,
   getLotPath,
   getTimeLeft,
   isTimeFinishing,
 } from '../../common';
+import { BaseController } from '../../framework';
 import { LotModel } from '../lot/lot.model';
 
 type ReqQuery = {
