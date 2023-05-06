@@ -1,2 +1,2 @@
-export * from './createUserValidate.schema';
-export * from './registerUserValidate.schema';
+export * from './createUser.schema';
+export * from './registerUser.schema';

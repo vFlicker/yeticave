@@ -1,2 +1,2 @@
-export * from './createNewBet.schema';
-export * from './createNewLot.schema';
+export * from './newBet.schema';
+export * from './newLot.schema';

@@ -1,25 +1,23 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 
-import { ROOT_PREFIX, SIGN_IN_PAGE } from '../../common';
+import { ROOT_PREFIX, SIGN_IN_PAGE, ValidationService } from '../../common';
 import { BaseController } from '../../framework';
-import {
-  createUserValidateSchema,
-  registerUserValidateSchema,
-} from './schemas';
+import { createUserSchema, registerUserSchema } from './schemas';
 import { UserModel } from './user.model';
 
-type SingInData = {
-  email: string;
-  password: string;
-};
+// TODO: create types
+// type SingInData = {
+//   email: string;
+//   password: string;
+// };
 
-type SingUpData = {
-  email: string;
-  password: string;
-  name: string;
-  contacts: string;
-};
+// type SingUpData = {
+//   email: string;
+//   password: string;
+//   name: string;
+//   contacts: string;
+// };
 
 export class UserController extends BaseController {
   protected dirname = __dirname;
@@ -43,28 +41,29 @@ export class UserController extends BaseController {
   };
 
   public sendSignInForm = async (req: Request, res: Response) => {
-    const { body } = req;
+    const { body: formData } = req;
 
     const userModel = new UserModel();
 
     const pageTitle = 'Login';
-    const errors = this.validateSingInForm(body);
-    const user = { ...body };
 
-    if (errors) {
-      const hasErrors = Boolean(errors);
+    const validation = new ValidationService(
+      createUserSchema,
+      formData,
+    ).validate();
 
+    if (validation.hasErrors()) {
       return this.render(res, 'signInPage', {
         pageTitle,
-        user,
-        errors,
-        hasErrors,
+        user: formData,
+        errors: validation.getErrors(),
+        hasErrors: validation.hasErrors(),
         canLogin: false,
         helper: {},
       });
     }
 
-    const foundUser = await userModel.getUserByEmail(user.email);
+    const foundUser = await userModel.getUserByEmail(formData.email);
 
     if (!foundUser) {
       const errors = {
@@ -73,7 +72,7 @@ export class UserController extends BaseController {
 
       return this.render(res, 'signInPage', {
         pageTitle,
-        user,
+        user: formData,
         errors,
         hasErrors: true,
         canLogin: false,
@@ -81,7 +80,7 @@ export class UserController extends BaseController {
       });
     }
 
-    bcrypt.compare(user.password, foundUser.password, (_, result) => {
+    bcrypt.compare(formData.password, foundUser.password, (_, result) => {
       if (!result) {
         const errors = {
           message: 'Invalid email or password',
@@ -89,7 +88,7 @@ export class UserController extends BaseController {
 
         return this.render(res, 'signInPage', {
           pageTitle,
-          user,
+          user: formData,
           errors,
           hasErrors: true,
           canLogin: false,
@@ -126,22 +125,24 @@ export class UserController extends BaseController {
   };
 
   public sendSignUpForm = async (req: Request, res: Response) => {
-    const { body } = req;
+    const { body: formData } = req;
 
     const userModel = new UserModel();
 
     const pageTitle = 'Register';
-    const errors = this.validateSingUpForm(body);
-    const formData = { ...body } as SingUpData;
 
-    if (errors) {
-      const hasErrors = Boolean(errors);
+    const validation = new ValidationService(
+      registerUserSchema,
+      // TODO: replace formData in all controllers
+      formData,
+    ).validate();
 
+    if (validation.hasErrors()) {
       return this.render(res, 'signUpPage', {
         pageTitle,
         user: formData,
-        errors,
-        hasErrors,
+        errors: validation.getErrors(),
+        hasErrors: validation.hasErrors(),
         canLogin: false,
         helper: {},
       });
@@ -166,34 +167,4 @@ export class UserController extends BaseController {
       });
     });
   };
-
-  private validateSingInForm(data: SingInData) {
-    const schema = createUserValidateSchema();
-    const { error } = schema.validate(data, { abortEarly: false });
-
-    if (error) {
-      const errors: Record<string, string> = {};
-
-      error.details.forEach((detail) => {
-        errors[detail.context!.key!] = detail.message;
-      });
-
-      return errors;
-    }
-  }
-
-  private validateSingUpForm(data: SingUpData) {
-    const schema = registerUserValidateSchema();
-    const { error } = schema.validate(data, { abortEarly: false });
-
-    if (error) {
-      const errors: Record<string, string> = {};
-
-      error.details.forEach((detail) => {
-        errors[detail.context!.key!] = detail.message;
-      });
-
-      return errors;
-    }
-  }
 }

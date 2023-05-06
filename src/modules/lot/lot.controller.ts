@@ -9,20 +9,12 @@ import {
   isTimeFinishing,
   lotHistoryCookie,
   requireAuth,
+  ValidationService,
 } from '../../common';
 import { BaseController } from '../../framework';
 import { BetModel } from '../bet/bet.model';
 import { LotModel } from './lot.model';
-import { createNewBetSchema, createNewLotSchema } from './schemas';
-
-type FormData = {
-  name: string;
-  category: string;
-  description: string;
-  price: number;
-  step: number;
-  endDate: string;
-};
+import { newBetSchema, newLotSchema } from './schemas';
 
 // TODO: add middleware for validation
 export class LotController extends BaseController {
@@ -65,24 +57,25 @@ export class LotController extends BaseController {
     const lotModel = new LotModel();
     const betModel = new BetModel();
     const lot = await lotModel.getLotById(id);
-    const allBets = await betModel.getAllByLotId(id);
+    const bets = await betModel.getAllByLotId(id);
     const maxPrice = await betModel.getMaxPriceByLotId(id);
 
+    const minPrice = Math.max(lot.price, maxPrice) + lot.step;
     const formData = { ...body };
 
-    const minPrice = Math.max(lot.price, maxPrice) + lot.step;
-    const errors = this.validateBetForm(formData, minPrice);
+    const validation = new ValidationService(
+      newBetSchema(minPrice),
+      formData,
+    ).validate();
 
-    if (errors) {
-      const hasErrors = Boolean(errors);
-
+    if (validation.hasErrors()) {
       return this.render(res, 'lotPage', {
-        pageTitle: lot.title,
-        bets: allBets,
+        pageTitle: lot.title, // TODO: use model field
+        bets,
         maxPrice,
         lot,
-        errors,
-        hasErrors,
+        errors: validation.getErrors(),
+        hasErrors: validation.hasErrors(),
         helper: {
           formatPrice,
           getMinRate,
@@ -160,18 +153,20 @@ export class LotController extends BaseController {
   public sendNewLotForm = async (req: Request, res: Response) => {
     const { body, file, session } = req;
 
-    const errors = this.validateForm(body, file?.mimetype);
+    const imageData = file && { size: file?.size, mimetype: file?.mimetype };
+    const formData = { ...body, image: imageData };
+
     const image = `/img/uploads/${file?.filename}`;
-    const formData = { ...body, image };
+    const lot = { ...body, image };
 
-    if (errors) {
-      const hasErrors = Boolean(errors);
+    const validation = new ValidationService(newLotSchema, formData).validate();
 
+    if (validation.hasErrors()) {
       return this.render(res, 'newLotPage', {
         pageTitle: 'Add new lot',
-        lot: formData,
-        errors,
-        hasErrors,
+        lot,
+        errors: validation.getErrors(),
+        hasErrors: validation.hasErrors(),
         helper: {
           formatPrice,
           getMinRate,
@@ -179,63 +174,15 @@ export class LotController extends BaseController {
       });
     }
 
-    const lotModel = new LotModel();
-
     if (session.user) {
       const { id } = session.user;
+      const lotModel = new LotModel();
 
       // TODO: handle errors
-      const lotId = await lotModel.addLot(formData, id);
+      const lotId = await lotModel.addLot(lot, id);
 
       const path = `/lots/${lotId}`;
       this.redirect(res, path);
     }
   };
-
-  private validateForm(data: FormData, image?: string) {
-    const formDataErrors = this.validateNewLotFormDate(data);
-    const imageErrors = this.validateImage(image);
-
-    const errors = { ...formDataErrors, ...imageErrors };
-
-    if (Object.keys(errors).length > 0) return errors;
-  }
-
-  private validateNewLotFormDate(data: FormData) {
-    const schema = createNewLotSchema();
-    const { error } = schema.validate(data, { abortEarly: false });
-
-    if (error) {
-      const errors: Record<string, string> = {};
-
-      error.details.forEach((detail) => {
-        errors[detail.context!.key!] = detail.message;
-      });
-
-      return errors;
-    }
-  }
-
-  private validateImage(mimetype = '') {
-    const imageMimeTypes = ['image/jpeg', 'image/png'];
-
-    if (imageMimeTypes.indexOf(mimetype) === -1) {
-      return { image: 'Invalid image, must be a jpg, jpeg or png image' };
-    }
-  }
-
-  private validateBetForm(data: FormData, minPrice = 1000) {
-    const schema = createNewBetSchema(minPrice);
-    const { error } = schema.validate(data, { abortEarly: false });
-
-    if (error) {
-      const errors: Record<string, string> = {};
-
-      error.details.forEach((detail) => {
-        errors[detail.context!.key!] = detail.message;
-      });
-
-      return errors;
-    }
-  }
 }

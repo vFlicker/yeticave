@@ -28,10 +28,13 @@ export class App {
 
   public setRoutes(routes: Router, modelFactory: ModelFactoryService): void {
     for (const route of routes) {
-      const { path, action, className, method } = route;
+      const { path, action, className, method, middlewares = [] } = route;
 
       const controller = new className(modelFactory);
-      this.app[method](path, controller[action]);
+      // TODO: Can I fix it?
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      this.app[method](path, middlewares, controller[action]);
     }
   }
 

@@ -4,9 +4,6 @@ import path from 'path';
 import { ModelFactoryService } from './modelFactory.service';
 
 export class BaseController {
-  // TODO: Can I fix it?
-  [key: string]: any;
-
   protected dirname = '';
   protected modelFactoryService: ModelFactoryService;
 
@@ -14,39 +11,24 @@ export class BaseController {
     this.modelFactoryService = modelFactoryService;
   }
 
-  public redirect(res: Response, path: string) {
+  public redirect(res: Response, path: string): void {
     res.redirect(path);
   }
 
-  // public beforeAction(req: Request, res: Response, next: NextFunction) {
-  //   const user = new AuthUser(req.session);
-  //   user.proceedAuth();
+  // TODO: createAuthUser?
+  // const user = new AuthUser(req.session);
 
-  //   const { guest, user: userRules } = this.rules;
-  //   const rules = user.isGuest() ? guest : userRules;
-
-  //   if (rules.includes(req.url)) {
-  //     return this.redirect(res, '/');
-  //   }
-
-  //   this.templateData.user = user;
-  //   next();
-  // }
-
-  public render(res: Response, fileName: string, data: object) {
-    // TODO: fix it
-    // const templateData = { ...this.templateData, ...data };
-
+  public render(res: Response, fileName: string, data: object): void {
     const view = this.getView(fileName);
     res.render(view, data);
   }
 
-  public getParam(req: Request, name: string) {
+  public getParam(req: Request, name: string): string {
     const value = req.params[name];
     return value;
   }
 
-  private getView(fileName: string) {
+  private getView(fileName: string): string {
     return path.resolve(this.dirname, 'views', fileName);
   }
 }
