@@ -1,5 +1,5 @@
-import { Router } from '../../framework';
 import { LOGOUT_PAGE, SIGN_IN_PAGE, SIGN_UP_PAGE } from '../../common';
+import { Router } from '../../framework';
 import { UserController } from './user.controller';
 
 export const userRouter: Router = [

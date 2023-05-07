@@ -1,8 +1,10 @@
 import {
   DiskStorageService,
   LOT_PAGE,
+  lotHistoryCookie,
   LOTS_BY_CATEGORY_PAGE,
   NEW_LOT_PAGE,
+  requireAuth,
 } from '../../common';
 import { Router } from '../../framework';
 import { LotController } from './lot.controller';
@@ -16,6 +18,7 @@ export const lotRouter: Router = [
     method: 'get',
     className: LotController,
     action: 'getNewLotPage',
+    middlewares: [requireAuth],
   },
   {
     path: NEW_LOT_PAGE,
@@ -29,6 +32,7 @@ export const lotRouter: Router = [
     method: 'get',
     className: LotController,
     action: 'getLotPage',
+    middlewares: [lotHistoryCookie],
   },
   {
     path: LOT_PAGE,

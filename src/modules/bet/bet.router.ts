@@ -1,4 +1,4 @@
-import { MY_BET_PAGE } from '../../common';
+import { MY_BET_PAGE, requireAuth } from '../../common';
 import { Router } from '../../framework';
 import { BetController } from './bet.controller';
 
@@ -8,5 +8,6 @@ export const betRouter: Router = [
     method: 'get',
     className: BetController,
     action: 'getMyBetsPage',
+    middlewares: [requireAuth],
   },
 ];

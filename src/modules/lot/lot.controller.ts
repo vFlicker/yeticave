@@ -7,8 +7,6 @@ import {
   getTimeAgo,
   getTimeLeft,
   isTimeFinishing,
-  lotHistoryCookie,
-  requireAuth,
   ValidationService,
 } from '../../common';
 import { BaseController } from '../../framework';
@@ -20,35 +18,32 @@ import { newBetSchema, newLotSchema } from './schemas';
 export class LotController extends BaseController {
   protected dirname = __dirname;
 
-  public getLotPage = [
-    lotHistoryCookie,
-    async (req: Request, res: Response) => {
-      const id = this.getParam(req, 'id');
+  public getLotPage = async (req: Request, res: Response) => {
+    const id = this.getParam(req, 'id');
 
-      const lotModel = new LotModel();
-      const betModel = new BetModel();
-      const lot = await lotModel.getLotById(id);
-      const allBets = await betModel.getAllByLotId(id);
-      const maxPrice = await betModel.getMaxPriceByLotId(id);
+    const lotModel = new LotModel();
+    const betModel = new BetModel();
+    const lot = await lotModel.getLotById(id);
+    const allBets = await betModel.getAllByLotId(id);
+    const maxPrice = await betModel.getMaxPriceByLotId(id);
 
-      // TODO: page error
-      if (!lot) return res.status(404).send('what???');
+    // TODO: page error
+    if (!lot) return res.status(404).send('what???');
 
-      this.render(res, 'lotPage', {
-        pageTitle: lot.title,
-        bets: allBets,
-        maxPrice,
-        lot,
-        errors: [],
-        hasErrors: false,
-        helper: {
-          formatPrice,
-          getMinRate,
-          getTimeAgo,
-        },
-      });
-    },
-  ];
+    this.render(res, 'lotPage', {
+      pageTitle: lot.title,
+      bets: allBets,
+      maxPrice,
+      lot,
+      errors: [],
+      hasErrors: false,
+      helper: {
+        formatPrice,
+        getMinRate,
+        getTimeAgo,
+      },
+    });
+  };
 
   public sendNewBetForm = async (req: Request, res: Response) => {
     const { body, params, session } = req;
@@ -124,31 +119,28 @@ export class LotController extends BaseController {
     });
   };
 
-  public getNewLotPage = [
-    requireAuth,
-    (_: Request, res: Response) => {
-      const lot = {
-        name: '',
-        description: '',
-        category: '',
-        image: '',
-        price: '',
-        step: '',
-        endDate: '',
-      };
+  public getNewLotPage = (_: Request, res: Response) => {
+    const lot = {
+      name: '',
+      description: '',
+      category: '',
+      image: '',
+      price: '',
+      step: '',
+      endDate: '',
+    };
 
-      this.render(res, 'newLotPage', {
-        pageTitle: 'Add new lot',
-        lot,
-        errors: [],
-        hasErrors: false,
-        helper: {
-          formatPrice,
-          getMinRate,
-        },
-      });
-    },
-  ];
+    this.render(res, 'newLotPage', {
+      pageTitle: 'Add new lot',
+      lot,
+      errors: [],
+      hasErrors: false,
+      helper: {
+        formatPrice,
+        getMinRate,
+      },
+    });
+  };
 
   public sendNewLotForm = async (req: Request, res: Response) => {
     const { body, file, session } = req;
