@@ -17,11 +17,12 @@ type ReqQuery = {
 export class SearchController extends BaseController {
   protected dirname = __dirname;
 
+  // TODO: Typed params
   public getSearchPage: RequestHandler<any, any, any, ReqQuery> = async (
     req,
     res: Response,
   ) => {
-    const lotModel = new LotModel();
+    const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
     const lots = await lotModel.getLotsByText(req.query.text);
 
     this.render(res, 'searchPage', {

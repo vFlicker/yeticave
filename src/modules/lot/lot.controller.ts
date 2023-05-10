@@ -21,10 +21,11 @@ export class LotController extends BaseController {
   public getLotPage = async (req: Request, res: Response) => {
     const id = this.getParam(req, 'id');
 
-    const lotModel = new LotModel();
-    const betModel = new BetModel();
+    const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
+    const betModel = this.modelFactoryService.getEmptyModel(BetModel);
+
     const lot = await lotModel.getLotById(id);
-    const allBets = await betModel.getAllByLotId(id);
+    const allBets = await betModel.getHistoryOfRatesByLotId(id);
     const maxPrice = await betModel.getMaxPriceByLotId(id);
 
     // TODO: page error
@@ -49,13 +50,13 @@ export class LotController extends BaseController {
     const { body, params, session } = req;
     const { id } = params;
 
-    const lotModel = new LotModel();
-    const betModel = new BetModel();
+    const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
+    const betModel = this.modelFactoryService.getEmptyModel(BetModel);
     const lot = await lotModel.getLotById(id);
-    const bets = await betModel.getAllByLotId(id);
+    const bets = await betModel.getHistoryOfRatesByLotId(id);
     const maxPrice = await betModel.getMaxPriceByLotId(id);
 
-    const minPrice = Math.max(lot.price, maxPrice) + lot.step;
+    const minPrice = Math.max(lot.price, maxPrice.price) + lot.step;
     const formData = { ...body };
 
     const validation = new ValidationService(
@@ -89,7 +90,7 @@ export class LotController extends BaseController {
         userId: user.id,
       };
 
-      await betModel.addNew(betData);
+      await betModel.createNew(betData);
 
       const path = `/lots/${lot.id}`;
       this.redirect(res, path);
@@ -99,7 +100,7 @@ export class LotController extends BaseController {
   public getLotsByCategoryPage = async (req: Request, res: Response) => {
     const name = this.getParam(req, 'name');
 
-    const lotModel = new LotModel();
+    const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
     const lots = await lotModel.getLotsByCategory(
       name[0].toLocaleUpperCase() + name.slice(1),
     );
@@ -168,7 +169,7 @@ export class LotController extends BaseController {
 
     if (session.user) {
       const { id } = session.user;
-      const lotModel = new LotModel();
+      const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
 
       // TODO: handle errors
       const lotId = await lotModel.addLot(lot, id);

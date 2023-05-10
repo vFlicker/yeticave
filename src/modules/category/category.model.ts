@@ -1,27 +1,27 @@
-import { DatabaseService } from '../../common';
 import { BaseModel } from '../../framework';
+import { Category } from './interfaces';
 
 export class CategoryModel extends BaseModel {
-  public async getAllCategories() {
-    const databaseService = DatabaseService.getInstance();
-
+  public async getAllCategories(): Promise<Category[]> {
     const sql = `SELECT
-      category_name as category
+      category_id AS id,
+      category_name AS name
     FROM category`;
 
-    const { rows } = await databaseService.getDB().query(sql);
-    return rows.map((item) => item.category);
+    const { rows } = await this.databaseService.getDB().query<Category>(sql);
+    return rows;
   }
 
-  public async getIdByName(name: string) {
-    const databaseService = DatabaseService.getInstance();
-
+  public async getIdByCategoryName(name: string): Promise<Category> {
     const sql = `SELECT
-      category_id as id
+      category_id AS id
+      category_name AS name
     FROM category
     WHERE category_name = $1`;
 
-    const { rows } = await databaseService.getDB().query(sql, [name]);
-    return rows[0].id;
+    const { rows } = await this.databaseService
+      .getDB()
+      .query<Category>(sql, [name]);
+    return rows[0];
   }
 }

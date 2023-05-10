@@ -1,6 +1,11 @@
 import { BaseModel } from './base.model';
 import { IDatabaseService } from './interfaces';
 
+type BaseModelConstructor = typeof BaseModel;
+type BaseModelConstructorParams = ConstructorParameters<BaseModelConstructor>;
+type ExtendedModel<T> = (new (...params: BaseModelConstructorParams) => T) &
+  BaseModelConstructor;
+
 export class ModelFactoryService {
   private static instance: ModelFactoryService;
   protected databaseService: IDatabaseService;
@@ -19,15 +24,15 @@ export class ModelFactoryService {
     return ModelFactoryService.instance;
   }
 
-  // public load<T extends BaseModel>(className: typeof BaseModel, id: string): T {
-  //   const table = className.tableName;
+  public getEmptyModel<T extends BaseModel>(className: ExtendedModel<T>): T {
+    const model = new className(this.databaseService, this);
+    return model as T;
+  }
 
-  //   const sql = `SELECT * FROM ${table} WHERE id = ? LIMIT 1`;
-  // }
-  public async load(
-    className: typeof BaseModel,
+  public async load<T extends BaseModel>(
+    className: ExtendedModel<T>,
     id: string,
-  ): Promise<BaseModel> {
+  ): Promise<T> {
     const table = className.tableName;
     const sql = `SELECT * FROM ${table} WHERE id = $1 LIMIT 1`;
 
@@ -35,10 +40,10 @@ export class ModelFactoryService {
       const db = this.databaseService.getDB();
       const { rows } = await db.query(sql, [id]);
 
-      const model = new className();
-      model.load(rows[0]).setDb(this.databaseService).setModelFactory(this);
+      const model = new className(this.databaseService, this);
+      model.load(rows[0]);
 
-      return model;
+      return model as T;
     } catch (err) {
       console.error(err);
       throw err;

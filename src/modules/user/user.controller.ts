@@ -43,7 +43,7 @@ export class UserController extends BaseController {
   public sendSignInForm = async (req: Request, res: Response) => {
     const { body: formData } = req;
 
-    const userModel = new UserModel();
+    const userModel = this.modelFactoryService.getEmptyModel(UserModel);
 
     const pageTitle = 'Login';
 
@@ -127,7 +127,7 @@ export class UserController extends BaseController {
   public sendSignUpForm = async (req: Request, res: Response) => {
     const { body: formData } = req;
 
-    const userModel = new UserModel();
+    const userModel = this.modelFactoryService.getEmptyModel(UserModel);
 
     const pageTitle = 'Register';
 

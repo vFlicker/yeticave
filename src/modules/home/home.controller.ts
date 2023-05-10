@@ -19,7 +19,7 @@ export class HomeController extends BaseController {
     const currentPage = page ? Number(page) : 1;
     const offset = (currentPage - 1) * NUMBER_ITEMS_PER_PAGE;
 
-    const lotModel = new LotModel();
+    const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
     // TODO: user object instead value
     const lotCount = await lotModel.getUnfinishedLotsCount();
     const lots = await lotModel.getUnfinishedLots(

@@ -20,8 +20,8 @@ export class BetController extends BaseController {
 
     if (!user) return this.redirect(res, ROOT_PREFIX);
 
-    const betModel = new BetModel();
-    const bets = await betModel.getAllByUserId(user.id);
+    const betModel = this.modelFactoryService.getEmptyModel(BetModel);
+    const bets = await betModel.getBetsForUser(user.id);
 
     this.render(res, 'myBetsPage', {
       pageTitle: 'My bets',

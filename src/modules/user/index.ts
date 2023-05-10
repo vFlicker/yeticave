@@ -1,2 +1,2 @@
-export * from './user.interface';
+export * from './interfaces';
 export { userRouter } from './user.router';

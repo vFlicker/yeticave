@@ -16,7 +16,7 @@ export class HistoryController extends BaseController {
   public getHistoryPage = async (req: Request, res: Response) => {
     const ids = JSON.parse(req.cookies[LOT_HISTORY_COOKIE_KEY]);
 
-    const lotModel = new LotModel();
+    const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
     const lots = await lotModel.getLotsByIds(ids);
 
     this.render(res, 'historyPage', {

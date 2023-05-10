@@ -4,10 +4,18 @@ import { ModelFactoryService } from './modelFactory.service';
 export class BaseModel {
   [key: string]: unknown;
 
-  public databaseService: IDatabaseService | null = null;
-  protected modelFactoryService: ModelFactoryService | null = null;
+  public databaseService: IDatabaseService;
+  protected modelFactoryService: ModelFactoryService;
 
   public static tableName: string;
+
+  constructor(
+    databaseService: IDatabaseService,
+    modelFactoryService: ModelFactoryService,
+  ) {
+    this.databaseService = databaseService;
+    this.modelFactoryService = modelFactoryService;
+  }
 
   // public load<T extends object>(data: T): this {
   //   for (const [key, value] of Object.entries(data)) {

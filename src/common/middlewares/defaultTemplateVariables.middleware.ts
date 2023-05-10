@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { CategoryModel } from '../../modules/category/category.model';
+import { ModelFactoryService } from '../../framework';
+import { CategoryModel } from '../../modules/category';
+import { DatabaseService } from '../services';
 import { getLotCategoryPath } from '../utils';
 
 export const defaultTemplateVariables = async (
@@ -8,7 +10,9 @@ export const defaultTemplateVariables = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const categoryModel = new CategoryModel();
+  const databaseService = DatabaseService.getInstance();
+  const modelFactory = ModelFactoryService.getInstance(databaseService);
+  const categoryModel = modelFactory.getEmptyModel(CategoryModel);
   const categories = await categoryModel.getAllCategories();
 
   res.locals.canShowTomMenu = true;

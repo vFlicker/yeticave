@@ -1,5 +1,6 @@
-import { createPlaceholders, DatabaseService } from '../../common';
+import { createPlaceholders } from '../../common';
 import { BaseModel } from '../../framework';
+import { User } from './interfaces';
 
 type SingUpData = {
   email: string;
@@ -9,9 +10,7 @@ type SingUpData = {
 };
 
 export class UserModel extends BaseModel {
-  public async getUserByEmail(email: string) {
-    const databaseService = DatabaseService.getInstance();
-
+  public async getUserByEmail(email: string): Promise<User> {
     const sql = `SELECT
       user_id as id,
       email,
@@ -24,12 +23,11 @@ export class UserModel extends BaseModel {
     WHERE
       email = $1`;
 
-    const { rows } = await databaseService.getDB().query(sql, [email]);
+    const { rows } = await this.databaseService.getDB().query(sql, [email]);
     return rows[0];
   }
 
-  public async create(data: SingUpData) {
-    const databaseService = DatabaseService.getInstance();
+  public async create(data: SingUpData): Promise<void> {
     const { name, email, password, contacts } = data;
 
     const placeholders = createPlaceholders(Object.keys(data).length);
@@ -40,6 +38,8 @@ export class UserModel extends BaseModel {
       (${placeholders})`;
 
     // TODO: handle errors
-    await databaseService.getDB().query(sql, [name, email, password, contacts]);
+    await this.databaseService
+      .getDB()
+      .query(sql, [name, email, password, contacts]);
   }
 }

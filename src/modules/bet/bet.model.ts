@@ -1,44 +1,41 @@
-import { DatabaseService, Id } from '../../common';
+import { Id } from '../../common';
 import { BaseModel } from '../../framework';
-
-type BetData = {
-  userId: Id;
-  lotId: Id;
-  price: number;
-};
+import { Bet, CreateBet, HistoryBet, MaxPrice } from './interfaces';
 
 export class BetModel extends BaseModel {
-  public async getAllByUserId(id: Id) {
-    const databaseService = DatabaseService.getInstance();
-
-    // TODO: вибирати лише найбільшу ставку,
-    // якщо їх де-кілька на один лот
+  public async getBetsForUser(id: Id): Promise<Bet[]> {
     const sql = `SELECT
       image_url AS "imageUrl",
       title,
       contacts,
       category_name AS "categoryName",
-      lot_id AS "lotId",
       lot.end_date AS "endDate",
+      bet.lot_id AS "lotId",
       bet.price,
       bet.create_date AS "createDate",
-      is_winner as "isWinner"
-    FROM bet
-    INNER JOIN lot
-      USING(lot_id)
-    INNER JOIN category
-      USING(category_id)
-    INNER JOIN app_user
+      bet.is_winner as "isWinner"
+    FROM (
+      SELECT lot_id, MAX(price) AS max_price
+      FROM bet
+      WHERE user_id = $1
+      GROUP BY lot_id
+    ) max_bet
+    JOIN bet
+      ON bet.lot_id = max_bet.lot_id AND bet.price = max_bet.max_price
+    JOIN lot
+      ON bet.lot_id = lot.lot_id
+    JOIN category
+      ON lot.category_id = category.category_id
+    JOIN app_user
       ON bet.user_id = app_user.user_id
-    WHERE bet.user_id = $1`;
+    WHERE bet.user_id = $1
+    ORDER BY bet.create_date DESC`;
 
-    const { rows } = await databaseService.getDB().query(sql, [id]);
+    const { rows } = await this.databaseService.getDB().query(sql, [id]);
     return rows;
   }
 
-  public async getAllByLotId(id: Id) {
-    const databaseService = DatabaseService.getInstance();
-
+  public async getHistoryOfRatesByLotId(id: Id): Promise<HistoryBet[]> {
     const sql = `SELECT
       user_name as "userName",
       price,
@@ -49,44 +46,36 @@ export class BetModel extends BaseModel {
     WHERE lot_id = $1
     ORDER BY bet.create_date DESC`;
 
-    const { rows } = await databaseService.getDB().query(sql, [id]);
+    const { rows } = await this.databaseService
+      .getDB()
+      .query<HistoryBet>(sql, [id]);
     return rows;
   }
 
-  public async getMaxPriceByLotId(id: Id) {
-    const databaseService = DatabaseService.getInstance();
-
+  public async getMaxPriceByLotId(id: Id): Promise<MaxPrice> {
     const sql = `SELECT
       Max(price) as price
     FROM bet
     WHERE lot_id = $1;`;
 
-    // TODO: remove it
-    // $sql = "SELECT `start_price`, `step_price`, MAX(b.price) AS `max_bet` FROM `lots` l
-    // JOIN `bets` b ON l.id = b.lot_id
-    // WHERE l.id = '$id'";
-
-    const { rows } = await databaseService.getDB().query(sql, [id]);
-    return rows[0].price;
+    const { rows } = await this.databaseService
+      .getDB()
+      .query<MaxPrice>(sql, [id]);
+    return rows[0];
   }
 
-  public async addNew(betData: BetData) {
-    const databaseService = DatabaseService.getInstance();
+  public async createNew(createBet: CreateBet): Promise<void> {
+    const { userId, lotId, price } = createBet;
 
     const sql = `INSERT INTO
-      bet (
-        user_id,
-        lot_id,
-        price
-      )
-    VALUES
-      ($1, $2, $3)`;
+        bet (
+          user_id,
+          lot_id,
+          price
+        )
+      VALUES
+        ($1, $2, $3)`;
 
-    const { userId, lotId, price } = betData;
-    const { rows } = await databaseService
-      .getDB()
-      .query(sql, [userId, lotId, price]);
-
-    return rows;
+    await this.databaseService.getDB().query(sql, [userId, lotId, price]);
   }
 }
