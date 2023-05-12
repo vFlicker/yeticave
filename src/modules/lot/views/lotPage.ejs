@@ -20,7 +20,7 @@
           <div class="lot-item__cost-state">
             <div class="lot-item__rate">
               <span class="lot-item__amount">Current price</span>
-              <span class="lot-item__cost"><%= helper.formatPrice(Math.max(lot.price, maxPrice)) %></span>
+              <span class="lot-item__cost"><%= helper.formatPrice(Math.max(lot.price, maxPrice.price)) %></span>
             </div>
             <div class="lot-item__min-cost">
               Minimum step &ndash;&nbsp;<span><%= helper.formatPrice(lot.step) %></span>
@@ -33,7 +33,7 @@
               <label for="cost">Your bet</label>
               <input id="lot_id" name="lotId" value="<%= lot.id %>" type="hidden">
               <input id="cost" class="input-cost" type="number" name="price"
-                placeholder="<%= helper.getMinRate(Math.max(lot.price, maxPrice), lot.step) %>">
+                placeholder="<%= helper.getMinRate(Math.max(lot.price, maxPrice.price), lot.step) %>">
               <span class="form__error form__error--bet"><%= errors.price %></span>
             </div>
             <button type="submit" class="button">Make a bet</button>

@@ -22,7 +22,7 @@ import { UserModel } from './user.model';
 export class UserController extends BaseController {
   protected dirname = __dirname;
 
-  public getSignInPage = (req: Request, res: Response) => {
+  public getSignInPage = (req: Request, res: Response): void => {
     if (req.session.user) return this.redirect(res, ROOT_PREFIX);
 
     const user = {
@@ -40,7 +40,11 @@ export class UserController extends BaseController {
     });
   };
 
-  public sendSignInForm = async (req: Request, res: Response) => {
+  public sendSignInForm = async (
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
+    // TODO: use framework method
     const { body: formData } = req;
 
     const userModel = this.modelFactoryService.getEmptyModel(UserModel);
@@ -106,7 +110,7 @@ export class UserController extends BaseController {
     });
   };
 
-  public getSignUpPage = async (_: Request, res: Response) => {
+  public getSignUpPage = async (_: Request, res: Response): Promise<void> => {
     const user = {
       email: '',
       password: '',
@@ -124,7 +128,10 @@ export class UserController extends BaseController {
     });
   };
 
-  public sendSignUpForm = async (req: Request, res: Response) => {
+  public sendSignUpForm = async (
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
     const { body: formData } = req;
 
     const userModel = this.modelFactoryService.getEmptyModel(UserModel);

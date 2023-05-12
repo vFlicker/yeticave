@@ -15,7 +15,8 @@ import { BetModel } from './bet.model';
 export class BetController extends BaseController {
   protected dirname = __dirname;
 
-  public getMyBetsPage = async (req: Request, res: Response) => {
+  public getMyBetsPage = async (req: Request, res: Response): Promise<void> => {
+    // TODO: add method to framework
     const { user } = req.session;
 
     if (!user) return this.redirect(res, ROOT_PREFIX);

@@ -130,9 +130,11 @@ export class LotModel extends BaseModel {
     const placeholders = createPlaceholders(length);
 
     const categoryModel = this.modelFactoryService.getEmptyModel(CategoryModel);
-    const { category, description, endDate, imageUrl, title, price, step } =
-      lot;
-    const categoryId = await categoryModel.getIdByCategoryName(category);
+    const { category, description, endDate, imageUrl, name, price, step } = lot;
+
+    const { id: categoryId } = await categoryModel.getIdByCategoryName(
+      category,
+    );
 
     const sql = `INSERT INTO
       lot (
@@ -147,7 +149,7 @@ export class LotModel extends BaseModel {
       )
     VALUES
       (${placeholders})
-    RETURNING lot_id`;
+    RETURNING lot_id AS "id"`;
 
     // TODO: handle errors
     const { rows } = await this.databaseService
@@ -155,7 +157,7 @@ export class LotModel extends BaseModel {
       .query(sql, [
         categoryId,
         userId,
-        title,
+        name,
         imageUrl,
         description,
         price,

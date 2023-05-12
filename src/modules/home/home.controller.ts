@@ -14,7 +14,9 @@ const NUMBER_ITEMS_PER_PAGE = 3;
 export class HomeController extends BaseController {
   protected dirname = __dirname;
 
-  public getHomePage = async (req: Request, res: Response) => {
+  // TODO: move pagination into new class
+  public getHomePage = async (req: Request, res: Response): Promise<void> => {
+    // TODO: add framework method
     const page = req.query.page as string;
     const currentPage = page ? Number(page) : 1;
     const offset = (currentPage - 1) * NUMBER_ITEMS_PER_PAGE;

@@ -13,7 +13,11 @@ import { LotModel } from '../lot/lot.model';
 export class HistoryController extends BaseController {
   protected dirname = __dirname;
 
-  public getHistoryPage = async (req: Request, res: Response) => {
+  public getHistoryPage = async (
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
+    // TODO: add framework method
     const ids = JSON.parse(req.cookies[LOT_HISTORY_COOKIE_KEY]);
 
     const lotModel = this.modelFactoryService.getEmptyModel(LotModel);

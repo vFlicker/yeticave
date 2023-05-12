@@ -18,7 +18,7 @@ import { newBetSchema, newLotSchema } from './schemas';
 export class LotController extends BaseController {
   protected dirname = __dirname;
 
-  public getLotPage = async (req: Request, res: Response) => {
+  public getLotPage = async (req: Request, res: Response): Promise<void> => {
     const id = this.getParam(req, 'id');
 
     const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
@@ -29,10 +29,10 @@ export class LotController extends BaseController {
     const maxPrice = await betModel.getMaxPriceByLotId(id);
 
     // TODO: page error
-    if (!lot) return res.status(404).send('what???');
+    // if (!lot) return res.status(404).send('what???');
 
     this.render(res, 'lotPage', {
-      pageTitle: lot.title,
+      pageTitle: lot.name,
       bets: allBets,
       maxPrice,
       lot,
@@ -46,7 +46,11 @@ export class LotController extends BaseController {
     });
   };
 
-  public sendNewBetForm = async (req: Request, res: Response) => {
+  public sendNewBetForm = async (
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
+    // TODO: use framework method
     const { body, params, session } = req;
     const { id } = params;
 
@@ -66,7 +70,7 @@ export class LotController extends BaseController {
 
     if (validation.hasErrors()) {
       return this.render(res, 'lotPage', {
-        pageTitle: lot.title, // TODO: use model field
+        pageTitle: lot.name, // TODO: use model field
         bets,
         maxPrice,
         lot,
@@ -97,7 +101,10 @@ export class LotController extends BaseController {
     }
   };
 
-  public getLotsByCategoryPage = async (req: Request, res: Response) => {
+  public getLotsByCategoryPage = async (
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
     const name = this.getParam(req, 'name');
 
     const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
@@ -105,7 +112,8 @@ export class LotController extends BaseController {
       name[0].toLocaleUpperCase() + name.slice(1),
     );
 
-    if (!lots) return res.status(404).send('what???');
+    // TODO: return page error
+    // if (!lots) return res.status(404).send('what???');
 
     this.render(res, 'lotsByCategoryPage', {
       pageTitle: name,
@@ -120,7 +128,8 @@ export class LotController extends BaseController {
     });
   };
 
-  public getNewLotPage = (_: Request, res: Response) => {
+  public getNewLotPage = (_: Request, res: Response): void => {
+    // use model
     const lot = {
       name: '',
       description: '',
@@ -143,14 +152,18 @@ export class LotController extends BaseController {
     });
   };
 
-  public sendNewLotForm = async (req: Request, res: Response) => {
+  public sendNewLotForm = async (
+    req: Request,
+    res: Response,
+  ): Promise<void> => {
+    // TODO: use framework methods
     const { body, file, session } = req;
 
     const imageData = file && { size: file?.size, mimetype: file?.mimetype };
-    const formData = { ...body, image: imageData };
+    const formData = { ...body, imageUrl: imageData };
 
-    const image = `/img/uploads/${file?.filename}`;
-    const lot = { ...body, image };
+    const imageUrl = `/img/uploads/${file?.filename}`;
+    const lot = { ...body, imageUrl };
 
     const validation = new ValidationService(newLotSchema, formData).validate();
 
@@ -172,7 +185,7 @@ export class LotController extends BaseController {
       const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
 
       // TODO: handle errors
-      const lotId = await lotModel.addLot(lot, id);
+      const { id: lotId } = await lotModel.addLot(lot, id);
 
       const path = `/lots/${lotId}`;
       this.redirect(res, path);

@@ -2,6 +2,7 @@ import { createPlaceholders } from '../../common';
 import { BaseModel } from '../../framework';
 import { User } from './interfaces';
 
+// TODO: move to interfaces
 type SingUpData = {
   email: string;
   password: string;

@@ -21,8 +21,9 @@ export class SearchController extends BaseController {
   public getSearchPage: RequestHandler<any, any, any, ReqQuery> = async (
     req,
     res: Response,
-  ) => {
+  ): Promise<void> => {
     const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
+    // TODO: use framework method
     const lots = await lotModel.getLotsByText(req.query.text);
 
     this.render(res, 'searchPage', {

@@ -14,7 +14,7 @@ export class CategoryModel extends BaseModel {
 
   public async getIdByCategoryName(name: string): Promise<Category> {
     const sql = `SELECT
-      category_id AS id
+      category_id AS id,
       category_name AS name
     FROM category
     WHERE category_name = $1`;

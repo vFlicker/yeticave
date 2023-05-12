@@ -12,7 +12,7 @@
         <label for="category">Category <sup>*</sup></label>
         <select id="category" name="category">
           <% categories.forEach((category) => { %>
-          <option><%= category %></option>
+          <option><%= category.name %></option>
           <% }); %>
         </select>
         <span class="form__error"><%= errors.category %></span>
@@ -24,16 +24,16 @@
         placeholder="Write a description of the lot"><%= lot.description %></textarea>
       <span class="form__error"><%= errors.message %></span>
     </div>
-    <div class="form__item form__item--file <%= errors.hasOwnProperty('image') ? 'form__item--invalid' : '' %>">
+    <div class="form__item form__item--file <%= errors.hasOwnProperty('imageUrl') ? 'form__item--invalid' : '' %>">
       <label>Image <sup>*</sup></label>
       <div class="form__input-file">
-        <input class="visually-hidden" type="file" id="photo" name="lot-image" />
+        <input class="visually-hidden" type="file" id="photo" name="imageUrl" />
         <label for="photo">
           <span class="form__add-button">+</span>
-          <img src="<%= lot.image %>" width="113" height="113" alt="Lot image" />
+          <img src="<%= lot.imageUrl %>" width="113" height="113" alt="Lot image" />
         </label>
       </div>
-      <span class="form__error"><%= errors.image %></span>
+      <span class="form__error"><%= errors.imageUrl %></span>
     </div>
     <div class="form__container-three">
       <div class="form__item form__item--small <%= errors.hasOwnProperty('price') ? 'form__item--invalid' : '' %>">

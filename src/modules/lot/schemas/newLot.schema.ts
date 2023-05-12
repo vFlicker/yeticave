@@ -20,5 +20,5 @@ export const newLotSchema = Joi.object({
   price: Joi.number().min(1).required(),
   step: Joi.number().min(1).required(),
   endDate: Joi.date().iso().greater('now'),
-  image: imageSchema,
+  imageUrl: imageSchema,
 });
