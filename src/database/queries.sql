@@ -50,7 +50,7 @@ VALUES
     'The 2014 Rossignol District Snowboard is a versatile board that performs well in a variety of conditions. It has a twin shape and a medium flex, making it suitable for intermediate riders who are looking to improve their skills.',
     10999,
     100,
-    '2023-04-25T17:17:03.305Z'
+    '2023-05-20T17:17:03.305Z'
   ),
   (
     1,
@@ -60,7 +60,7 @@ VALUES
     'The DC Ply Mens 2016/2017 Snowboard is a high-performance board that is designed for advanced riders. It has a true twin shape and a medium flex, making it suitable for freestyle riding in the park or on the mountain.',
     159999,
     100,
-    '2023-04-25T17:17:03.305Z'
+    '2023-05-21T17:17:03.305Z'
   ),
   (
     2,
@@ -70,7 +70,7 @@ VALUES
     'The Union Contact Pro 2015 Bindings are designed for intermediate to advanced riders who want a lightweight and responsive binding. They have a size L/XL, making them suitable for riders with larger boot sizes.',
     8000,
     20,
-    '2023-04-25T17:17:03.305Z'
+    '2023-05-25T17:17:03.305Z'
   ),
   (
     3,
@@ -80,7 +80,7 @@ VALUES
     'The DC Mutiny Charcoal Snowboard Boots are designed for intermediate to advanced riders who want a comfortable and responsive boot. They have a medium flex and a traditional lacing system, making them easy to adjust for a customized fit.',
     10999,
     10,
-    '2023-04-25T17:17:03.305Z'
+    '2023-05-23T17:17:03.305Z'
   ),
   (
     4,
@@ -90,7 +90,7 @@ VALUES
     'The DC Mutiny Charcoal Snowboard Jacket is designed for riders who want a warm and stylish jacket for their winter adventures. It features a waterproof and breathable shell, as well as a variety of pockets and ventilation options.',
     7500,
     10,
-    '2023-04-23T17:17:03.305Z'
+    '2023-05-27T17:17:03.305Z'
   ),
   (
     5,
@@ -100,7 +100,7 @@ VALUES
     'The Oakley Canopy Snowboard Goggles are designed for riders who want maximum visibility and protection on the mountain. They have a large lens and a comfortable fit, making them suitable for all-day riding in a variety of conditions.',
     5400,
     20,
-    '2023-04-26T17:17:03.305Z'
+    '2023-05-26T17:17:03.305Z'
   );
 
 INSERT INTO

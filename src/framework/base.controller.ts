@@ -23,6 +23,24 @@ export class BaseController {
     res.render(view, data);
   }
 
+  public renderError(res: Response, error: unknown): void {
+    console.error(error);
+
+    const title = 'Something went wrong';
+    const data = {
+      pageTitle: title,
+      title,
+      text: 'Try later.',
+    };
+
+    res.render('pages/error', data);
+  }
+
+  public getQuery<T>(req: Request, name: string): T {
+    const value = req.query[name] as unknown as T;
+    return value;
+  }
+
   public getParam(req: Request, name: string): string {
     const value = req.params[name];
     return value;

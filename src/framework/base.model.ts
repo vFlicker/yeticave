@@ -1,3 +1,4 @@
+import { BaseQuery } from './base.query';
 import { IDatabaseService } from './interfaces';
 import { ModelFactoryService } from './modelFactory.service';
 
@@ -7,7 +8,9 @@ export class BaseModel {
   public databaseService: IDatabaseService;
   protected modelFactoryService: ModelFactoryService;
 
-  public static tableName: string;
+  // TODO: can i remove one of this methods?
+  protected tableName = '';
+  public static tableName = '';
 
   constructor(
     databaseService: IDatabaseService,
@@ -15,6 +18,17 @@ export class BaseModel {
   ) {
     this.databaseService = databaseService;
     this.modelFactoryService = modelFactoryService;
+  }
+
+  public getTableName(): string {
+    return this.tableName;
+  }
+
+  public async getScalarValue<T>(sql: string): Promise<T> {
+    const { rows } = await this.databaseService.getDB().query(sql);
+
+    const result = rows[0];
+    return result;
   }
 
   // public load<T extends object>(data: T): this {
@@ -40,5 +54,9 @@ export class BaseModel {
   public setModelFactory(modelFactoryService: ModelFactoryService): this {
     this.modelFactoryService = modelFactoryService;
     return this;
+  }
+
+  public getQuery(): BaseQuery | null {
+    return null;
   }
 }

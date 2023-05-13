@@ -6,37 +6,35 @@ import {
   getTimeLeft,
   isTimeFinishing,
 } from '../../common';
-import { BaseController } from '../../framework';
+import { BaseController, PaginatorService } from '../../framework';
 import { LotModel } from '../lot/lot.model';
-
-const NUMBER_ITEMS_PER_PAGE = 3;
 
 export class HomeController extends BaseController {
   protected dirname = __dirname;
 
-  // TODO: move pagination into new class
   public getHomePage = async (req: Request, res: Response): Promise<void> => {
-    // TODO: add framework method
-    const page = req.query.page as string;
+    const page = this.getQuery<number | undefined>(req, 'page');
     const currentPage = page ? Number(page) : 1;
-    const offset = (currentPage - 1) * NUMBER_ITEMS_PER_PAGE;
 
     const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
-    // TODO: user object instead value
-    const lotCount = await lotModel.getUnfinishedLotsCount();
-    const lots = await lotModel.getUnfinishedLots(
-      NUMBER_ITEMS_PER_PAGE,
-      offset,
-    );
+    const paginator = new PaginatorService(this.modelFactoryService, lotModel);
 
-    const length = Math.ceil(Number(lotCount) / NUMBER_ITEMS_PER_PAGE);
+    await paginator
+      .setItemsPerPage(6)
+      .setCurrentPage(currentPage)
+      .init('getUnfinished');
+
+    const lots = paginator.getItems();
+    const pagesCount = paginator.getTotalPages();
+    const pagesNumbers = paginator.getPagesNumbers();
 
     this.render(res, 'homePage', {
       pageTitle: 'Home',
       lots,
       canShowTomMenu: false,
-      pages: Array.from({ length }, (_, index) => index + 1),
-      pagesCount: length,
+      pages: pagesNumbers,
+      pagesCount,
+      lotsCount: paginator.getTotalResults(),
       currentPage,
       helper: {
         formatPrice,

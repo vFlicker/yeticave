@@ -43,10 +43,25 @@ export class ModelFactoryService {
       const model = new className(this.databaseService, this);
       model.load(rows[0]);
 
-      return model as T;
+      return model;
     } catch (err) {
       console.error(err);
       throw err;
     }
+  }
+
+  public async getAllByQuery<T extends BaseModel>(
+    model: T,
+    sql: string,
+    parameters: (string | number)[],
+  ): Promise<T[]> {
+    const { rows } = await this.databaseService.getDB().query(sql, parameters);
+
+    const instances = rows.map((row) => {
+      const instance = model.load(row);
+      return instance;
+    });
+
+    return instances;
   }
 }

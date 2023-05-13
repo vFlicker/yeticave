@@ -13,10 +13,8 @@ export const requireAuth = (
 
     return res.render('pages/error', {
       pageTitle: title,
-      error: {
-        title,
-        text: 'Sorry, you do not have permission to access this page.',
-      },
+      title,
+      text: 'Sorry, you do not have permission to access this page.',
     });
   }
 

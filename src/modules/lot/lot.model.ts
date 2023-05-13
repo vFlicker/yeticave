@@ -1,9 +1,12 @@
 import { createPlaceholders, Id } from '../../common';
-import { BaseModel } from '../../framework';
+import { BaseModel, BaseQuery } from '../../framework';
 import { CategoryModel } from '../category/category.model';
 import { Lot, LotCount, LotId } from './interfaces';
+import { LotQuery } from './lot.query';
 
 export class LotModel extends BaseModel {
+  protected tableName = 'lot';
+
   public async getLotById(id: Id): Promise<Lot> {
     const sql = `SELECT
       lot_id AS id,
@@ -86,33 +89,6 @@ export class LotModel extends BaseModel {
     return rows;
   }
 
-  public async getUnfinishedLots(
-    limit: number,
-    offset: number,
-  ): Promise<Lot[]> {
-    const sql = `SELECT
-      lot_id as id,
-      title,
-      lot_description as description,
-      image_url as "imageUrl",
-      price,
-      step,
-      end_date as "endDate",
-      category_name as category
-    FROM
-      lot
-    INNER JOIN category USING(category_id)
-    WHERE end_date > NOW()
-    ORDER BY create_date DESC
-    LIMIT $1
-    OFFSET $2`;
-
-    const { rows } = await this.databaseService
-      .getDB()
-      .query(sql, [limit, offset]);
-    return rows;
-  }
-
   public async getUnfinishedLotsCount(): Promise<LotCount> {
     const sql = `SELECT
       COUNT(*) as count
@@ -166,5 +142,10 @@ export class LotModel extends BaseModel {
       ]);
 
     return rows[0];
+  }
+
+  public getQuery(): BaseQuery | null {
+    const lotQuery = new LotQuery(this);
+    return lotQuery;
   }
 }
