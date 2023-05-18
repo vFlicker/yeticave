@@ -7,8 +7,8 @@ import {
   isTimeFinishing,
   LOT_HISTORY_COOKIE_KEY,
 } from '../../common';
-import { BaseController } from '../../framework';
-import { LotModel } from '../lot/lot.model';
+import { BaseController, PaginatorService } from '../../framework';
+import { LotModel } from '../lot';
 
 export class HistoryController extends BaseController {
   protected dirname = __dirname;
@@ -17,15 +17,31 @@ export class HistoryController extends BaseController {
     req: Request,
     res: Response,
   ): Promise<void> => {
-    // TODO: add framework method
-    const ids = JSON.parse(req.cookies[LOT_HISTORY_COOKIE_KEY]);
+    const ids = this.getCookie<string[]>(req, LOT_HISTORY_COOKIE_KEY);
+
+    if (!ids.length) {
+      this.render(res, 'emptyHistoryPage', { pageTitle: 'History' });
+      return;
+    }
+
+    const currentPage = this.getCurrentPage(req);
+    const uri = this.getUri(req);
 
     const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
-    const lots = await lotModel.getLotsByIds(ids);
+    const paginator = new PaginatorService(this.modelFactoryService, lotModel);
+
+    await paginator
+      .setUri(uri)
+      .setItemsPerPage(6)
+      .setCurrentPage(currentPage)
+      .init('getLotsByIds', ids);
+
+    const lots = paginator.getItems();
 
     this.render(res, 'historyPage', {
       pageTitle: 'History',
       lots,
+      paginator,
       helper: {
         formatPrice,
         getTimeLeft,

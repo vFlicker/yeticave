@@ -1,5 +1,6 @@
 import { BaseModel } from './base.model';
 import { BaseQuery } from './base.query';
+import { IPaginatorService } from './interfaces';
 import { ModelFactoryService } from './modelFactory.service';
 
 type QueryMethod = (...params: any[]) => string;
@@ -7,11 +8,14 @@ type Count = { count: number };
 
 const NUMBER_ITEMS_PER_PAGE = 6;
 
-export class PaginatorService<T extends BaseModel> {
+export class PaginatorService<T extends BaseModel>
+  implements IPaginatorService<T>
+{
   protected totalResults = 1;
   protected totalPages = 1;
   protected itemsPerPage = NUMBER_ITEMS_PER_PAGE;
   protected currentPage = 1;
+  protected uri: string | null = '';
   protected items: T[] = [];
   protected modelFactory: ModelFactoryService;
   protected model: T;
@@ -45,6 +49,26 @@ export class PaginatorService<T extends BaseModel> {
     return this;
   }
 
+  public setUri(uri: string): this {
+    this.uri = uri;
+    return this;
+  }
+
+  public getUri(): string | null {
+    return this.uri;
+  }
+
+  public getUrl(page: number): string {
+    const uri = this.getUri();
+
+    if (!uri) throw new Error('Uri was not set');
+
+    const searchParams = new URLSearchParams(uri.slice(1));
+    searchParams.set('page', page.toString());
+
+    return `?${searchParams.toString()}`;
+  }
+
   public getTotalResults(): number {
     return this.totalResults;
   }
@@ -67,16 +91,13 @@ export class PaginatorService<T extends BaseModel> {
       const offset = (this.currentPage - 1) * this.itemsPerPage;
 
       this.totalResults = Number(count);
-
-      console.log(this.totalResults);
-
       this.totalPages = Math.ceil(this.totalResults / this.itemsPerPage);
 
       this.query.setOffset(offset);
       this.query.setLimit(this.itemsPerPage);
 
       const query = this.query[methodName] as QueryMethod;
-      query.apply(this.query);
+      query.call(this.query, parameters);
 
       const sql = this.query.getSql();
 

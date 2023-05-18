@@ -1,20 +1,31 @@
-<% if (pagesCount > 1) { %>
+<%
+  const pages = paginator.getPagesNumbers();
+  const uri = paginator.getUri();
+  const currentPage = paginator.getCurrentPage();
+  const totalPages = paginator.getTotalPages();
+
+  const getItemClass = (page) => page === currentPage ? 'pagination-item pagination-item--active' : 'pagination-item';
+
+  const linkPrevClass = currentPage === 1 ? 'link link--disabled' : 'link';
+  const linkNextClass = paginator.isLastPage() ? 'link link--disabled' : 'link';
+  const prevUrl = currentPage === 1 ? '#' : paginator.getUrl(currentPage - 1);
+  const nextUrl = paginator.isLastPage() ? '#' : paginator.getUrl(currentPage + 1);
+%>
+
+<% if (totalPages > 1) { %>
 <ul class="pagination-list">
   <li class="pagination-item pagination-item-prev">
-    <a href="<%= currentPage > 1 ? `?page=${currentPage - 1}` : '' %>" class="link <%= currentPage === 1 ? 'link--disabled' : '' %>">Prev</a>
+    <a href="<%= prevUrl %>" class="<%= linkPrevClass %>">Prev</a>
   </li>
 
   <% pages.forEach((page) => { %>
-  <li class="pagination-item <%= page === currentPage ? 'pagination-item--active' : '' %>">
-    <a href="<%= `?page=${page}`%>">
-      <%= page %>
-    </a>
+  <li class="<%= getItemClass(page) %>">
+    <a href="<%= paginator.getUrl(page) %>"><%= page %></a>
   </li>
   <% }) %>
 
-  <li
-    class="pagination-item pagination-item-next">
-    <a href="<%= currentPage < pagesCount ? `?page=${currentPage + 1}` : '' %>" class="link <%= currentPage === pagesCount ? 'link--disabled' : '' %>">Next</a>
+  <li class="pagination-item pagination-item-next">
+    <a href="<%= nextUrl %>" class="<%= linkNextClass %>">Next</a>
   </li>
 </ul>
 <% } %>

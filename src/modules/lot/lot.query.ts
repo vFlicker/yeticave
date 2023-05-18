@@ -1,8 +1,18 @@
+import { Id } from '../../common';
 import { BaseQuery } from '../../framework/base.query';
 
 export class LotQuery extends BaseQuery {
   public getUnfinished(): string {
     this.where = 'WHERE end_date > NOW()';
+    this.setOrder('create_date DESC');
+
+    return this.getSql();
+  }
+
+  public getLotsByIds(ids: Id[]): string {
+    const placeholders = this.createPlaceholders(ids.length);
+
+    this.where = `WHERE lot_id IN (${placeholders})`;
     this.setOrder('create_date DESC');
 
     return this.getSql();
@@ -21,6 +31,6 @@ export class LotQuery extends BaseQuery {
       end_date AS "endDate",
       category_name AS category`;
     this.from = `FROM ${tableName} AS table_name`;
-    this.join = 'INNER JOIN category USING(category_id)';
+    this.join = 'JOIN category USING(category_id)';
   }
 }

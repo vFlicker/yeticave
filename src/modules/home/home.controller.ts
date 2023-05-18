@@ -7,41 +7,41 @@ import {
   isTimeFinishing,
 } from '../../common';
 import { BaseController, PaginatorService } from '../../framework';
-import { LotModel } from '../lot/lot.model';
+import { LotModel } from '../lot';
 
 export class HomeController extends BaseController {
   protected dirname = __dirname;
 
   public getHomePage = async (req: Request, res: Response): Promise<void> => {
-    const page = this.getQuery<number | undefined>(req, 'page');
-    const currentPage = page ? Number(page) : 1;
+    const currentPage = this.getCurrentPage(req);
+    const uri = this.getUri(req);
 
     const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
     const paginator = new PaginatorService(this.modelFactoryService, lotModel);
 
-    await paginator
-      .setItemsPerPage(6)
-      .setCurrentPage(currentPage)
-      .init('getUnfinished');
+    try {
+      await paginator
+        .setUri(uri)
+        .setItemsPerPage(6)
+        .setCurrentPage(currentPage)
+        .init('getUnfinished');
 
-    const lots = paginator.getItems();
-    const pagesCount = paginator.getTotalPages();
-    const pagesNumbers = paginator.getPagesNumbers();
+      const lots = paginator.getItems();
 
-    this.render(res, 'homePage', {
-      pageTitle: 'Home',
-      lots,
-      canShowTomMenu: false,
-      pages: pagesNumbers,
-      pagesCount,
-      lotsCount: paginator.getTotalResults(),
-      currentPage,
-      helper: {
-        formatPrice,
-        getTimeLeft,
-        isTimeFinishing,
-        getLotPath,
-      },
-    });
+      this.render(res, 'homePage', {
+        pageTitle: 'Home',
+        canShowTomMenu: false,
+        paginator,
+        lots,
+        helper: {
+          formatPrice,
+          getTimeLeft,
+          isTimeFinishing,
+          getLotPath,
+        },
+      });
+    } catch (error) {
+      this.renderError(res, error);
+    }
   };
 }
