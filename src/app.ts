@@ -8,13 +8,6 @@ import path from 'path';
 
 import { authenticateUser, defaultTemplateVariables } from './common';
 import { ModelFactoryService, Router } from './framework';
-import { User } from './modules/user';
-
-declare module 'express-session' {
-  interface SessionData {
-    user: User | null;
-  }
-}
 
 export class App {
   app: Express;

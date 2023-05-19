@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { SessionData } from 'express-session';
 import path from 'path';
 
 import { ModelFactoryService } from './modelFactory.service';
@@ -41,6 +42,13 @@ export class BaseController {
     console.error(error);
 
     res.render('pages/error', data);
+  }
+
+  public getSession<T extends keyof SessionData>(
+    req: Request,
+    name: T,
+  ): SessionData[T] {
+    return req.session[name];
   }
 
   public getCookie<T>(req: Request, key: string): T {

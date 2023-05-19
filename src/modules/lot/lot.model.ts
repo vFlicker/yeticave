@@ -1,11 +1,13 @@
 import { createPlaceholders, Id } from '../../common';
-import { BaseModel, BaseQuery } from '../../framework';
-import { CategoryModel } from '../category/category.model';
+import { BaseModel } from '../../framework';
+import { CategoryModel } from '../category';
 import { Lot, LotCount, LotId } from './interfaces';
 import { LotQuery } from './lot.query';
 
 export class LotModel extends BaseModel {
   protected tableName = 'lot';
+
+  private queryBuilder = new LotQuery(this);
 
   public async getLotById(id: Id): Promise<Lot> {
     const sql = `SELECT
@@ -144,8 +146,7 @@ export class LotModel extends BaseModel {
     return rows[0];
   }
 
-  public getQuery(): BaseQuery | null {
-    const lotQuery = new LotQuery(this);
-    return lotQuery;
+  public getQuery(): LotQuery {
+    return this.queryBuilder;
   }
 }

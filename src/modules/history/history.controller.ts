@@ -30,24 +30,28 @@ export class HistoryController extends BaseController {
     const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
     const paginator = new PaginatorService(this.modelFactoryService, lotModel);
 
-    await paginator
-      .setUri(uri)
-      .setItemsPerPage(6)
-      .setCurrentPage(currentPage)
-      .init('getLotsByIds', ids);
+    try {
+      await paginator
+        .setUri(uri)
+        .setItemsPerPage(6)
+        .setCurrentPage(currentPage)
+        .init('getLotsByIds', ids);
 
-    const lots = paginator.getItems();
+      const lots = paginator.getItems();
 
-    this.render(res, 'historyPage', {
-      pageTitle: 'History',
-      lots,
-      paginator,
-      helper: {
-        formatPrice,
-        getTimeLeft,
-        isTimeFinishing,
-        getLotPath,
-      },
-    });
+      this.render(res, 'historyPage', {
+        pageTitle: 'History',
+        lots,
+        paginator,
+        helper: {
+          formatPrice,
+          getTimeLeft,
+          isTimeFinishing,
+          getLotPath,
+        },
+      });
+    } catch (error) {
+      this.renderError(res, error);
+    }
   };
 }

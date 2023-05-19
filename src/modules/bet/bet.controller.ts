@@ -11,29 +11,35 @@ import {
 import { BaseController } from '../../framework';
 import { BetModel } from './bet.model';
 
-// TODO: add middleware for validation
 export class BetController extends BaseController {
   protected dirname = __dirname;
 
   public getMyBetsPage = async (req: Request, res: Response): Promise<void> => {
-    // TODO: add method to framework
-    const { user } = req.session;
+    const user = this.getSession(req, 'user');
 
-    if (!user) return this.redirect(res, ROOT_PREFIX);
+    if (!user) {
+      this.redirect(res, ROOT_PREFIX);
+      return;
+    }
 
     const betModel = this.modelFactoryService.getEmptyModel(BetModel);
-    const bets = await betModel.getBetsForUser(user.id);
 
-    this.render(res, 'myBetsPage', {
-      pageTitle: 'My bets',
-      bets,
-      helper: {
-        formatPrice,
-        isTimeFinished,
-        isTimeFinishing,
-        getTimeLeft,
-        getTimeAgo,
-      },
-    });
+    try {
+      const bets = await betModel.getBetsForUser(user.id);
+
+      this.render(res, 'myBetsPage', {
+        pageTitle: 'My bets',
+        bets,
+        helper: {
+          formatPrice,
+          isTimeFinished,
+          isTimeFinishing,
+          getTimeLeft,
+          getTimeAgo,
+        },
+      });
+    } catch (error) {
+      this.renderError(res, error);
+    }
   };
 }
