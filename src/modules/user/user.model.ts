@@ -13,7 +13,7 @@ type SingUpData = {
 export class UserModel extends BaseModel {
   public async getUserByEmail(email: string): Promise<User> {
     const sql = `SELECT
-      user_id as id,
+      id,
       email,
       user_name as name,
       user_password as password,

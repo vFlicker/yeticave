@@ -5,6 +5,7 @@ export class CategoryQuery extends BaseQuery {
     return this.getSql();
   }
 
+  // TODO: use getScalarValue
   public getIdByCategoryName(): string {
     this.where = `WHERE category_name = $1`;
 
@@ -15,7 +16,7 @@ export class CategoryQuery extends BaseQuery {
     const tableName = this.model.getTableName();
 
     this.select = `SELECT
-      category_id AS id,
+      id,
       category_name AS name`;
     this.from = `FROM ${tableName} AS table_name`;
   }

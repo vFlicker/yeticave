@@ -21,21 +21,18 @@ export class LotController extends BaseController {
   public getLotPage = async (req: Request, res: Response): Promise<void> => {
     const id = this.getParam(req, 'id');
 
-    const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
+    // TODO: handle error
+    const lotModel = await this.modelFactoryService.load(LotModel, id);
     const betModel = this.modelFactoryService.getEmptyModel(BetModel);
 
-    const lot = await lotModel.getLotById(id);
     const allBets = await betModel.getHistoryOfRatesByLotId(id);
     const maxPrice = await betModel.getMaxPriceByLotId(id);
 
-    // TODO: page error
-    // if (!lot) return res.status(404).send('what???');
-
     this.render(res, 'lotPage', {
-      pageTitle: lot.name,
+      pageTitle: lotModel.title,
       bets: allBets,
       maxPrice,
-      lot,
+      lot: lotModel,
       errors: [],
       hasErrors: false,
       helper: {
@@ -52,52 +49,56 @@ export class LotController extends BaseController {
   ): Promise<void> => {
     // TODO: use framework method
     const { body, params, session } = req;
-    const { id } = params;
+    const { id: idParam } = params;
 
-    const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
+    const lotModel = await this.modelFactoryService.load(LotModel, idParam);
     const betModel = this.modelFactoryService.getEmptyModel(BetModel);
-    const lot = await lotModel.getLotById(id);
-    const bets = await betModel.getHistoryOfRatesByLotId(id);
-    const maxPrice = await betModel.getMaxPriceByLotId(id);
+    const bets = await betModel.getHistoryOfRatesByLotId(idParam);
+    const maxPrice = await betModel.getMaxPriceByLotId(idParam);
 
-    const minPrice = Math.max(lot.price, maxPrice.price) + lot.step;
-    const formData = { ...body };
+    const { id, price, step, title } = lotModel;
 
-    const validation = new ValidationService(
-      newBetSchema(minPrice),
-      formData,
-    ).validate();
+    // TODO: if (! && !) throw new Err
+    if (id && price && step && title) {
+      const minPrice = Math.max(price, maxPrice.price) + step;
+      const formData = { ...body };
 
-    if (validation.hasErrors()) {
-      return this.render(res, 'lotPage', {
-        pageTitle: lot.name, // TODO: use model field
-        bets,
-        maxPrice,
-        lot,
-        errors: validation.getErrors(),
-        hasErrors: validation.hasErrors(),
-        helper: {
-          formatPrice,
-          getMinRate,
-          getTimeAgo,
-        },
-      });
-    }
+      const validation = new ValidationService(
+        newBetSchema(minPrice),
+        formData,
+      ).validate();
 
-    if (session.user) {
-      const { user } = session;
+      if (validation.hasErrors()) {
+        return this.render(res, 'lotPage', {
+          pageTitle: lotModel.title,
+          bets,
+          maxPrice,
+          lot: lotModel,
+          errors: validation.getErrors(),
+          hasErrors: validation.hasErrors(),
+          helper: {
+            formatPrice,
+            getMinRate,
+            getTimeAgo,
+          },
+        });
+      }
 
-      // TODO: handle errors
-      const betData = {
-        price: Number(formData.price),
-        lotId: lot.id,
-        userId: user.id,
-      };
+      if (session.user) {
+        const { user } = session;
 
-      await betModel.createNew(betData);
+        // TODO: handle errors
+        const betData = {
+          price: Number(formData.price),
+          lotId: id,
+          userId: user.id,
+        };
 
-      const path = `/lots/${lot.id}`;
-      this.redirect(res, path);
+        await betModel.createNew(betData);
+
+        const path = `/lots/${id}`;
+        this.redirect(res, path);
+      }
     }
   };
 

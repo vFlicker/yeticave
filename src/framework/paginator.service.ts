@@ -1,7 +1,7 @@
 import { BaseModel } from './base.model';
-import { BaseQuery } from './base.query';
 import { IPaginatorService } from './interfaces';
 import { ModelFactoryService } from './modelFactory.service';
+import { ExtendedModel } from './types';
 
 type QueryMethod = (...params: any[]) => string;
 type Count = { count: number };
@@ -18,13 +18,11 @@ export class PaginatorService<T extends BaseModel>
   protected uri: string | null = '';
   protected items: T[] = [];
   protected modelFactory: ModelFactoryService;
-  protected model: T;
-  protected query: BaseQuery | null;
+  protected className: ExtendedModel<T>;
 
-  constructor(modelFactory: ModelFactoryService, model: T) {
+  constructor(modelFactory: ModelFactoryService, className: ExtendedModel<T>) {
     this.modelFactory = modelFactory;
-    this.model = model;
-    this.query = model.getQuery();
+    this.className = className;
   }
 
   public getItemsPerPage(): number {
@@ -85,27 +83,30 @@ export class PaginatorService<T extends BaseModel>
     methodName: string,
     parameters: (string | number)[] = [],
   ): Promise<void> {
-    if (this.query && typeof this.query[methodName] === 'function') {
-      const countSql = this.query.getCountSql();
-      const { count } = await this.model.getScalarValue<Count>(countSql);
+    const model = this.modelFactory.getEmptyModel(this.className) as T;
+    const queryBuilder = model.getQuery();
+
+    if (queryBuilder && typeof queryBuilder[methodName] === 'function') {
+      const countSql = queryBuilder.getCountSql();
+      const { count } = await model.getScalarValue<Count>(countSql);
       const offset = (this.currentPage - 1) * this.itemsPerPage;
 
       this.totalResults = Number(count);
       this.totalPages = Math.ceil(this.totalResults / this.itemsPerPage);
 
-      this.query.setOffset(offset);
-      this.query.setLimit(this.itemsPerPage);
+      queryBuilder.setOffset(offset);
+      queryBuilder.setLimit(this.itemsPerPage);
 
-      const query = this.query[methodName] as QueryMethod;
-      query.call(this.query, parameters);
+      const query = queryBuilder[methodName] as QueryMethod;
+      query.call(queryBuilder, parameters);
 
-      const sql = this.query.getSql();
+      const sql = queryBuilder.getSql();
 
-      const items = await this.modelFactory.getAllByQuery(
-        this.model,
+      const items = (await this.modelFactory.getAllByQuery(
+        this.className,
         sql,
         parameters,
-      );
+      )) as T[];
 
       this.items = items;
     }

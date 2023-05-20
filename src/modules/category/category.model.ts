@@ -7,6 +7,10 @@ export class CategoryModel extends BaseModel {
 
   private queryBuilder = new CategoryQuery(this);
 
+  public getQuery(): CategoryQuery {
+    return this.queryBuilder;
+  }
+
   public async getAllCategories(): Promise<Category[]> {
     const sql = this.queryBuilder.getAllCategories();
 
@@ -21,9 +25,5 @@ export class CategoryModel extends BaseModel {
       .getDB()
       .query<Category>(sql, [name]);
     return rows[0];
-  }
-
-  public getQuery(): CategoryQuery {
-    return this.queryBuilder;
   }
 }

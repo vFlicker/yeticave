@@ -1,10 +1,6 @@
 import { BaseModel } from './base.model';
 import { IDatabaseService } from './interfaces';
-
-type BaseModelConstructor = typeof BaseModel;
-type BaseModelConstructorParams = ConstructorParameters<BaseModelConstructor>;
-type ExtendedModel<T> = (new (...params: BaseModelConstructorParams) => T) &
-  BaseModelConstructor;
+import { ExtendedModel } from './types';
 
 export class ModelFactoryService {
   private static instance: ModelFactoryService;
@@ -33,14 +29,12 @@ export class ModelFactoryService {
     className: ExtendedModel<T>,
     id: string,
   ): Promise<T> {
-    const table = className.tableName;
-    const sql = `SELECT * FROM ${table} WHERE id = $1 LIMIT 1`;
-
     try {
-      const db = this.databaseService.getDB();
-      const { rows } = await db.query(sql, [id]);
-
       const model = new className(this.databaseService, this);
+      const db = this.databaseService.getDB();
+
+      const { rows } = await db.query(model.initSql(), [id]);
+
       model.load(rows[0]);
 
       return model;
@@ -51,13 +45,14 @@ export class ModelFactoryService {
   }
 
   public async getAllByQuery<T extends BaseModel>(
-    model: T,
+    className: ExtendedModel<T>,
     sql: string,
     parameters: (string | number)[],
   ): Promise<T[]> {
     const { rows } = await this.databaseService.getDB().query(sql, parameters);
 
     const instances = rows.map((row) => {
+      const model = new className(this.databaseService, this);
       const instance = model.load(row);
       return instance;
     });

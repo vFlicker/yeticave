@@ -1,8 +1,12 @@
 import { Id } from '../../common';
-import { BaseModel } from '../../framework';
+import { BaseModel, BaseQuery } from '../../framework';
 import { Bet, CreateBet, HistoryBet, MaxPrice } from './interfaces';
 
 export class BetModel extends BaseModel {
+  public getQuery(): BaseQuery | null {
+    return null;
+  }
+
   public async getBetsForUser(id: Id): Promise<Bet[]> {
     const sql = `SELECT
       image_url AS "imageUrl",
@@ -23,11 +27,11 @@ export class BetModel extends BaseModel {
     JOIN bet
       ON bet.lot_id = max_bet.lot_id AND bet.price = max_bet.max_price
     JOIN lot
-      ON bet.lot_id = lot.lot_id
+      ON bet.lot_id = lot.id
     JOIN category
-      ON lot.category_id = category.category_id
+      ON lot.category_id = category.id
     JOIN app_user
-      ON bet.user_id = app_user.user_id
+      ON bet.user_id = app_user.id
     WHERE bet.user_id = $1
     ORDER BY bet.create_date DESC`;
 
@@ -42,7 +46,7 @@ export class BetModel extends BaseModel {
       bet.create_date as "createDate"
     FROM bet
     INNER JOIN app_user
-      USING(user_id)
+      ON bet.user_id = app_user.id
     WHERE lot_id = $1
     ORDER BY bet.create_date DESC`;
 

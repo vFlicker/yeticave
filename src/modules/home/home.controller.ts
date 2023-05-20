@@ -16,8 +16,7 @@ export class HomeController extends BaseController {
     const currentPage = this.getCurrentPage(req);
     const uri = this.getUri(req);
 
-    const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
-    const paginator = new PaginatorService(this.modelFactoryService, lotModel);
+    const paginator = new PaginatorService(this.modelFactoryService, LotModel);
 
     try {
       await paginator

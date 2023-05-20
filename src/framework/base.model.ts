@@ -31,14 +31,7 @@ export class BaseModel {
     return result;
   }
 
-  // public load<T extends object>(data: T): this {
-  //   for (const [key, value] of Object.entries(data)) {
-  //     this[key] = value;
-  //   }
-
-  //   return this;
-  // }
-  public load(data: object): this {
+  public load(data: Record<string, any>): this {
     for (const [key, value] of Object.entries(data)) {
       this[key] = value;
     }
@@ -58,5 +51,10 @@ export class BaseModel {
 
   public getQuery(): BaseQuery | null {
     return null;
+  }
+
+  public initSql(): string {
+    const sql = `SELECT * FROM ${this.tableName} WHERE id = $1 LIMIT 1`;
+    return sql;
   }
 }

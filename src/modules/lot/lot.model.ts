@@ -1,105 +1,44 @@
-import { createPlaceholders, Id } from '../../common';
+import { createPlaceholders, Id, Timestamp } from '../../common';
 import { BaseModel } from '../../framework';
 import { CategoryModel } from '../category';
-import { Lot, LotCount, LotId } from './interfaces';
+import { Lot, LotId } from './interfaces';
 import { LotQuery } from './lot.query';
 
 export class LotModel extends BaseModel {
+  static tableName = 'lot';
   protected tableName = 'lot';
+
+  public id?: Id;
+  public title?: string;
+  public description?: string;
+  public imageUrl?: string;
+  public price?: number;
+  public step?: number;
+  public endDate?: Timestamp;
+  public category?: string;
 
   private queryBuilder = new LotQuery(this);
 
-  public async getLotById(id: Id): Promise<Lot> {
-    const sql = `SELECT
-      lot_id AS id,
-      title,
-      lot_description AS description,
-      image_url AS "imageUrl",
-      price,
-      step,
-      end_date AS "endDate",
-      category_name AS category
-    FROM
-      lot
-    INNER JOIN category USING(category_id)
-    WHERE lot_id = $1`;
+  public getQuery(): LotQuery {
+    return this.queryBuilder;
+  }
 
-    const { rows } = await this.databaseService.getDB().query(sql, [id]);
-    return rows[0];
+  public initSql(): string {
+    return this.queryBuilder.getLotById();
   }
 
   public async getLotsByText(text: string): Promise<Lot[]> {
-    const sql = `SELECT
-      lot_id as id,
-      title,
-      lot_description as description,
-      image_url as "imageUrl",
-      price,
-      step,
-      end_date as "endDate",
-      category_name as category
-    FROM
-      lot
-    INNER JOIN category USING(category_id)
-    WHERE ts @@ phraseto_tsquery('english', $1)
-    ORDER BY create_date DESC`;
+    const sql = this.queryBuilder.getLotsByText();
 
     const { rows } = await this.databaseService.getDB().query(sql, [text]);
     return rows;
   }
 
   public async getLotsByCategory(category: string): Promise<Lot[]> {
-    const sql = `SELECT
-      lot_id as id,
-      title,
-      lot_description as description,
-      image_url as "imageUrl",
-      price,
-      step,
-      end_date as "endDate",
-      category_name as category
-    FROM
-      lot
-    INNER JOIN category USING(category_id)
-    WHERE category_name = $1
-    ORDER BY create_date DESC`;
+    const sql = this.queryBuilder.getLotsByCategory();
 
     const { rows } = await this.databaseService.getDB().query(sql, [category]);
     return rows;
-  }
-
-  public async getLotsByIds(ids: Id[]): Promise<Lot[]> {
-    // TODO: look at this function
-    const placeholders = createPlaceholders(ids.length);
-
-    const sql = `SELECT
-      lot_id as id,
-      title,
-      lot_description as description,
-      image_url as "imageUrl",
-      price,
-      step,
-      end_date as "endDate",
-      category_name as category
-    FROM
-      lot
-    INNER JOIN category USING(category_id)
-    WHERE lot_id IN (${placeholders})
-    ORDER BY create_date DESC`;
-
-    const { rows } = await this.databaseService.getDB().query(sql, ids);
-    return rows;
-  }
-
-  public async getUnfinishedLotsCount(): Promise<LotCount> {
-    const sql = `SELECT
-      COUNT(*) as count
-    FROM
-      lot
-    WHERE end_date > NOW()`;
-
-    const { rows } = await this.databaseService.getDB().query(sql);
-    return rows[0];
   }
 
   public async addLot(lot: Lot, userId: string): Promise<LotId> {
@@ -127,7 +66,7 @@ export class LotModel extends BaseModel {
       )
     VALUES
       (${placeholders})
-    RETURNING lot_id AS "id"`;
+    RETURNING "id"`;
 
     // TODO: handle errors
     const { rows } = await this.databaseService
@@ -144,9 +83,5 @@ export class LotModel extends BaseModel {
       ]);
 
     return rows[0];
-  }
-
-  public getQuery(): LotQuery {
-    return this.queryBuilder;
   }
 }

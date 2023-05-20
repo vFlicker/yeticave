@@ -53,8 +53,7 @@ export abstract class BaseQuery {
   }
 
   public getCountSql(): string {
-    // TODO: rename id in tables
-    const select = 'SELECT COUNT(table_name.lot_id)';
+    const select = 'SELECT COUNT(table_name.id)';
     const where = 'WHERE end_date > NOW()';
 
     return this.getSql(false, { select, where });
