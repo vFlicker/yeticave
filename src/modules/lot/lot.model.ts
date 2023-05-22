@@ -5,7 +5,6 @@ import { Lot, LotId } from './interfaces';
 import { LotQuery } from './lot.query';
 
 export class LotModel extends BaseModel {
-  static tableName = 'lot';
   protected tableName = 'lot';
 
   public id?: Id;
@@ -30,15 +29,15 @@ export class LotModel extends BaseModel {
   public async getLotsByText(text: string): Promise<Lot[]> {
     const sql = this.queryBuilder.getLotsByText();
 
-    const { rows } = await this.databaseService.getDB().query(sql, [text]);
-    return rows;
+    const lots = this.getScalarValues<Lot>(sql, [text]);
+    return lots;
   }
 
   public async getLotsByCategory(category: string): Promise<Lot[]> {
     const sql = this.queryBuilder.getLotsByCategory();
 
-    const { rows } = await this.databaseService.getDB().query(sql, [category]);
-    return rows;
+    const lots = this.getScalarValues<Lot>(sql, [category]);
+    return lots;
   }
 
   public async addLot(lot: Lot, userId: string): Promise<LotId> {
@@ -46,6 +45,7 @@ export class LotModel extends BaseModel {
     const length = Object.keys(lot).length + 1;
     const placeholders = createPlaceholders(length);
 
+    // TODO: is it need here?
     const categoryModel = this.modelFactoryService.getEmptyModel(CategoryModel);
     const { category, description, endDate, imageUrl, name, price, step } = lot;
 
@@ -68,20 +68,17 @@ export class LotModel extends BaseModel {
       (${placeholders})
     RETURNING "id"`;
 
-    // TODO: handle errors
-    const { rows } = await this.databaseService
-      .getDB()
-      .query(sql, [
-        categoryId,
-        userId,
-        name,
-        imageUrl,
-        description,
-        price,
-        step,
-        endDate,
-      ]);
+    const lotId = await this.getScalarValue<LotId>(sql, [
+      categoryId,
+      userId,
+      name,
+      imageUrl,
+      description,
+      price,
+      step,
+      endDate,
+    ]);
 
-    return rows[0];
+    return lotId;
   }
 }

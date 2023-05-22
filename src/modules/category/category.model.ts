@@ -14,16 +14,14 @@ export class CategoryModel extends BaseModel {
   public async getAllCategories(): Promise<Category[]> {
     const sql = this.queryBuilder.getAllCategories();
 
-    const { rows } = await this.databaseService.getDB().query<Category>(sql);
-    return rows;
+    const categories = await this.getScalarValues<Category>(sql);
+    return categories;
   }
 
   public async getIdByCategoryName(name: string): Promise<Category> {
     const sql = this.queryBuilder.getIdByCategoryName();
 
-    const { rows } = await this.databaseService
-      .getDB()
-      .query<Category>(sql, [name]);
-    return rows[0];
+    const category = this.getScalarValue<Category>(sql, [name]);
+    return category;
   }
 }

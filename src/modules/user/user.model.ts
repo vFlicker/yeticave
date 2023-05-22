@@ -24,8 +24,8 @@ export class UserModel extends BaseModel {
     WHERE
       email = $1`;
 
-    const { rows } = await this.databaseService.getDB().query(sql, [email]);
-    return rows[0];
+    const user = this.getScalarValue<User>(sql, [email]);
+    return user;
   }
 
   public async create(data: SingUpData): Promise<void> {
@@ -38,9 +38,6 @@ export class UserModel extends BaseModel {
     VALUES
       (${placeholders})`;
 
-    // TODO: handle errors
-    await this.databaseService
-      .getDB()
-      .query(sql, [name, email, password, contacts]);
+    await this.runSimpleQuery(sql, [name, email, password, contacts]);
   }
 }

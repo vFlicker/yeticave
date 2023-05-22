@@ -35,8 +35,8 @@ export class BetModel extends BaseModel {
     WHERE bet.user_id = $1
     ORDER BY bet.create_date DESC`;
 
-    const { rows } = await this.databaseService.getDB().query(sql, [id]);
-    return rows;
+    const bets = await this.getScalarValues<Bet>(sql, [id]);
+    return bets;
   }
 
   public async getHistoryOfRatesByLotId(id: Id): Promise<HistoryBet[]> {
@@ -50,10 +50,8 @@ export class BetModel extends BaseModel {
     WHERE lot_id = $1
     ORDER BY bet.create_date DESC`;
 
-    const { rows } = await this.databaseService
-      .getDB()
-      .query<HistoryBet>(sql, [id]);
-    return rows;
+    const historyBets = await this.getScalarValues<HistoryBet>(sql, [id]);
+    return historyBets;
   }
 
   public async getMaxPriceByLotId(id: Id): Promise<MaxPrice> {
@@ -62,10 +60,8 @@ export class BetModel extends BaseModel {
     FROM bet
     WHERE lot_id = $1;`;
 
-    const { rows } = await this.databaseService
-      .getDB()
-      .query<MaxPrice>(sql, [id]);
-    return rows[0];
+    const maxPrice = await this.getScalarValue<MaxPrice>(sql, [id]);
+    return maxPrice;
   }
 
   public async createNew(createBet: CreateBet): Promise<void> {
@@ -80,6 +76,6 @@ export class BetModel extends BaseModel {
       VALUES
         ($1, $2, $3)`;
 
-    await this.databaseService.getDB().query(sql, [userId, lotId, price]);
+    await this.runSimpleQuery(sql, [userId, lotId, price]);
   }
 }

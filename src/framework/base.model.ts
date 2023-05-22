@@ -6,11 +6,9 @@ export class BaseModel {
   [key: string]: unknown;
 
   public databaseService: IDatabaseService;
-  protected modelFactoryService: ModelFactoryService;
 
-  // TODO: can i remove one of this methods?
   protected tableName = '';
-  public static tableName = '';
+  protected modelFactoryService: ModelFactoryService;
 
   constructor(
     databaseService: IDatabaseService,
@@ -24,11 +22,34 @@ export class BaseModel {
     return this.tableName;
   }
 
-  public async getScalarValue<T>(sql: string): Promise<T> {
-    const { rows } = await this.databaseService.getDB().query(sql);
+  // TODO: return this.queryBuilder.
+  public getQuery(): BaseQuery | null {
+    return null;
+  }
+
+  public async getScalarValue<T>(
+    sql: string,
+    data: (string | number)[] = [],
+  ): Promise<T> {
+    const { rows } = await this.databaseService.getDB().query(sql, data);
 
     const result = rows[0];
     return result;
+  }
+
+  public async getScalarValues<T>(
+    sql: string,
+    data: (string | number)[] = [],
+  ): Promise<T[]> {
+    const { rows } = await this.databaseService.getDB().query(sql, data);
+    return rows;
+  }
+
+  public async runSimpleQuery(
+    sql: string,
+    data: (string | number)[] = [],
+  ): Promise<void> {
+    await this.databaseService.getDB().query(sql, data);
   }
 
   public load(data: Record<string, any>): this {
@@ -47,10 +68,6 @@ export class BaseModel {
   public setModelFactory(modelFactoryService: ModelFactoryService): this {
     this.modelFactoryService = modelFactoryService;
     return this;
-  }
-
-  public getQuery(): BaseQuery | null {
-    return null;
   }
 
   public initSql(): string {
