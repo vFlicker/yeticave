@@ -1,34 +1,40 @@
-import { LOGOUT_PAGE, SIGN_IN_PAGE, SIGN_UP_PAGE } from '../../common';
+import {
+  LOGIN,
+  LOGIN_PAGE,
+  LOGOUT,
+  REGISTER,
+  REGISTER_PAGE,
+} from '../../common';
 import { Router } from '../../framework';
 import { UserController } from './user.controller';
 
 export const userRouter: Router = [
   {
-    path: SIGN_IN_PAGE,
+    path: LOGIN_PAGE,
     method: 'get',
     className: UserController,
-    action: 'getSignInPage',
+    action: 'getLoginPage',
   },
   {
-    path: SIGN_IN_PAGE,
-    method: 'post',
-    className: UserController,
-    action: 'sendSignInForm',
-  },
-  {
-    path: SIGN_UP_PAGE,
+    path: REGISTER_PAGE,
     method: 'get',
     className: UserController,
-    action: 'getSignUpPage',
+    action: 'getRegisterPage',
   },
   {
-    path: SIGN_UP_PAGE,
+    path: LOGIN,
     method: 'post',
     className: UserController,
-    action: 'sendSignUpForm',
+    action: 'login',
   },
   {
-    path: LOGOUT_PAGE,
+    path: REGISTER,
+    method: 'post',
+    className: UserController,
+    action: 'register',
+  },
+  {
+    path: LOGOUT,
     method: 'get',
     className: UserController,
     action: 'logout',

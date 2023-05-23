@@ -1,4 +1,4 @@
-import { createPlaceholders, Id, Timestamp } from '../../common';
+import { Id, Timestamp } from '../../common';
 import { BaseModel } from '../../framework';
 import { CategoryModel } from '../category';
 import { CreateLot, Lot, LotId } from './interfaces';
@@ -6,21 +6,17 @@ import { LotQuery } from './lot.query';
 
 export class LotModel extends BaseModel {
   protected tableName = 'lot';
+  protected queryBuilder: LotQuery = new LotQuery(this);
 
   public id: Id = '';
+  public userId = '';
   public title = '';
   public description = '';
   public imageUrl = '';
-  public price = 0;
-  public step = 0;
+  public price = '';
+  public step = '';
   public endDate: Timestamp = '';
   public category = '';
-
-  private queryBuilder = new LotQuery(this);
-
-  public getQuery(): LotQuery {
-    return this.queryBuilder;
-  }
 
   public initSql(): string {
     return this.queryBuilder.getLotById();
@@ -29,21 +25,31 @@ export class LotModel extends BaseModel {
   public async getLotsByText(text: string): Promise<Lot[]> {
     const sql = this.queryBuilder.getLotsByText();
 
-    const lots = this.getScalarValues<Lot>(sql, [text]);
+    const lots = await this.getScalarValues<Lot>(sql, [text]);
     return lots;
   }
 
   public async getLotsByCategory(category: string): Promise<Lot[]> {
     const sql = this.queryBuilder.getLotsByCategory();
 
-    const lots = this.getScalarValues<Lot>(sql, [category]);
+    const lots = await this.getScalarValues<Lot>(sql, [category]);
     return lots;
   }
 
   public async addLot(createLot: CreateLot, userId: string): Promise<LotId> {
-    // TODO: look at this function
-    const length = Object.keys(createLot).length + 1;
-    const placeholders = createPlaceholders(length);
+    const rows = [
+      'category_id',
+      'user_id',
+      'title',
+      'image_url',
+      'lot_description',
+      'price',
+      'step',
+      'end_date',
+    ];
+
+    const fields = LotQuery.createFields(rows);
+    const placeholders = LotQuery.createPlaceholders(rows.length);
 
     // TODO: is it need here?
     const categoryModel = this.modelFactoryService.getEmptyModel(CategoryModel);
@@ -55,16 +61,7 @@ export class LotModel extends BaseModel {
     );
 
     const sql = `INSERT INTO
-      lot (
-        category_id,
-        user_id,
-        title,
-        image_url,
-        lot_description,
-        price,
-        step,
-        end_date
-      )
+      lot (${fields})
     VALUES
       (${placeholders})
     RETURNING "id"`;

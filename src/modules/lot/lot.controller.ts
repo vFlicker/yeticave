@@ -11,14 +11,15 @@ import {
 } from '../../common';
 import { BaseController, PaginatorService } from '../../framework';
 import { BetModel } from '../bet/bet.model';
-import { CrateBet, CreateLot } from './interfaces';
+import { CreateLot } from './interfaces';
 import { LotModel } from './lot.model';
-import { newBetSchema, newLotSchema } from './schemas';
+import { newLotSchema } from './schemas';
 
 export class LotController extends BaseController {
   protected dirname = __dirname;
 
   public getLotPage = async (req: Request, res: Response): Promise<void> => {
+    const user = this.getSession(req, 'user');
     const id = this.getParam(req, 'id');
 
     const betModel = this.modelFactoryService.getEmptyModel(BetModel);
@@ -34,11 +35,14 @@ export class LotController extends BaseController {
         maxPricePromise,
       ]);
 
+      const isShowBetForm = user && user.id !== lotModel.userId;
+
       this.render(res, 'lotPage', {
         pageTitle: lotModel.title,
         bets: allBets,
         maxPrice: maxPrice,
         lot: lotModel,
+        isShowBetForm,
         errors: [],
         hasErrors: false,
         helper: {
@@ -47,71 +51,6 @@ export class LotController extends BaseController {
           getTimeAgo,
         },
       });
-    } catch (error) {
-      this.renderError(res, error);
-    }
-  };
-
-  public sendNewBetForm = async (
-    req: Request,
-    res: Response,
-  ): Promise<void> => {
-    const body = this.getBody<CrateBet>(req);
-    const user = this.getSession(req, 'user');
-    const idParam = this.getParam(req, 'id');
-
-    const betModel = this.modelFactoryService.getEmptyModel(BetModel);
-
-    const lotModelPromise = this.modelFactoryService.load(LotModel, idParam);
-    const allBetsPromise = betModel.getHistoryOfRatesByLotId(idParam);
-    const maxPricePromise = betModel.getMaxPriceByLotId(idParam);
-
-    try {
-      const [lotModel, allBets, maxPrice] = await Promise.all([
-        lotModelPromise,
-        allBetsPromise,
-        maxPricePromise,
-      ]);
-
-      const { id, price, step, title } = lotModel;
-
-      if (!id || !price || !step || !title) return;
-
-      const minPrice = Math.max(price, maxPrice.price) + step;
-
-      const validation = new ValidationService(
-        newBetSchema(minPrice),
-        body,
-      ).validate();
-
-      if (validation.hasErrors()) {
-        return this.render(res, 'lotPage', {
-          pageTitle: lotModel.title,
-          bets: allBets,
-          maxPrice,
-          lot: lotModel,
-          errors: validation.getErrors(),
-          hasErrors: validation.hasErrors(),
-          helper: {
-            formatPrice,
-            getMinRate,
-            getTimeAgo,
-          },
-        });
-      }
-
-      if (user) {
-        const betData = {
-          price: Number(body.price),
-          lotId: id,
-          userId: user.id,
-        };
-
-        await betModel.createNew(betData);
-
-        const path = `/lots/${id}`;
-        this.redirect(res, path);
-      }
     } catch (error) {
       this.renderError(res, error);
     }
@@ -171,10 +110,7 @@ export class LotController extends BaseController {
     });
   };
 
-  public sendNewLotForm = async (
-    req: Request,
-    res: Response,
-  ): Promise<void> => {
+  public createNewLot = async (req: Request, res: Response): Promise<void> => {
     const body = this.getBody<Omit<CreateLot, 'imageUrl'>>(req);
     const file = this.getFile(req);
     const user = this.getSession(req, 'user');

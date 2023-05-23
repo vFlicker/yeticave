@@ -699,19 +699,15 @@ h2 {
 }
 
 .lots__list {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 -15px;
+  margin: 0 0 30px 0;
   padding: 0;
   list-style: none;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 30px;
 }
 
-.lots__item-wrapper {
-  -ms-flex: 0 0 33.333%;
-  flex: 0 0 33.333%;
-  margin-bottom: 30px;
-  padding: 0 15px;
-}
 
 .lot {
   background-color: #fff;
@@ -731,8 +727,11 @@ h2 {
 }
 
 .lot__image img {
+  display: block;
   width: 100%;
   height: 100%;
+
+  background-color: #ffffff;
   object-fit: cover;
 }
 
@@ -785,22 +784,32 @@ h2 {
 
 .timer {
   position: relative;
-  padding: 6px 8px 5px 28px;
-  background-color: #879296;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  padding: 6px 8px 5px 8px;
+  border-radius: 2px;
+
   font-size: 13px;
   line-height: 18px;
   color: #fff;
-  border-radius: 2px;
+
+  background-color: #879296;
 }
 
 .timer::before {
   content: "";
-  position: absolute;
-  top: 8px;
-  left: 9px;
+
+  display: block;
   width: 12px;
   height: 12px;
-  background: url("../img/timer.svg") 0 0 no-repeat;
+  margin-right: 4px;
+
+  background-image: url("../img/timer.svg");
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 
 .timer--finishing {
@@ -1152,10 +1161,6 @@ input::-webkit-inner-spin-button {
 }
 
 .lot-item__timer {
-  -webkit-align-self: flex-end;
-  -ms-flex-item-align: end;
-  align-self: flex-end;
-  width: 80px;
   margin-bottom: 19px;
 }
 

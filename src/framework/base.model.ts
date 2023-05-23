@@ -9,6 +9,7 @@ export class BaseModel {
 
   protected tableName = '';
   protected modelFactoryService: ModelFactoryService;
+  protected queryBuilder: BaseQuery | null = null;
 
   constructor(
     databaseService: IDatabaseService,
@@ -22,9 +23,8 @@ export class BaseModel {
     return this.tableName;
   }
 
-  // TODO: return this.queryBuilder.
   public getQuery(): BaseQuery | null {
-    return null;
+    return this.queryBuilder;
   }
 
   public async getScalarValue<T>(

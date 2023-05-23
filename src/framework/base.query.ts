@@ -59,10 +59,6 @@ export abstract class BaseQuery {
     return this.getSql(false, { select, where });
   }
 
-  public createPlaceholders(length: number) {
-    return Array.from({ length }, (_, index) => `$${index + 1}`).join(', ');
-  }
-
   protected getLimitSql(): string {
     let sql = '';
 
@@ -74,4 +70,12 @@ export abstract class BaseQuery {
   }
 
   protected abstract initSql(): void;
+
+  static createPlaceholders(length: number) {
+    return Array.from({ length }, (_, index) => `$${index + 1}`).join(', ');
+  }
+
+  static createFields(fields: string[]) {
+    return fields.join(', ');
+  }
 }

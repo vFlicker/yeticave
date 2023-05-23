@@ -31,7 +31,7 @@ export class LotQuery extends BaseQuery {
   }
 
   public getLotsByIds(ids: Id[]): string {
-    const placeholders = this.createPlaceholders(ids.length);
+    const placeholders = LotQuery.createPlaceholders(ids.length);
 
     this.where = `WHERE table_name.id IN (${placeholders})`;
     this.setOrder('create_date DESC');
@@ -44,6 +44,7 @@ export class LotQuery extends BaseQuery {
 
     this.select = `SELECT
       table_name.id AS id,
+      user_id AS "userId",
       title,
       lot_description AS description,
       image_url AS "imageUrl",

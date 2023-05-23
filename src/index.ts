@@ -1,6 +1,7 @@
 import { App } from './app';
 import { databaseConfig, DatabaseService } from './common';
 import { ModelFactoryService } from './framework';
+import { _404Router } from './modules/_404';
 import { betRouter } from './modules/bet';
 import { historyRouter } from './modules/history';
 import { homeRouter } from './modules/home';
@@ -15,12 +16,13 @@ const app = new App();
 
 app.setRoutes(
   [
-    ...betRouter,
     ...historyRouter,
     ...homeRouter,
     ...lotRouter,
+    ...betRouter,
     ...searchRouter,
     ...userRouter,
+    ..._404Router,
   ],
   modelFactory,
 );

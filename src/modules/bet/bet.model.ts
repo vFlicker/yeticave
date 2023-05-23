@@ -1,11 +1,11 @@
 import { Id } from '../../common';
 import { BaseModel } from '../../framework';
+import { BetQuery } from './bet.query';
 import { Bet, CreateBet, HistoryBet, MaxPrice } from './interfaces';
 
 export class BetModel extends BaseModel {
-  public getQuery(): null {
-    return null;
-  }
+  protected tableName = 'bet';
+  protected queryBuilder: BetQuery = new BetQuery(this);
 
   public async getBetsForUser(id: Id): Promise<Bet[]> {
     const sql = `SELECT
@@ -35,11 +35,11 @@ export class BetModel extends BaseModel {
     WHERE bet.user_id = $1
     ORDER BY bet.create_date DESC`;
 
-    const bets = await this.getScalarValues<Bet>(sql, [id]);
+    const bets = this.getScalarValues<Bet>(sql, [id]);
     return bets;
   }
 
-  public async getHistoryOfRatesByLotId(id: Id): Promise<HistoryBet[]> {
+  public getHistoryOfRatesByLotId(id: Id): Promise<HistoryBet[]> {
     const sql = `SELECT
       user_name as "userName",
       price,
@@ -50,7 +50,7 @@ export class BetModel extends BaseModel {
     WHERE lot_id = $1
     ORDER BY bet.create_date DESC`;
 
-    const historyBets = await this.getScalarValues<HistoryBet>(sql, [id]);
+    const historyBets = this.getScalarValues<HistoryBet>(sql, [id]);
     return historyBets;
   }
 
@@ -65,16 +65,17 @@ export class BetModel extends BaseModel {
   }
 
   public async createNew(createBet: CreateBet): Promise<void> {
+    const rows = ['user_id', 'lot_id', 'price'];
+
+    const fields = BetQuery.createFields(rows);
+    const placeholders = BetQuery.createPlaceholders(rows.length);
+
     const { userId, lotId, price } = createBet;
 
     const sql = `INSERT INTO
-        bet (
-          user_id,
-          lot_id,
-          price
-        )
+        bet (${fields})
       VALUES
-        ($1, $2, $3)`;
+        (${placeholders})`;
 
     await this.runSimpleQuery(sql, [userId, lotId, price]);
   }

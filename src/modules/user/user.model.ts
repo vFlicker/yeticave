@@ -1,6 +1,6 @@
-import { createPlaceholders } from '../../common';
 import { BaseModel } from '../../framework';
 import { User } from './interfaces';
+import { UserQuery } from './user.query';
 
 // TODO: move to interfaces
 type SingUpData = {
@@ -11,6 +11,9 @@ type SingUpData = {
 };
 
 export class UserModel extends BaseModel {
+  protected tableName = 'user';
+  protected queryBuilder: UserQuery = new UserQuery(this);
+
   public email = '';
   public password = '';
   public name = '';
@@ -33,13 +36,16 @@ export class UserModel extends BaseModel {
     return user;
   }
 
-  public async create(data: SingUpData): Promise<void> {
+  public async createNewUser(data: SingUpData): Promise<void> {
     const { name, email, password, contacts } = data;
 
-    const placeholders = createPlaceholders(Object.keys(data).length);
+    const rows = ['user_name', 'email', 'user_password', 'contacts'];
+
+    const fields = UserQuery.createFields(rows);
+    const placeholders = UserQuery.createPlaceholders(rows.length);
 
     const sql = `INSERT INTO
-      app_user(user_name, email, user_password, contacts)
+      app_user(${fields})
     VALUES
       (${placeholders})`;
 

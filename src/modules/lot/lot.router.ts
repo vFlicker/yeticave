@@ -1,4 +1,5 @@
 import {
+  CREATE_NEW_LOT,
   DiskStorageService,
   LOT_PAGE,
   lotHistoryCookie,
@@ -21,10 +22,10 @@ export const lotRouter: Router = [
     middlewares: [requireAuth],
   },
   {
-    path: NEW_LOT_PAGE,
+    path: CREATE_NEW_LOT,
     method: 'post',
     className: LotController,
-    action: 'sendNewLotForm',
+    action: 'createNewLot',
     middlewares: [fileUploader.single('imageUrl')],
   },
   {
@@ -33,12 +34,6 @@ export const lotRouter: Router = [
     className: LotController,
     action: 'getLotPage',
     middlewares: [lotHistoryCookie],
-  },
-  {
-    path: LOT_PAGE,
-    method: 'post',
-    className: LotController,
-    action: 'sendNewBetForm',
   },
   {
     path: LOTS_BY_CATEGORY_PAGE,

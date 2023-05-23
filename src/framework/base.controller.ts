@@ -22,6 +22,10 @@ export class BaseController {
     res.redirect(path);
   }
 
+  public setStatusCode(res: Response, statusCode: number): void {
+    res.status(statusCode);
+  }
+
   // TODO: createAuthUser?
   // const user = new AuthUser(req.session);
 
@@ -49,6 +53,10 @@ export class BaseController {
     name: T,
   ): SessionData[T] {
     return req.session[name];
+  }
+
+  public getLocal<T>(res: Response, name: string): T {
+    return res.locals[name] as T;
   }
 
   public closeSession<T extends Exclude<keyof SessionData, 'Cookie'>>(

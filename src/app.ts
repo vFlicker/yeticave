@@ -15,7 +15,6 @@ export class App {
   constructor() {
     dotenv.config();
     this.app = express();
-
     this.setup();
   }
 
@@ -39,65 +38,19 @@ export class App {
   }
 
   private setup() {
-    this.setupParsers();
-    this.setupSession();
-    this.applyMiddlewares();
-    this.setupViewEngine();
-
-    // const transporter = nodemailer.createTransport({
-    //   host: process.env.MAILER_HOST,
-    //   port: Number(process.env.MAILER_PORT),
-    //   secure: process.env.MAILER_SECURE === 'true',
-    //   auth: {
-    //     user: process.env.MAILER_USER,
-    //     pass: process.env.MAILER_PASS,
-    //   },
-    //   tls: {
-    //     rejectUnauthorized: process.env.MAILER_REJECTUNAUTHORIZED === 'true',
-    //   },
-    // });
-    // this.app.get('/send-email', (_, res) => {
-    //   const messagePath = path.resolve(
-    //     __dirname,
-    //     'common',
-    //     'views',
-    //     'messages',
-    //     'email.ejs',
-    //   );
-    //   ejs.renderFile(
-    //     messagePath,
-    //     { name: 'Vlad', lotId: 3, title: 'Lot name' },
-    //     (err, data) => {
-    //       if (err) {
-    //         console.log(err);
-    //       } else {
-    //         const mailOptions = {
-    //           from: process.env.MAILER_USER,
-    //           to: 'flickervladislav@yandex.com',
-    //           subject: 'You won. YatiCave auction.',
-    //           html: data,
-    //         };
-    //         transporter.sendMail(mailOptions, (error) => {
-    //           if (error) console.log({ error });
-    //           res.send(`send email success`);
-    //         });
-    //       }
-    //     },
-    //   );
-    // });
-    // this.app.get('*', (_, res) => {
-    // TODO: add not found page with 404 status code
-    //   res.status(404).send('Not Found');
-    // });
+    this.setParsers();
+    this.setSession();
+    this.setMiddlewares();
+    this.setViewEngine();
   }
 
-  private setupParsers() {
+  private setParsers() {
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded());
     this.app.use(cookieParser());
   }
 
-  private setupSession() {
+  private setSession() {
     this.app.use(
       session({
         secret: 'keyboard cat',
@@ -107,12 +60,12 @@ export class App {
     );
   }
 
-  private applyMiddlewares() {
+  private setMiddlewares() {
     this.app.use(authenticateUser);
     this.app.use(defaultTemplateVariables);
   }
 
-  private setupViewEngine() {
+  private setViewEngine() {
     this.app.use(express.static('public'));
     this.app.use(expressEjsLayouts);
 

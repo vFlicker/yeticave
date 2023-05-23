@@ -4,12 +4,7 @@ import { Category } from './interfaces';
 
 export class CategoryModel extends BaseModel {
   protected tableName = 'category';
-
-  private queryBuilder = new CategoryQuery(this);
-
-  public getQuery(): CategoryQuery {
-    return this.queryBuilder;
-  }
+  protected queryBuilder: CategoryQuery = new CategoryQuery(this);
 
   public async getAllCategories(): Promise<Category[]> {
     const sql = this.queryBuilder.getAllCategories();
