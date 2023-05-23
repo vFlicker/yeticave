@@ -1,9 +1,9 @@
 import { Id } from '../../common';
-import { BaseModel, BaseQuery } from '../../framework';
+import { BaseModel } from '../../framework';
 import { Bet, CreateBet, HistoryBet, MaxPrice } from './interfaces';
 
 export class BetModel extends BaseModel {
-  public getQuery(): BaseQuery | null {
+  public getQuery(): null {
     return null;
   }
 

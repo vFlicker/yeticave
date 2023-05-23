@@ -86,6 +86,7 @@ export class App {
     //   );
     // });
     // this.app.get('*', (_, res) => {
+    // TODO: add not found page with 404 status code
     //   res.status(404).send('Not Found');
     // });
   }

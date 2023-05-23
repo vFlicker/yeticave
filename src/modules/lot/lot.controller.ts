@@ -9,69 +9,85 @@ import {
   isTimeFinishing,
   ValidationService,
 } from '../../common';
-import { BaseController } from '../../framework';
+import { BaseController, PaginatorService } from '../../framework';
 import { BetModel } from '../bet/bet.model';
+import { CrateBet, CreateLot } from './interfaces';
 import { LotModel } from './lot.model';
 import { newBetSchema, newLotSchema } from './schemas';
 
-// TODO: add middleware for validation
 export class LotController extends BaseController {
   protected dirname = __dirname;
 
   public getLotPage = async (req: Request, res: Response): Promise<void> => {
     const id = this.getParam(req, 'id');
 
-    // TODO: handle error
-    const lotModel = await this.modelFactoryService.load(LotModel, id);
     const betModel = this.modelFactoryService.getEmptyModel(BetModel);
 
-    const allBets = await betModel.getHistoryOfRatesByLotId(id);
-    const maxPrice = await betModel.getMaxPriceByLotId(id);
+    const lotModelPromise = this.modelFactoryService.load(LotModel, id);
+    const allBetsPromise = betModel.getHistoryOfRatesByLotId(id);
+    const maxPricePromise = betModel.getMaxPriceByLotId(id);
 
-    this.render(res, 'lotPage', {
-      pageTitle: lotModel.title,
-      bets: allBets,
-      maxPrice,
-      lot: lotModel,
-      errors: [],
-      hasErrors: false,
-      helper: {
-        formatPrice,
-        getMinRate,
-        getTimeAgo,
-      },
-    });
+    try {
+      const [lotModel, allBets, maxPrice] = await Promise.all([
+        lotModelPromise,
+        allBetsPromise,
+        maxPricePromise,
+      ]);
+
+      this.render(res, 'lotPage', {
+        pageTitle: lotModel.title,
+        bets: allBets,
+        maxPrice: maxPrice,
+        lot: lotModel,
+        errors: [],
+        hasErrors: false,
+        helper: {
+          formatPrice,
+          getMinRate,
+          getTimeAgo,
+        },
+      });
+    } catch (error) {
+      this.renderError(res, error);
+    }
   };
 
   public sendNewBetForm = async (
     req: Request,
     res: Response,
   ): Promise<void> => {
-    // TODO: use framework method
-    const { body, params, session } = req;
-    const { id: idParam } = params;
+    const body = this.getBody<CrateBet>(req);
+    const user = this.getSession(req, 'user');
+    const idParam = this.getParam(req, 'id');
 
-    const lotModel = await this.modelFactoryService.load(LotModel, idParam);
     const betModel = this.modelFactoryService.getEmptyModel(BetModel);
-    const bets = await betModel.getHistoryOfRatesByLotId(idParam);
-    const maxPrice = await betModel.getMaxPriceByLotId(idParam);
 
-    const { id, price, step, title } = lotModel;
+    const lotModelPromise = this.modelFactoryService.load(LotModel, idParam);
+    const allBetsPromise = betModel.getHistoryOfRatesByLotId(idParam);
+    const maxPricePromise = betModel.getMaxPriceByLotId(idParam);
 
-    // TODO: if (! && !) throw new Err
-    if (id && price && step && title) {
+    try {
+      const [lotModel, allBets, maxPrice] = await Promise.all([
+        lotModelPromise,
+        allBetsPromise,
+        maxPricePromise,
+      ]);
+
+      const { id, price, step, title } = lotModel;
+
+      if (!id || !price || !step || !title) return;
+
       const minPrice = Math.max(price, maxPrice.price) + step;
-      const formData = { ...body };
 
       const validation = new ValidationService(
         newBetSchema(minPrice),
-        formData,
+        body,
       ).validate();
 
       if (validation.hasErrors()) {
         return this.render(res, 'lotPage', {
           pageTitle: lotModel.title,
-          bets,
+          bets: allBets,
           maxPrice,
           lot: lotModel,
           errors: validation.getErrors(),
@@ -84,12 +100,9 @@ export class LotController extends BaseController {
         });
       }
 
-      if (session.user) {
-        const { user } = session;
-
-        // TODO: handle errors
+      if (user) {
         const betData = {
-          price: Number(formData.price),
+          price: Number(body.price),
           lotId: id,
           userId: user.id,
         };
@@ -99,51 +112,56 @@ export class LotController extends BaseController {
         const path = `/lots/${id}`;
         this.redirect(res, path);
       }
+    } catch (error) {
+      this.renderError(res, error);
     }
   };
 
+  // TODO: there is problem with amount of items
+  // because method`getCount` has issue
   public getLotsByCategoryPage = async (
     req: Request,
     res: Response,
   ): Promise<void> => {
+    const currentPage = this.getCurrentPage(req);
+    const uri = this.getUri(req);
     const name = this.getParam(req, 'name');
+    const categoryName = `${name[0].toLocaleUpperCase()}${name.slice(1)}`;
 
-    const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
-    const lots = await lotModel.getLotsByCategory(
-      name[0].toLocaleUpperCase() + name.slice(1),
-    );
+    const paginator = new PaginatorService(this.modelFactoryService, LotModel);
 
-    // TODO: return page error
-    // if (!lots) return res.status(404).send('what???');
+    try {
+      await paginator
+        .setUri(uri)
+        .setItemsPerPage(6)
+        .setCurrentPage(currentPage)
+        .init('getLotsByCategory', [categoryName]);
 
-    this.render(res, 'lotsByCategoryPage', {
-      pageTitle: name,
-      name,
-      lots,
-      helper: {
-        formatPrice,
-        getTimeLeft,
-        isTimeFinishing,
-        getLotPath,
-      },
-    });
+      const lots = paginator.getItems();
+
+      this.render(res, 'lotsByCategoryPage', {
+        pageTitle: name,
+        name,
+        paginator,
+        lots,
+        helper: {
+          formatPrice,
+          getTimeLeft,
+          isTimeFinishing,
+          getLotPath,
+        },
+      });
+    } catch (error) {
+      this.renderError(res, error);
+    }
   };
 
   public getNewLotPage = (_: Request, res: Response): void => {
-    // use model
-    const lot = {
-      name: '',
-      description: '',
-      category: '',
-      image: '',
-      price: '',
-      step: '',
-      endDate: '',
-    };
+    const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
 
     this.render(res, 'newLotPage', {
       pageTitle: 'Add new lot',
-      lot,
+      lot: lotModel,
       errors: [],
       hasErrors: false,
       helper: {
@@ -157,16 +175,19 @@ export class LotController extends BaseController {
     req: Request,
     res: Response,
   ): Promise<void> => {
-    // TODO: use framework methods
-    const { body, file, session } = req;
+    const body = this.getBody<Omit<CreateLot, 'imageUrl'>>(req);
+    const file = this.getFile(req);
+    const user = this.getSession(req, 'user');
 
-    const imageData = file && { size: file?.size, mimetype: file?.mimetype };
-    const formData = { ...body, imageUrl: imageData };
+    const validation = new ValidationService(newLotSchema, {
+      ...body,
+      image: {
+        size: file?.size,
+        mimetype: file?.mimetype,
+      },
+    }).validate();
 
-    const imageUrl = `/img/uploads/${file?.filename}`;
-    const lot = { ...body, imageUrl };
-
-    const validation = new ValidationService(newLotSchema, formData).validate();
+    const lot = { ...body, imageUrl: `/img/uploads/${file?.filename}` };
 
     if (validation.hasErrors()) {
       return this.render(res, 'newLotPage', {
@@ -181,15 +202,18 @@ export class LotController extends BaseController {
       });
     }
 
-    if (session.user) {
-      const { id } = session.user;
+    if (user) {
+      const { id } = user;
       const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
 
-      // TODO: handle errors
-      const { id: lotId } = await lotModel.addLot(lot, id);
+      try {
+        const { id: lotId } = await lotModel.addLot(lot, id);
 
-      const path = `/lots/${lotId}`;
-      this.redirect(res, path);
+        const path = `/lots/${lotId}`;
+        this.redirect(res, path);
+      } catch (error) {
+        this.renderError(res, error);
+      }
     }
   };
 }

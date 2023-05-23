@@ -2,7 +2,7 @@ import { Id, Timestamp } from '../../../common';
 
 export interface Lot {
   id: Id;
-  name: string;
+  title: string;
   description: string;
   imageUrl: string;
   price: number;

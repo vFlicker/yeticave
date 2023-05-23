@@ -54,7 +54,9 @@ export class BaseModel {
 
   public load(data: Record<string, any>): this {
     for (const [key, value] of Object.entries(data)) {
-      this[key] = value;
+      if (this.hasOwnProperty(key)) {
+        this[key] = value;
+      }
     }
 
     return this;

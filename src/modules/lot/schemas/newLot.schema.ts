@@ -14,7 +14,7 @@ const imageSchema = Joi.object({
   .messages({ 'any.required': 'Image is a required' });
 
 export const newLotSchema = Joi.object({
-  name: Joi.string().min(3).max(255).required(),
+  title: Joi.string().min(3).max(255).required(),
   category: Joi.string().required(),
   description: Joi.string().required(),
   price: Joi.number().min(1).required(),

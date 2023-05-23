@@ -61,7 +61,10 @@ export class PaginatorService<T extends BaseModel>
 
     if (!uri) throw new Error('Uri was not set');
 
-    const searchParams = new URLSearchParams(uri.slice(1));
+    const query = uri.match(/\?.*$/);
+    const parsedQuery = query ? query[0] : '';
+    const searchParams = new URLSearchParams(parsedQuery);
+
     searchParams.set('page', page.toString());
 
     return `?${searchParams.toString()}`;

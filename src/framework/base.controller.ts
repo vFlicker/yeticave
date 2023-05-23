@@ -51,6 +51,22 @@ export class BaseController {
     return req.session[name];
   }
 
+  public closeSession<T extends Exclude<keyof SessionData, 'Cookie'>>(
+    req: Request,
+    name: T,
+  ): void {
+    // TODO: can I remove any?
+    req.session[name] = null as any;
+  }
+
+  public getBody<T>(req: Request): T {
+    return req.body as T;
+  }
+
+  public getFile(req: Request): Express.Multer.File | undefined {
+    return req.file;
+  }
+
   public getCookie<T>(req: Request, key: string): T {
     const data = JSON.parse(req.cookies[key] || '[]');
     return data;

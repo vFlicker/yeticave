@@ -1,20 +1,20 @@
 import { createPlaceholders, Id, Timestamp } from '../../common';
 import { BaseModel } from '../../framework';
 import { CategoryModel } from '../category';
-import { Lot, LotId } from './interfaces';
+import { CreateLot, Lot, LotId } from './interfaces';
 import { LotQuery } from './lot.query';
 
 export class LotModel extends BaseModel {
   protected tableName = 'lot';
 
-  public id?: Id;
-  public title?: string;
-  public description?: string;
-  public imageUrl?: string;
-  public price?: number;
-  public step?: number;
-  public endDate?: Timestamp;
-  public category?: string;
+  public id: Id = '';
+  public title = '';
+  public description = '';
+  public imageUrl = '';
+  public price = 0;
+  public step = 0;
+  public endDate: Timestamp = '';
+  public category = '';
 
   private queryBuilder = new LotQuery(this);
 
@@ -40,14 +40,15 @@ export class LotModel extends BaseModel {
     return lots;
   }
 
-  public async addLot(lot: Lot, userId: string): Promise<LotId> {
+  public async addLot(createLot: CreateLot, userId: string): Promise<LotId> {
     // TODO: look at this function
-    const length = Object.keys(lot).length + 1;
+    const length = Object.keys(createLot).length + 1;
     const placeholders = createPlaceholders(length);
 
     // TODO: is it need here?
     const categoryModel = this.modelFactoryService.getEmptyModel(CategoryModel);
-    const { category, description, endDate, imageUrl, name, price, step } = lot;
+    const { category, description, endDate, imageUrl, title, price, step } =
+      createLot;
 
     const { id: categoryId } = await categoryModel.getIdByCategoryName(
       category,
@@ -71,7 +72,7 @@ export class LotModel extends BaseModel {
     const lotId = await this.getScalarValue<LotId>(sql, [
       categoryId,
       userId,
-      name,
+      title,
       imageUrl,
       description,
       price,

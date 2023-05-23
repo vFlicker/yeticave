@@ -3,10 +3,10 @@
     action="/lots/new" method="post">
     <h2>Add a lot</h2>
     <div class="form__container-two">
-      <div class="form__item <%= errors.hasOwnProperty('name') ? 'form__item--invalid' : '' %>">
+      <div class="form__item <%= errors.hasOwnProperty('title') ? 'form__item--invalid' : '' %>">
         <label for="name">Name <sup>*</sup></label>
-        <input id="name" type="text" name="name" placeholder="Enter lot name" value="<%= lot.name %>" />
-        <span class="form__error"><%= errors.name %></span>
+        <input id="name" type="text" name="title" placeholder="Enter lot name" value="<%= lot.title %>" />
+        <span class="form__error"><%= errors.title %></span>
       </div>
       <div class="form__item <%= errors.hasOwnProperty('category') ? 'form__item--invalid' : '' %>">
         <label for="category">Category <sup>*</sup></label>

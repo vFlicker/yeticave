@@ -5,7 +5,6 @@ export class CategoryQuery extends BaseQuery {
     return this.getSql();
   }
 
-  // TODO: use getScalarValue
   public getIdByCategoryName(): string {
     this.where = `WHERE category_name = $1`;
 

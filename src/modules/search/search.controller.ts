@@ -1,4 +1,4 @@
-import { RequestHandler, Response } from 'express';
+import { Request, Response } from 'express';
 
 import {
   formatPrice,
@@ -9,33 +9,30 @@ import {
 import { BaseController } from '../../framework';
 import { LotModel } from '../lot/lot.model';
 
-type ReqQuery = {
-  text: string;
-};
-
-// TODO: add middleware for validation query
 export class SearchController extends BaseController {
   protected dirname = __dirname;
 
-  // TODO: Typed params
-  public getSearchPage: RequestHandler<any, any, any, ReqQuery> = async (
-    req,
-    res: Response,
-  ): Promise<void> => {
-    const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
-    // TODO: use framework method
-    const lots = await lotModel.getLotsByText(req.query.text);
+  public getSearchPage = async (req: Request, res: Response): Promise<void> => {
+    const searchText = this.getQuery<string>(req, 'text');
 
-    this.render(res, 'searchPage', {
-      pageTitle: 'Find lot',
-      search: req.query.text,
-      lots,
-      helper: {
-        formatPrice,
-        getTimeLeft,
-        isTimeFinishing,
-        getLotPath,
-      },
-    });
+    const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
+
+    try {
+      const lots = await lotModel.getLotsByText(searchText);
+
+      this.render(res, 'searchPage', {
+        pageTitle: 'Found lots',
+        search: searchText,
+        lots,
+        helper: {
+          formatPrice,
+          getTimeLeft,
+          isTimeFinishing,
+          getLotPath,
+        },
+      });
+    } catch (error) {
+      this.renderError(res, error);
+    }
   };
 }

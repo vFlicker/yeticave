@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 
 import { ROOT_PREFIX, SIGN_IN_PAGE, ValidationService } from '../../common';
 import { BaseController } from '../../framework';
+import { SignIn, User } from './interfaces';
 import { createUserSchema, registerUserSchema } from './schemas';
 import { UserModel } from './user.model';
 
@@ -23,16 +24,18 @@ export class UserController extends BaseController {
   protected dirname = __dirname;
 
   public getSignInPage = (req: Request, res: Response): void => {
-    if (req.session.user) return this.redirect(res, ROOT_PREFIX);
+    const user = this.getSession(req, 'user');
 
-    const user = {
-      email: '',
-      password: '',
-    };
+    if (user) {
+      this.redirect(res, ROOT_PREFIX);
+      return;
+    }
+
+    const userModel = this.modelFactoryService.getEmptyModel(UserModel);
 
     this.render(res, 'signInPage', {
       pageTitle: 'Login',
-      user,
+      user: userModel,
       errors: [],
       hasErrors: false,
       canLogin: false,
@@ -44,12 +47,12 @@ export class UserController extends BaseController {
     req: Request,
     res: Response,
   ): Promise<void> => {
-    // TODO: use framework method
-    const { body: formData } = req;
+    const formData = this.getBody<SignIn>(req);
+
+    // TODO: add title
+    const pageTitle = 'Login';
 
     const userModel = this.modelFactoryService.getEmptyModel(UserModel);
-
-    const pageTitle = 'Login';
 
     const validation = new ValidationService(
       createUserSchema,
@@ -67,29 +70,12 @@ export class UserController extends BaseController {
       });
     }
 
-    const foundUser = await userModel.getUserByEmail(formData.email);
+    try {
+      const errors = { message: 'Invalid email or password' };
 
-    if (!foundUser) {
-      const errors = {
-        message: 'Invalid email or password',
-      };
+      const foundUser = await userModel.getUserByEmail(formData.email);
 
-      return this.render(res, 'signInPage', {
-        pageTitle,
-        user: formData,
-        errors,
-        hasErrors: true,
-        canLogin: false,
-        helper: {},
-      });
-    }
-
-    bcrypt.compare(formData.password, foundUser.password, (_, result) => {
-      if (!result) {
-        const errors = {
-          message: 'Invalid email or password',
-        };
-
+      if (!foundUser) {
         return this.render(res, 'signInPage', {
           pageTitle,
           user: formData,
@@ -100,27 +86,39 @@ export class UserController extends BaseController {
         });
       }
 
-      req.session.regenerate(() => {
-        req.session.user = foundUser;
+      bcrypt.compare(formData.password, foundUser.password, (_, result) => {
+        if (!result) {
+          this.render(res, 'signInPage', {
+            pageTitle,
+            user: formData,
+            errors,
+            hasErrors: true,
+            canLogin: false,
+            helper: {},
+          });
 
-        req.session.save(() => {
-          this.redirect(res, ROOT_PREFIX);
+          return;
+        }
+
+        req.session.regenerate(() => {
+          req.session.user = foundUser;
+
+          req.session.save(() => {
+            this.redirect(res, ROOT_PREFIX);
+          });
         });
       });
-    });
+    } catch (error) {
+      this.renderError(res, error);
+    }
   };
 
   public getSignUpPage = async (_: Request, res: Response): Promise<void> => {
-    const user = {
-      email: '',
-      password: '',
-      name: '',
-      message: '',
-    };
+    const userModel = this.modelFactoryService.getEmptyModel(UserModel);
 
     this.render(res, 'signUpPage', {
       pageTitle: 'Register',
-      user,
+      user: userModel,
       errors: [],
       hasErrors: false,
       canLogin: false,
@@ -132,20 +130,21 @@ export class UserController extends BaseController {
     req: Request,
     res: Response,
   ): Promise<void> => {
-    const { body: formData } = req;
+    const formData = this.getBody<Omit<User, 'id'>>(req);
 
+    // TODO: const registerModel = new RegisterModel();
+    // registerModel.load(formData);
     const userModel = this.modelFactoryService.getEmptyModel(UserModel);
 
     const pageTitle = 'Register';
 
     const validation = new ValidationService(
       registerUserSchema,
-      // TODO: replace formData in all controllers
       formData,
     ).validate();
 
     if (validation.hasErrors()) {
-      return this.render(res, 'signUpPage', {
+      this.render(res, 'signUpPage', {
         pageTitle,
         user: formData,
         errors: validation.getErrors(),
@@ -153,20 +152,25 @@ export class UserController extends BaseController {
         canLogin: false,
         helper: {},
       });
+
+      return;
     }
 
     const { name, email, password, contacts } = formData;
 
-    // TODO: check user email uniq
+    try {
+      // TODO: check user email uniq
+      const passwordHash = await bcrypt.hash(password, 10);
+      await userModel.create({ name, email, password: passwordHash, contacts });
 
-    const passwordHash = await bcrypt.hash(password, 10);
-    await userModel.create({ name, email, password: passwordHash, contacts });
-
-    this.redirect(res, SIGN_IN_PAGE);
+      this.redirect(res, SIGN_IN_PAGE);
+    } catch (error) {
+      this.renderError(res, error);
+    }
   };
 
   public logout = (req: Request, res: Response) => {
-    req.session.user = null;
+    this.closeSession(req, 'user');
 
     req.session.save(() => {
       req.session.regenerate(() => {
