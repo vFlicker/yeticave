@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { SessionData } from 'express-session';
 import path from 'path';
 
+import { APP_TITLE } from '../common';
 import { ModelFactoryService } from './modelFactory.service';
 
 interface ErrorData {
@@ -13,9 +14,18 @@ interface ErrorData {
 export class BaseController {
   protected dirname = '';
   protected modelFactoryService: ModelFactoryService;
+  protected pageTitle = '';
 
   constructor(modelFactoryService: ModelFactoryService) {
     this.modelFactoryService = modelFactoryService;
+  }
+
+  public getTitle() {
+    if (this.pageTitle) {
+      return `${this.pageTitle} | ${APP_TITLE}`;
+    }
+
+    return APP_TITLE;
   }
 
   public redirect(res: Response, path: string): void {
@@ -29,9 +39,10 @@ export class BaseController {
   // TODO: createAuthUser?
   // const user = new AuthUser(req.session);
 
-  public render(res: Response, fileName: string, data: object): void {
+  public render(res: Response, fileName: string, data?: object): void {
     const view = this.getView(fileName);
-    res.render(view, data);
+
+    res.render(view, { pageTitle: this.getTitle(), ...data });
   }
 
   public renderError(

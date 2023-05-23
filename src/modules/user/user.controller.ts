@@ -3,28 +3,17 @@ import { Request, Response } from 'express';
 
 import { LOGIN, ROOT_PREFIX, ValidationService } from '../../common';
 import { BaseController } from '../../framework';
-import { SignIn, User } from './interfaces';
+import { LoginData, User } from './interfaces';
 import { createUserSchema, registerUserSchema } from './schemas';
 import { UserModel } from './user.model';
-
-// TODO: create types
-// type SingInData = {
-//   email: string;
-//   password: string;
-// };
-
-// type SingUpData = {
-//   email: string;
-//   password: string;
-//   name: string;
-//   contacts: string;
-// };
 
 export class UserController extends BaseController {
   protected dirname = __dirname;
 
   public getLoginPage = (req: Request, res: Response): void => {
     const user = this.getSession(req, 'user');
+
+    this.pageTitle = 'Login';
 
     if (user) {
       this.redirect(res, ROOT_PREFIX);
@@ -34,7 +23,6 @@ export class UserController extends BaseController {
     const userModel = this.modelFactoryService.getEmptyModel(UserModel);
 
     this.render(res, 'loginPage', {
-      pageTitle: 'Login',
       user: userModel,
       errors: [],
       hasErrors: false,
@@ -44,10 +32,9 @@ export class UserController extends BaseController {
   };
 
   public login = async (req: Request, res: Response): Promise<void> => {
-    const formData = this.getBody<SignIn>(req);
+    const formData = this.getBody<LoginData>(req);
 
-    // TODO: add title
-    const pageTitle = 'Login';
+    this.pageTitle = 'Login';
 
     const userModel = this.modelFactoryService.getEmptyModel(UserModel);
 
@@ -58,7 +45,6 @@ export class UserController extends BaseController {
 
     if (validation.hasErrors()) {
       return this.render(res, 'loginPage', {
-        pageTitle,
         user: formData,
         errors: validation.getErrors(),
         hasErrors: validation.hasErrors(),
@@ -74,7 +60,6 @@ export class UserController extends BaseController {
 
       if (!foundUser) {
         return this.render(res, 'loginPage', {
-          pageTitle,
           user: formData,
           errors,
           hasErrors: true,
@@ -86,7 +71,6 @@ export class UserController extends BaseController {
       bcrypt.compare(formData.password, foundUser.password, (_, result) => {
         if (!result) {
           this.render(res, 'loginPage', {
-            pageTitle,
             user: formData,
             errors,
             hasErrors: true,
@@ -111,10 +95,11 @@ export class UserController extends BaseController {
   };
 
   public getRegisterPage = async (_: Request, res: Response): Promise<void> => {
+    this.pageTitle = 'Register';
+
     const userModel = this.modelFactoryService.getEmptyModel(UserModel);
 
     this.render(res, 'registerPage', {
-      pageTitle: 'Register',
       user: userModel,
       errors: [],
       hasErrors: false,
@@ -126,11 +111,11 @@ export class UserController extends BaseController {
   public register = async (req: Request, res: Response): Promise<void> => {
     const formData = this.getBody<Omit<User, 'id'>>(req);
 
+    this.pageTitle = 'Register';
+
     // TODO: const registerModel = new RegisterModel();
     // registerModel.load(formData);
     const userModel = this.modelFactoryService.getEmptyModel(UserModel);
-
-    const pageTitle = 'Register';
 
     const validation = new ValidationService(
       registerUserSchema,
@@ -139,7 +124,6 @@ export class UserController extends BaseController {
 
     if (validation.hasErrors()) {
       this.render(res, 'registerPage', {
-        pageTitle,
         user: formData,
         errors: validation.getErrors(),
         hasErrors: validation.hasErrors(),

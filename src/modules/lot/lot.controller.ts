@@ -35,10 +35,11 @@ export class LotController extends BaseController {
         maxPricePromise,
       ]);
 
+      this.pageTitle = lotModel.title;
+
       const isShowBetForm = user && user.id !== lotModel.userId;
 
       this.render(res, 'lotPage', {
-        pageTitle: lotModel.title,
         bets: allBets,
         maxPrice: maxPrice,
         lot: lotModel,
@@ -67,6 +68,8 @@ export class LotController extends BaseController {
     const name = this.getParam(req, 'name');
     const categoryName = `${name[0].toLocaleUpperCase()}${name.slice(1)}`;
 
+    this.pageTitle = name;
+
     const paginator = new PaginatorService(this.modelFactoryService, LotModel);
 
     try {
@@ -79,7 +82,6 @@ export class LotController extends BaseController {
       const lots = paginator.getItems();
 
       this.render(res, 'lotsByCategoryPage', {
-        pageTitle: name,
         name,
         paginator,
         lots,
@@ -98,8 +100,9 @@ export class LotController extends BaseController {
   public getNewLotPage = (_: Request, res: Response): void => {
     const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
 
+    this.pageTitle = 'Add new lot';
+
     this.render(res, 'newLotPage', {
-      pageTitle: 'Add new lot',
       lot: lotModel,
       errors: [],
       hasErrors: false,
@@ -115,6 +118,8 @@ export class LotController extends BaseController {
     const file = this.getFile(req);
     const user = this.getSession(req, 'user');
 
+    this.pageTitle = 'Add new lot';
+
     const validation = new ValidationService(newLotSchema, {
       ...body,
       image: {
@@ -127,7 +132,6 @@ export class LotController extends BaseController {
 
     if (validation.hasErrors()) {
       return this.render(res, 'newLotPage', {
-        pageTitle: 'Add new lot',
         lot,
         errors: validation.getErrors(),
         hasErrors: validation.hasErrors(),

@@ -22,6 +22,8 @@ export class BetController extends BaseController {
   public getMyBetsPage = async (req: Request, res: Response): Promise<void> => {
     const user = this.getSession(req, 'user');
 
+    this.pageTitle = 'My bets';
+
     if (!user) {
       this.redirect(res, ROOT_PREFIX);
       return;
@@ -33,7 +35,6 @@ export class BetController extends BaseController {
       const bets = await betModel.getBetsForUser(user.id);
 
       this.render(res, 'myBetsPage', {
-        pageTitle: 'My bets',
         bets,
         helper: {
           formatPrice,
@@ -66,6 +67,8 @@ export class BetController extends BaseController {
         maxPricePromise,
       ]);
 
+      this.pageTitle = lotModel.title;
+
       const { id, price, step, title } = lotModel;
 
       if (!id || !price || !step || !title) return;
@@ -79,7 +82,6 @@ export class BetController extends BaseController {
 
       if (validation.hasErrors()) {
         return this.render(res, 'lotPage', {
-          pageTitle: lotModel.title,
           bets: allBets,
           maxPrice,
           lot: lotModel,

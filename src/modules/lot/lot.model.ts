@@ -13,8 +13,8 @@ export class LotModel extends BaseModel {
   public title = '';
   public description = '';
   public imageUrl = '';
-  public price = '';
-  public step = '';
+  public price = 0;
+  public step = 0;
   public endDate: Timestamp = '';
   public category = '';
 

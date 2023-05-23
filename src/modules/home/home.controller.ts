@@ -16,6 +16,8 @@ export class HomeController extends BaseController {
     const currentPage = this.getCurrentPage(req);
     const uri = this.getUri(req);
 
+    this.pageTitle = 'Home';
+
     const paginator = new PaginatorService(this.modelFactoryService, LotModel);
 
     try {
@@ -28,7 +30,6 @@ export class HomeController extends BaseController {
       const lots = paginator.getItems();
 
       this.render(res, 'homePage', {
-        pageTitle: 'Home',
         canShowTomMenu: false,
         paginator,
         lots,

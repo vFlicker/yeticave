@@ -15,13 +15,14 @@ export class SearchController extends BaseController {
   public getSearchPage = async (req: Request, res: Response): Promise<void> => {
     const searchText = this.getQuery<string>(req, 'text');
 
+    this.pageTitle = 'Found lots';
+
     const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
 
     try {
       const lots = await lotModel.getLotsByText(searchText);
 
       this.render(res, 'searchPage', {
-        pageTitle: 'Found lots',
         search: searchText,
         lots,
         helper: {

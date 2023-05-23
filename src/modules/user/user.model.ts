@@ -1,14 +1,6 @@
 import { BaseModel } from '../../framework';
-import { User } from './interfaces';
+import { CreateNewUser, User } from './interfaces';
 import { UserQuery } from './user.query';
-
-// TODO: move to interfaces
-type SingUpData = {
-  email: string;
-  password: string;
-  name: string;
-  contacts: string;
-};
 
 export class UserModel extends BaseModel {
   protected tableName = 'user';
@@ -36,7 +28,7 @@ export class UserModel extends BaseModel {
     return user;
   }
 
-  public async createNewUser(data: SingUpData): Promise<void> {
+  public async createNewUser(data: CreateNewUser): Promise<void> {
     const { name, email, password, contacts } = data;
 
     const rows = ['user_name', 'email', 'user_password', 'contacts'];

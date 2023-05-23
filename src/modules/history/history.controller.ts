@@ -19,8 +19,10 @@ export class HistoryController extends BaseController {
   ): Promise<void> => {
     const ids = this.getCookie<string[]>(req, LOT_HISTORY_COOKIE_KEY);
 
+    this.pageTitle = 'History';
+
     if (!ids.length) {
-      this.render(res, 'emptyHistoryPage', { pageTitle: 'History' });
+      this.render(res, 'emptyHistoryPage');
       return;
     }
 
@@ -39,7 +41,6 @@ export class HistoryController extends BaseController {
       const lots = paginator.getItems();
 
       this.render(res, 'historyPage', {
-        pageTitle: 'History',
         lots,
         paginator,
         helper: {
