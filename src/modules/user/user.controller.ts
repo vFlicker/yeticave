@@ -89,8 +89,7 @@ export class UserController extends BaseController {
 
     this.render(res, 'registerPage', {
       user: userModel,
-      errors: [],
-      hasErrors: false,
+      validation: null,
       canLogin: false,
       helper: {},
     });
@@ -113,8 +112,7 @@ export class UserController extends BaseController {
     if (validation.hasErrors()) {
       return this.render(res, 'registerPage', {
         user: formData,
-        errors: validation.getErrors(),
-        hasErrors: validation.hasErrors(),
+        validation,
         canLogin: false,
         helper: {},
       });

@@ -26,7 +26,7 @@ export const lotRouter: Router = [
     method: 'post',
     className: LotController,
     action: 'createNewLot',
-    middlewares: [fileUploader.single('imageUrl')],
+    middlewares: [fileUploader.single('image')],
   },
   {
     path: LOT_PAGE,

@@ -1,59 +1,23 @@
-<main>
-  <form class="form form--add-lot container <%= hasErrors ? 'form--invalid' : '' %>" enctype="multipart/form-data"
-    action="/lots/new" method="post">
+<% const form = new Form(lot, validation); %>
+
+<main class="container">
+  <%- form.begin('/lots/new', 'post', {
+    enctype: 'multipart/form-data',
+    className: 'form--lot',
+  }); %>
     <h2>Add a lot</h2>
-    <div class="form__container-two">
-      <div class="form__item <%= errors.hasOwnProperty('title') ? 'form__item--invalid' : '' %>">
-        <label for="name">Name <sup>*</sup></label>
-        <input id="name" type="text" name="title" placeholder="Enter lot name" value="<%= lot.title %>" />
-        <span class="form__error"><%= errors.title %></span>
-      </div>
-      <div class="form__item <%= errors.hasOwnProperty('category') ? 'form__item--invalid' : '' %>">
-        <label for="category">Category <sup>*</sup></label>
-        <select id="category" name="category">
-          <% categories.forEach((category) => { %>
-          <option><%= category.name %></option>
-          <% }); %>
-        </select>
-        <span class="form__error"><%= errors.category %></span>
-      </div>
+    <div class="form__container">
+      <%- form.field('Name *', 'title', 'Enter lot name'); %>
+      <%- form.field('Category *', 'category').selectField(categories); %>
     </div>
-    <div class="form__item form__item--wide <%= errors.hasOwnProperty('description') ? 'form__item--invalid' : '' %>">
-      <label for="description">Description <sup>*</sup></label>
-      <textarea id="description" name="description"
-        placeholder="Write a description of the lot"><%= lot.description %></textarea>
-      <span class="form__error"><%= errors.message %></span>
+    <%- form.field('Description *', 'description', 'Write a description of the lot').textareaField(); %>
+    <%- form.field('Image *', 'image').fileField(); %>
+    <div class="form__container">
+      <%- form.field('Starting price *', 'price', '0').numberField(); %>
+      <%- form.field('Bet step *', 'step', '0').numberField(); %>
+      <%- form.field('End date of auction *', 'endDate', 'Please enter a date'); %>
     </div>
-    <div class="form__item form__item--file <%= errors.hasOwnProperty('imageUrl') ? 'form__item--invalid' : '' %>">
-      <label>Image <sup>*</sup></label>
-      <div class="form__input-file">
-        <input class="visually-hidden" type="file" id="photo" name="imageUrl" />
-        <label for="photo">
-          <span class="form__add-button">+</span>
-          <img src="<%= lot.imageUrl %>" width="113" height="113" alt="Lot image" />
-        </label>
-      </div>
-      <span class="form__error"><%= errors.imageUrl %></span>
-    </div>
-    <div class="form__container-three">
-      <div class="form__item form__item--small <%= errors.hasOwnProperty('price') ? 'form__item--invalid' : '' %>">
-        <label for="price">Starting price <sup>*</sup></label>
-        <input id="price" type="number" min="0" name="price" placeholder="0" value="<%= lot.price %>" />
-        <span class="form__error"><%= errors.price %></span>
-      </div>
-      <div class="form__item form__item--small <%= errors.hasOwnProperty('step') ? 'form__item--invalid' : '' %>">
-        <label for="step">Bet step <sup>*</sup></label>
-        <input id="step" type="number" min="0" name="step" placeholder="0" value="<%= lot.step %>" />
-        <span class="form__error"><%= errors.step %></span>
-      </div>
-      <div class="form__item <%= errors.hasOwnProperty('endDate') ? 'form__item--invalid' : '' %>">
-        <label for="endDate">End date of auction <sup>*</sup></label>
-        <input id="date-picker" class="form__input-date flatpickr-input active" type="text" name="endDate"
-          placeholder="Please enter a date" readonly="readonly" value="<%= lot.endDate %>">
-        <span class="form__error"><%= errors.endDate %></span>
-      </div>
-    </div>
-    <div class='form__error-message'><%= errors.message %></div>
+    <%- form.errorBlock(); %>
     <button type="submit" class="button">Add lot</button>
-  </form>
+  <%- form.end(); %>
 </main>

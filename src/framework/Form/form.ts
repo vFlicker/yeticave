@@ -14,15 +14,16 @@ export class Form {
     options: Record<string, string> = {},
   ): string {
     const errorClass = this.validation?.hasErrors() ? 'form--invalid' : '';
+    const { className: formClass = '', ...restOptions } = options;
 
-    const attributes = Object.entries(options)
+    const attributes = Object.entries(restOptions)
       .map(([key, value]) => `${key}=${value}`)
       .join(' ');
 
     return `<form
       action="${action}"
       method="${method}"
-      class="form container ${errorClass}"
+      class="form ${formClass} ${errorClass}"
       ${attributes}>
     `;
   }

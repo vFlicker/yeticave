@@ -13,7 +13,7 @@
 
 (() => {
   /* Date picker */
-  const datePickerElement = document.querySelector('#date-picker');
+  const datePickerElement = document.querySelector('#endDate');
 
   if (datePickerElement) {
     flatpickr(datePickerElement, {
@@ -28,11 +28,11 @@
   /* Lot preview */
   const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
-  const wrapperElement = document.querySelector('.form__input-file');
+  const uploaderElement = document.querySelector('.uploader');
 
-  if (wrapperElement) {
-    const previewElement = wrapperElement.querySelector('img');
-    const chooseFileElement = wrapperElement.querySelector('input[type=file]');
+  if (uploaderElement) {
+    const previewElement = uploaderElement.querySelector('.uploader__image');
+    const chooseFileElement = uploaderElement.querySelector('.uploader__input');
 
     const onFileChange = () => {
       const file = chooseFileElement.files[0];
@@ -44,7 +44,7 @@
         const reader = new FileReader();
 
         reader.addEventListener('load', () => {
-          wrapperElement.classList.add('form__input-file--selected');
+          uploaderElement.classList.add('uploader__input--selected');
           previewElement.src = reader.result;
         });
 

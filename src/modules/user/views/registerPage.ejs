@@ -1,29 +1,14 @@
-<main>
-  <form class="form container <%= hasErrors ? 'form--invalid' : '' %>" action="/register" method="post"
-    autocomplete="off">
-    <h2>Registering new account</h2>
-    <div class="form__item <%= errors.hasOwnProperty('email') ? 'form__item--invalid' : '' %>">
-      <label for="email">E-mail <sup>*</sup></label>
-      <input id="email" type="text" name="email" placeholder="Enter e-mail" value="<%= user.email %>">
-      <span class="form__error"><%= errors.email %></span>
-    </div>
-    <div class="form__item <%= errors.hasOwnProperty('password') ? 'form__item--invalid' : '' %>">
-      <label for="password">Password <sup>*</sup></label>
-      <input id="password" type="password" name="password" placeholder="Enter password" value="<%= user.password %>">
-      <span class="form__error"><%= errors.password %></span>
-    </div>
-    <div class="form__item <%= errors.hasOwnProperty('name') ? 'form__item--invalid' : '' %>">
-      <label for="name">Name <sup>*</sup></label>
-      <input id="name" type="text" name="name" placeholder="Enter name" value="<%= user.name %>">
-      <span class="form__error"><%= errors.name %></span>
-    </div>
-    <div class="form__item <%= errors.hasOwnProperty('contacts') ? 'form__item--invalid' : '' %>">
-      <label for="message">Contact details <sup>*</sup></label>
-      <textarea id="contacts" name="contacts" placeholder="Write how to contact you"><%= user.contacts %></textarea>
-      <span class="form__error"><%= errors.contacts %></span>
-    </div>
-    <div class='form__error-message'><%= errors.message %></div>
+<% const form = new Form(user, validation); %>
+
+<main class="container">
+  <%- form.begin('/register', 'post', { className: 'form-login' }); %>
+    <h2>Registering</h2>
+    <%- form.field('Email *', 'email', 'Enter e-mail'); %>
+    <%- form.field('Password *', 'password', 'Enter password').passwordField(); %>
+    <%- form.field('Name *', 'name', 'Enter name'); %>
+    <%- form.field('Contact details *', 'contacts', 'Write how to contact you').textareaField(); %>
+    <%- form.errorBlock(); %>
     <button type="submit" class="button">Register</button>
     <a class="text-link" href="/login">Already have account</a>
-  </form>
+  <%- form.end(); %>
 </main>

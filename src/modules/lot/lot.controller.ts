@@ -7,9 +7,12 @@ import {
   getTimeAgo,
   getTimeLeft,
   isTimeFinishing,
-  ValidationService,
 } from '../../common';
-import { BaseController, PaginatorService } from '../../framework';
+import {
+  BaseController,
+  PaginatorService,
+  ValidationService,
+} from '../../framework';
 import { BetModel } from '../bet/bet.model';
 import { CreateLot } from './interfaces';
 import { LotModel } from './lot.model';
@@ -104,8 +107,7 @@ export class LotController extends BaseController {
 
     this.render(res, 'newLotPage', {
       lot: lotModel,
-      errors: [],
-      hasErrors: false,
+      validation: null,
       helper: {
         formatPrice,
         getMinRate,
@@ -120,12 +122,11 @@ export class LotController extends BaseController {
 
     this.pageTitle = 'Add new lot';
 
+    const image = file && { size: file?.size, mimetype: file?.mimetype };
+
     const validation = new ValidationService(newLotSchema, {
       ...body,
-      image: {
-        size: file?.size,
-        mimetype: file?.mimetype,
-      },
+      image,
     }).validate();
 
     const lot = { ...body, imageUrl: `/img/uploads/${file?.filename}` };
@@ -133,8 +134,7 @@ export class LotController extends BaseController {
     if (validation.hasErrors()) {
       return this.render(res, 'newLotPage', {
         lot,
-        errors: validation.getErrors(),
-        hasErrors: validation.hasErrors(),
+        validation,
         helper: {
           formatPrice,
           getMinRate,
