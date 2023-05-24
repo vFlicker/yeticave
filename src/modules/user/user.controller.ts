@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 
-import { LOGIN, ROOT_PREFIX, ValidationService } from '../../common';
-import { BaseController } from '../../framework';
+import { LOGIN, ROOT_PREFIX } from '../../common';
+import { BaseController, ValidationService } from '../../framework';
 import { LoginData, User } from './interfaces';
 import { createUserSchema, registerUserSchema } from './schemas';
 import { UserModel } from './user.model';
@@ -16,18 +16,15 @@ export class UserController extends BaseController {
     this.pageTitle = 'Login';
 
     if (user) {
-      this.redirect(res, ROOT_PREFIX);
-      return;
+      return this.redirect(res, ROOT_PREFIX);
     }
 
     const userModel = this.modelFactoryService.getEmptyModel(UserModel);
 
     this.render(res, 'loginPage', {
       user: userModel,
-      errors: [],
-      hasErrors: false,
+      validation: null,
       canLogin: false,
-      helper: {},
     });
   };
 
@@ -46,39 +43,30 @@ export class UserController extends BaseController {
     if (validation.hasErrors()) {
       return this.render(res, 'loginPage', {
         user: formData,
-        errors: validation.getErrors(),
-        hasErrors: validation.hasErrors(),
+        validation,
         canLogin: false,
-        helper: {},
       });
     }
 
     try {
-      const errors = { message: 'Invalid email or password' };
-
       const foundUser = await userModel.getUserByEmail(formData.email);
+      validation.setError('blockMessage', 'Invalid email or password');
 
       if (!foundUser) {
         return this.render(res, 'loginPage', {
           user: formData,
-          errors,
-          hasErrors: true,
+          validation,
           canLogin: false,
-          helper: {},
         });
       }
 
       bcrypt.compare(formData.password, foundUser.password, (_, result) => {
         if (!result) {
-          this.render(res, 'loginPage', {
+          return this.render(res, 'loginPage', {
             user: formData,
-            errors,
-            hasErrors: true,
+            validation,
             canLogin: false,
-            helper: {},
           });
-
-          return;
         }
 
         req.session.regenerate(() => {
@@ -123,15 +111,13 @@ export class UserController extends BaseController {
     ).validate();
 
     if (validation.hasErrors()) {
-      this.render(res, 'registerPage', {
+      return this.render(res, 'registerPage', {
         user: formData,
         errors: validation.getErrors(),
         hasErrors: validation.hasErrors(),
         canLogin: false,
         helper: {},
       });
-
-      return;
     }
 
     const { name, email, password, contacts } = formData;
@@ -139,6 +125,7 @@ export class UserController extends BaseController {
     try {
       // TODO: check user email uniq
       const passwordHash = await bcrypt.hash(password, 10);
+
       await userModel.createNewUser({
         name,
         email,

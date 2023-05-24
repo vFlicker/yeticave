@@ -1,11 +1,11 @@
 import { ObjectSchema } from 'joi';
 
-type Errors = Record<string, string>;
+import { ValidationErrors } from './types';
 
 export class ValidationService {
   private schema;
   private data;
-  private errors: Errors = {};
+  private errors: ValidationErrors = {};
 
   constructor(schema: ObjectSchema<any>, data: any) {
     this.schema = schema;
@@ -17,7 +17,8 @@ export class ValidationService {
 
     if (error) {
       for (const { context, message } of error.details) {
-        this.errors[context!.label!] = message;
+        const { label } = context!;
+        this.errors[label!] = message;
       }
     }
 
@@ -32,7 +33,19 @@ export class ValidationService {
     return !this.isValid();
   }
 
-  public getErrors(): Errors {
+  public hasError(name: string): boolean {
+    return Boolean(this.errors[name]);
+  }
+
+  public getErrors(): ValidationErrors {
     return this.errors;
+  }
+
+  public getError(name: string): string {
+    return this.errors[name];
+  }
+
+  public setError(label: string, message: string): void {
+    this.errors[label] = message;
   }
 }

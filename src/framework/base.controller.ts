@@ -42,7 +42,7 @@ export class BaseController {
   public render(res: Response, fileName: string, data?: object): void {
     const view = this.getView(fileName);
 
-    res.render(view, { pageTitle: this.getTitle(), ...data });
+    res.render(view, { pageTitle: this.getTitle(), helpers: {}, ...data });
   }
 
   public renderError(
