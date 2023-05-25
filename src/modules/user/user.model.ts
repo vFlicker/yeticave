@@ -3,7 +3,7 @@ import { CreateNewUser, User } from './interfaces';
 import { UserQuery } from './user.query';
 
 export class UserModel extends BaseModel {
-  protected tableName = 'user';
+  protected tableName = 'app_user';
   protected queryBuilder: UserQuery = new UserQuery(this);
 
   public email = '';
@@ -12,17 +12,7 @@ export class UserModel extends BaseModel {
   public contacts = '';
 
   public async getUserByEmail(email: string): Promise<User> {
-    const sql = `SELECT
-      id,
-      email,
-      user_name as name,
-      user_password as password,
-      avatar_url as "avatarUrl",
-      contacts
-    FROM
-      app_user
-    WHERE
-      email = $1`;
+    const sql = this.queryBuilder.getUserByEmail();
 
     const user = this.getScalarValue<User>(sql, [email]);
     return user;

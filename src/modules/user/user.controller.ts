@@ -100,8 +100,6 @@ export class UserController extends BaseController {
 
     this.pageTitle = 'Register';
 
-    // TODO: const registerModel = new RegisterModel();
-    // registerModel.load(formData);
     const userModel = this.modelFactoryService.getEmptyModel(UserModel);
 
     const validation = new ValidationService(
@@ -109,9 +107,11 @@ export class UserController extends BaseController {
       formData,
     ).validate();
 
+    userModel.load(formData);
+
     if (validation.hasErrors()) {
       return this.render(res, 'registerPage', {
-        user: formData,
+        user: userModel,
         validation,
         canLogin: false,
         helper: {},
@@ -121,7 +121,19 @@ export class UserController extends BaseController {
     const { name, email, password, contacts } = formData;
 
     try {
-      // TODO: check user email uniq
+      const user = await userModel.getUserByEmail(email);
+
+      if (user) {
+        validation.setError('email', 'Email must be unique');
+
+        return this.render(res, 'registerPage', {
+          user: userModel,
+          validation,
+          canLogin: false,
+          helper: {},
+        });
+      }
+
       const passwordHash = await bcrypt.hash(password, 10);
 
       await userModel.createNewUser({
