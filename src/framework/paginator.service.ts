@@ -90,8 +90,12 @@ export class PaginatorService<T extends BaseModel>
     const queryBuilder = model.getQuery();
 
     if (queryBuilder && typeof queryBuilder[methodName] === 'function') {
+      const query = queryBuilder[methodName] as QueryMethod;
+      query.call(queryBuilder, parameters);
+
       const countSql = queryBuilder.getCountSql();
-      const { count } = await model.getScalarValue<Count>(countSql);
+      const { count } = await model.getScalarValue<Count>(countSql, parameters);
+
       const offset = (this.currentPage - 1) * this.itemsPerPage;
 
       this.totalResults = Number(count);
@@ -99,9 +103,6 @@ export class PaginatorService<T extends BaseModel>
 
       queryBuilder.setOffset(offset);
       queryBuilder.setLimit(this.itemsPerPage);
-
-      const query = queryBuilder[methodName] as QueryMethod;
-      query.call(queryBuilder, parameters);
 
       const sql = queryBuilder.getSql();
 

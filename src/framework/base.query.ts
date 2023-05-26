@@ -54,9 +54,9 @@ export abstract class BaseQuery {
 
   public getCountSql(): string {
     const select = 'SELECT COUNT(table_name.id)';
-    const where = 'WHERE table_name.end_date > NOW()';
+    const order = '';
 
-    return this.getSql(false, { select, where });
+    return this.getSql(false, { select, order });
   }
 
   protected getLimitSql(): string {

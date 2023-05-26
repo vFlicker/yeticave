@@ -4,9 +4,9 @@
     <p class="promo__text">In our online auction you will find the most exclusive snowboard and ski equipment.</p>
     <ul class="promo__list">
       <% categories.forEach((category) => { %>
-      <li class="promo__item promo__item--<%= category.name.toLowerCase() %>">
-        <a class="promo__link" href="<%= getLotCategoryPath(category.name) %>">
-          <%= category.name %>
+      <li class="promo__item promo__item--<%= category.toLowerCase() %>">
+        <a class="promo__link" href="<%= getLotCategoryPath(category) %>">
+          <%= category %>
         </a>
       </li>
       <% }); %>

@@ -4,7 +4,7 @@ import { BetQuery } from './bet.query';
 import { Bet, CreateBet, HistoryBet, MaxPrice } from './interfaces';
 
 export class BetModel extends BaseModel {
-  protected tableName = 'bet';
+  protected tableName = 'bets';
   protected queryBuilder: BetQuery = new BetQuery(this);
 
   public async getBetsForUser(id: Id): Promise<Bet[]> {
@@ -13,27 +13,27 @@ export class BetModel extends BaseModel {
       title,
       contacts,
       category_name AS "categoryName",
-      lot.end_date AS "endDate",
-      bet.lot_id AS "lotId",
-      bet.price,
-      bet.create_date AS "createDate",
-      bet.is_winner as "isWinner"
+      lots.end_date AS "endDate",
+      bets.lot_id AS "lotId",
+      bets.price,
+      bets.create_date AS "createDate",
+      bets.is_winner as "isWinner"
     FROM (
       SELECT lot_id, MAX(price) AS max_price
-      FROM bet
+      FROM bets
       WHERE user_id = $1
       GROUP BY lot_id
     ) max_bet
-    JOIN bet
-      ON bet.lot_id = max_bet.lot_id AND bet.price = max_bet.max_price
-    JOIN lot
-      ON bet.lot_id = lot.id
-    JOIN category
-      ON lot.category_id = category.id
-    JOIN app_user
-      ON bet.user_id = app_user.id
-    WHERE bet.user_id = $1
-    ORDER BY bet.create_date DESC`;
+    JOIN bets
+      ON bets.lot_id = max_bet.lot_id AND bets.price = max_bet.max_price
+    JOIN lots
+      ON bets.lot_id = lots.id
+    JOIN categories
+      ON lots.category_id = categories.id
+    JOIN users
+      ON bets.user_id = users.id
+    WHERE bets.user_id = $1
+    ORDER BY bets.create_date DESC`;
 
     const bets = this.getScalarValues<Bet>(sql, [id]);
     return bets;
@@ -43,12 +43,12 @@ export class BetModel extends BaseModel {
     const sql = `SELECT
       user_name as "userName",
       price,
-      bet.create_date as "createDate"
-    FROM bet
-    INNER JOIN app_user
-      ON bet.user_id = app_user.id
+      bets.create_date as "createDate"
+    FROM bets
+    JOIN users
+      ON bets.user_id = users.id
     WHERE lot_id = $1
-    ORDER BY bet.create_date DESC`;
+    ORDER BY bets.create_date DESC`;
 
     const historyBets = this.getScalarValues<HistoryBet>(sql, [id]);
     return historyBets;
@@ -57,7 +57,7 @@ export class BetModel extends BaseModel {
   public async getMaxPriceByLotId(id: Id): Promise<MaxPrice> {
     const sql = `SELECT
       Max(price) as price
-    FROM bet
+    FROM bets
     WHERE lot_id = $1;`;
 
     const maxPrice = await this.getScalarValue<MaxPrice>(sql, [id]);
@@ -73,7 +73,7 @@ export class BetModel extends BaseModel {
     const { userId, lotId, price } = createBet;
 
     const sql = `INSERT INTO
-        bet (${fields})
+        bets (${fields})
       VALUES
         (${placeholders})`;
 

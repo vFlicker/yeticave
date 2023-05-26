@@ -36,9 +36,6 @@ export class BaseController {
     res.status(statusCode);
   }
 
-  // TODO: createAuthUser?
-  // const user = new AuthUser(req.session);
-
   public render(res: Response, fileName: string, data?: object): void {
     const view = this.getView(fileName);
 
@@ -70,12 +67,11 @@ export class BaseController {
     return res.locals[name] as T;
   }
 
-  public closeSession<T extends Exclude<keyof SessionData, 'Cookie'>>(
+  public closeSession<T extends Exclude<keyof SessionData, 'cookie'>>(
     req: Request,
     name: T,
   ): void {
-    // TODO: can I remove any?
-    req.session[name] = null as any;
+    req.session[name] = null;
   }
 
   public getBody<T>(req: Request): T {

@@ -1,5 +1,5 @@
 INSERT INTO
-  category (category_name)
+  categories (category_name)
 VALUES
   ('Boards'),
   ('Attachment'),
@@ -9,7 +9,7 @@ VALUES
   ('Other');
 
 INSERT INTO
-  app_user(user_name, email, user_password, contacts)
+  users(user_name, email, user_password, contacts)
 VALUES
   (
     'User 1',
@@ -31,7 +31,7 @@ VALUES
   );
 
 INSERT INTO
-  lot (
+  lots (
     category_id,
     user_id,
     title,
@@ -104,14 +104,14 @@ VALUES
   );
 
 INSERT INTO
-  bet (user_id, lot_id, price)
+  bets (user_id, lot_id, price)
 VALUES
   (1, 1, 11500),
   (3, 6, 6000),
   (2, 5, 8000),
   (3, 5, 8400);
 
-ALTER TABLE lot ADD COLUMN ts tsvector
+ALTER TABLE lots ADD COLUMN ts tsvector
   GENERATED ALWAYS AS (to_tsvector('english', title)) STORED;
 
-CREATE INDEX ts_idx ON lot USING GIN (ts);
+CREATE INDEX ts_idx ON lots USING GIN (ts);

@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 import {
   formatPrice,
+  getLotHistoryCookieKey,
   getLotPath,
   getTimeLeft,
   isTimeFinishing,
@@ -17,9 +18,17 @@ export class HistoryController extends BaseController {
     req: Request,
     res: Response,
   ): Promise<void> => {
-    const ids = this.getCookie<string[]>(req, LOT_HISTORY_COOKIE_KEY);
+    const user = this.getSession(req, 'user');
 
     this.pageTitle = 'History';
+
+    if (!user) {
+      this.renderError(res, 'User is not auth');
+      return;
+    }
+
+    const key = getLotHistoryCookieKey(user.id);
+    const ids = this.getCookie<string[]>(req, key);
 
     if (!ids.length) {
       this.render(res, 'emptyHistoryPage');

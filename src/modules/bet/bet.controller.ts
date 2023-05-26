@@ -8,9 +8,8 @@ import {
   isTimeFinished,
   isTimeFinishing,
   ROOT_PREFIX,
-  ValidationService,
 } from '../../common';
-import { BaseController } from '../../framework';
+import { BaseController, ValidationService } from '../../framework';
 import { LotModel } from '../lot';
 import { BetModel } from './bet.model';
 import { CreateBet } from './interfaces';

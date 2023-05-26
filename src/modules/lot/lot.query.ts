@@ -10,22 +10,22 @@ export class LotQuery extends BaseQuery {
 
   public getLotsByText(): string {
     this.where =
-      "WHERE ts @@ phraseto_tsquery('english', $1) AND end_date > NOW()";
-    this.setOrder('create_date DESC');
+      "WHERE ts @@ phraseto_tsquery('english', $1) AND table_name.end_date > NOW()";
+    this.setOrder('table_name.end_date DESC');
 
     return this.getSql();
   }
 
   public getLotsByCategory(): string {
-    this.where = 'WHERE category_name = $1';
-    this.setOrder('create_date DESC');
+    this.where = 'WHERE category_name = $1 AND table_name.end_date > NOW()';
+    this.setOrder('table_name.end_date DESC');
 
     return this.getSql();
   }
 
   public getUnfinished(): string {
-    this.where = 'WHERE end_date > NOW()';
-    this.setOrder('create_date DESC');
+    this.where = 'WHERE table_name.end_date > NOW()';
+    this.setOrder('table_name.end_date DESC');
 
     return this.getSql();
   }
@@ -34,7 +34,7 @@ export class LotQuery extends BaseQuery {
     const placeholders = LotQuery.createPlaceholders(ids.length);
 
     this.where = `WHERE table_name.id IN (${placeholders})`;
-    this.setOrder('create_date DESC');
+    this.setOrder('table_name.end_date DESC');
 
     return this.getSql();
   }
@@ -53,6 +53,6 @@ export class LotQuery extends BaseQuery {
       end_date AS "endDate",
       category_name AS category`;
     this.from = `FROM ${tableName} AS table_name`;
-    this.join = 'JOIN category ON table_name.category_id = category.id';
+    this.join = 'JOIN categories ON table_name.category_id = categories.id';
   }
 }

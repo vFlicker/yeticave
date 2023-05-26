@@ -5,7 +5,7 @@ import { CreateLot, Lot, LotId } from './interfaces';
 import { LotQuery } from './lot.query';
 
 export class LotModel extends BaseModel {
-  protected tableName = 'lot';
+  protected tableName = 'lots';
   protected queryBuilder: LotQuery = new LotQuery(this);
 
   public id: Id = '';
@@ -51,7 +51,6 @@ export class LotModel extends BaseModel {
     const fields = LotQuery.createFields(rows);
     const placeholders = LotQuery.createPlaceholders(rows.length);
 
-    // TODO: is it need here?
     const categoryModel = this.modelFactoryService.getEmptyModel(CategoryModel);
     const { category, description, endDate, imageUrl, title, price, step } =
       createLot;
@@ -61,7 +60,7 @@ export class LotModel extends BaseModel {
     );
 
     const sql = `INSERT INTO
-      lot (${fields})
+      lots (${fields})
     VALUES
       (${placeholders})
     RETURNING "id"`;

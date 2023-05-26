@@ -67,9 +67,9 @@ export class Field extends BaseField {
     return this;
   }
 
-  public selectField(options: any[]): Field {
+  public selectField(options: string[]): Field {
     const optionsHtml = options
-      .map((option) => `<option>${option.name}</option>`)
+      .map((option) => `<option>${option}</option>`)
       .join('');
 
     const select = `<select

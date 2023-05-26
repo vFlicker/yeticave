@@ -1,13 +1,13 @@
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
-import express, { Express } from 'express';
+import express, { Express, RequestHandler } from 'express';
 import expressEjsLayouts from 'express-ejs-layouts';
 import session from 'express-session';
 import path from 'path';
 
 import { authenticateUser, defaultTemplateVariables } from './common';
-import { ModelFactoryService, Router } from './framework';
+import { BaseController, ModelFactoryService, Router } from './framework';
 
 export class App {
   app: Express;
@@ -23,10 +23,12 @@ export class App {
       const { path, action, className, method, middlewares = [] } = route;
 
       const controller = new className(modelFactory);
-      // TODO: Can I fix it?
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      this.app[method](path, middlewares, controller[action]);
+
+      const requestHandler = controller[
+        action as keyof BaseController
+      ] as RequestHandler;
+
+      this.app[method](path, middlewares, requestHandler);
     }
   }
 

@@ -8,6 +8,7 @@ export class _404Controller extends BaseController {
 
   public getNotFoundPage = (_: Request, res: Response): void => {
     this.pageTitle = 'Page not found';
+
     this.setStatusCode(res, StatusCodes.NOT_FOUND);
     this.render(res, 'notFoundPage');
   };

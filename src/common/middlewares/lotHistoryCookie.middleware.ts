@@ -1,31 +1,34 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { LOT_HISTORY_COOKIE_KEY } from '../constants';
-import { convertDayToMilliseconds } from '../utils';
+import { convertDayToMilliseconds, getLotHistoryCookieKey } from '../utils';
 
-// TODO: now for each user we have the same history. Fix it.
 export const lotHistoryCookie = (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  const { id } = req.params;
+  const { id: lotId } = req.params;
+  const { user } = req.session;
 
-  const expire = Date.now() + convertDayToMilliseconds(30);
-  const cookieExpire = new Date(expire);
-  let cookieValue = [];
+  if (user) {
+    const { id: userId } = user;
+    const key = getLotHistoryCookieKey(userId);
+    const expire = Date.now() + convertDayToMilliseconds(30);
+    const cookieExpire = new Date(expire);
+    let cookieValue = [];
 
-  if (req.cookies[LOT_HISTORY_COOKIE_KEY]) {
-    cookieValue = JSON.parse(req.cookies[LOT_HISTORY_COOKIE_KEY]);
+    if (req.cookies[key]) {
+      cookieValue = JSON.parse(req.cookies[key]);
+    }
+
+    if (!cookieValue.includes(lotId)) {
+      cookieValue.push(lotId);
+    }
+
+    res.cookie(key, JSON.stringify(cookieValue), {
+      expires: cookieExpire,
+    });
   }
-
-  if (!cookieValue.includes(id)) {
-    cookieValue.push(id);
-  }
-
-  res.cookie(LOT_HISTORY_COOKIE_KEY, JSON.stringify(cookieValue), {
-    expires: cookieExpire,
-  });
 
   next();
 };

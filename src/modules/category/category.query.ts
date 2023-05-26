@@ -1,10 +1,6 @@
 import { BaseQuery } from '../../framework/base.query';
 
 export class CategoryQuery extends BaseQuery {
-  public getAllCategories(): string {
-    return this.getSql();
-  }
-
   public getIdByCategoryName(): string {
     this.where = `WHERE category_name = $1`;
 

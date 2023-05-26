@@ -1,15 +1,18 @@
 import { BaseModel } from '../../framework';
 import { CategoryQuery } from './category.query';
-import { Category } from './interfaces';
+import { Categories, Category } from './interfaces';
 
 export class CategoryModel extends BaseModel {
-  protected tableName = 'category';
+  protected tableName = 'categories';
   protected queryBuilder: CategoryQuery = new CategoryQuery(this);
 
-  public async getAllCategories(): Promise<Category[]> {
-    const sql = this.queryBuilder.getAllCategories();
+  public async getAllCategories(): Promise<string[]> {
+    const sql = `SELECT
+      array_agg(category_name) AS categories
+    FROM
+      categories`;
 
-    const categories = await this.getScalarValues<Category>(sql);
+    const { categories } = await this.getScalarValue<Categories>(sql);
     return categories;
   }
 

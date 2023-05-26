@@ -60,8 +60,6 @@ export class LotController extends BaseController {
     }
   };
 
-  // TODO: there is problem with amount of items
-  // because method`getCount` has issue
   public getLotsByCategoryPage = async (
     req: Request,
     res: Response,
@@ -133,6 +131,7 @@ export class LotController extends BaseController {
 
     if (validation.hasErrors()) {
       return this.render(res, 'newLotPage', {
+        // TODO: use lotModel
         lot,
         validation,
         helper: {

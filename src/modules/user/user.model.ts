@@ -3,7 +3,7 @@ import { CreateNewUser, User } from './interfaces';
 import { UserQuery } from './user.query';
 
 export class UserModel extends BaseModel {
-  protected tableName = 'app_user';
+  protected tableName = 'users';
   protected queryBuilder: UserQuery = new UserQuery(this);
 
   public email = '';
@@ -27,7 +27,7 @@ export class UserModel extends BaseModel {
     const placeholders = UserQuery.createPlaceholders(rows.length);
 
     const sql = `INSERT INTO
-      app_user(${fields})
+      users(${fields})
     VALUES
       (${placeholders})`;
 
