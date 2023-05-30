@@ -34,11 +34,11 @@ CREATE TABLE lots (
   PRIMARY KEY(id),
   CONSTRAINT fk_lot_category
     FOREIGN KEY(category_id)
-      REFERENCES categories(category_id)
+      REFERENCES categories(id)
       ON DELETE CASCADE,
   CONSTRAINT fk_lot_user
     FOREIGN KEY(user_id)
-      REFERENCES users(user_id)
+      REFERENCES users(id)
       ON DELETE CASCADE
 );
 
@@ -53,10 +53,10 @@ CREATE TABLE bets (
   PRIMARY KEY(id),
   CONSTRAINT fk_bet_user
     FOREIGN KEY(user_id)
-      REFERENCES users(user_id)
+      REFERENCES users(id)
       ON DELETE CASCADE,
   CONSTRAINT fk_bet_lot
     FOREIGN KEY(lot_id)
-      REFERENCES lots(lot_id)
+      REFERENCES lots(id)
       ON DELETE CASCADE
 );

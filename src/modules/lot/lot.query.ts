@@ -11,21 +11,21 @@ export class LotQuery extends BaseQuery {
   public getLotsByText(): string {
     this.where =
       "WHERE ts @@ phraseto_tsquery('english', $1) AND table_name.end_date > NOW()";
-    this.setOrder('table_name.end_date DESC');
+    this.setOrder('table_name.create_date DESC');
 
     return this.getSql();
   }
 
   public getLotsByCategory(): string {
     this.where = 'WHERE category_name = $1 AND table_name.end_date > NOW()';
-    this.setOrder('table_name.end_date DESC');
+    this.setOrder('table_name.create_date DESC');
 
     return this.getSql();
   }
 
   public getUnfinished(): string {
     this.where = 'WHERE table_name.end_date > NOW()';
-    this.setOrder('table_name.end_date DESC');
+    this.setOrder('table_name.create_date DESC');
 
     return this.getSql();
   }
@@ -34,7 +34,7 @@ export class LotQuery extends BaseQuery {
     const placeholders = LotQuery.createPlaceholders(ids.length);
 
     this.where = `WHERE table_name.id IN (${placeholders})`;
-    this.setOrder('table_name.end_date DESC');
+    this.setOrder('table_name.create_date DESC');
 
     return this.getSql();
   }
