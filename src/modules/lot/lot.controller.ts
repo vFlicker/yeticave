@@ -114,7 +114,7 @@ export class LotController extends BaseController {
   };
 
   public createNewLot = async (req: Request, res: Response): Promise<void> => {
-    const body = this.getBody<Omit<CreateLot, 'imageUrl'>>(req);
+    const lotBody = this.getBody<CreateLot>(req);
     const file = this.getFile(req);
     const user = this.getSession(req, 'user');
 
@@ -122,17 +122,16 @@ export class LotController extends BaseController {
 
     const image = file && { size: file?.size, mimetype: file?.mimetype };
 
-    const validation = new ValidationService(newLotSchema, {
-      ...body,
-      image,
-    }).validate();
+    const body = { ...lotBody, image };
+    const validation = new ValidationService(newLotSchema, body).validate();
 
-    const lot = { ...body, imageUrl: `/img/uploads/${file?.filename}` };
+    const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
+    const data = { ...lotBody, imageUrl: `/img/uploads/${file?.filename}` };
+    lotModel.load(data);
 
     if (validation.hasErrors()) {
       return this.render(res, 'newLotPage', {
-        // TODO: use lotModel
-        lot,
+        lot: lotModel,
         validation,
         helper: {
           formatPrice,
@@ -146,10 +145,9 @@ export class LotController extends BaseController {
       const lotModel = this.modelFactoryService.getEmptyModel(LotModel);
 
       try {
-        const { id: lotId } = await lotModel.addLot(lot, id);
+        const { id: lotId } = await lotModel.addLot(data, id);
 
-        const path = `/lots/${lotId}`;
-        this.redirect(res, path);
+        this.redirect(res, `/lots/${lotId}`);
       } catch (error) {
         this.renderError(res, error);
       }

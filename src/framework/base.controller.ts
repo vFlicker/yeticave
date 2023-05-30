@@ -71,7 +71,7 @@ export class BaseController {
     req: Request,
     name: T,
   ): void {
-    req.session[name] = null;
+    delete req.session[name];
   }
 
   public getBody<T>(req: Request): T {

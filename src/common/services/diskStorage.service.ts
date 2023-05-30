@@ -4,13 +4,14 @@ export class DiskStorageService {
   constructor(private filePath: string) {}
 
   public createFileUploader() {
+    // TODO: add file filter
     return multer({ storage: this.createStorage() });
   }
 
   private createStorage() {
     return multer.diskStorage({
-      destination: (_, __, cb) => cb(null, this.filePath),
-      filename: (_, { originalname }, cb) => {
+      destination: (_req, _file, cb) => cb(null, this.filePath),
+      filename: (_req, { originalname }, cb) => {
         return cb(null, this.getFileName(originalname));
       },
     });

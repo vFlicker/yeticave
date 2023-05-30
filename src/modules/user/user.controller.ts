@@ -33,8 +33,6 @@ export class UserController extends BaseController {
 
     this.pageTitle = 'Login';
 
-    const userModel = this.modelFactoryService.getEmptyModel(UserModel);
-
     const validation = new ValidationService(
       createUserSchema,
       formData,
@@ -47,6 +45,8 @@ export class UserController extends BaseController {
         canLogin: false,
       });
     }
+
+    const userModel = this.modelFactoryService.getEmptyModel(UserModel);
 
     try {
       const foundUser = await userModel.getUserByEmail(formData.email);
