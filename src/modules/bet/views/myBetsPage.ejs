@@ -1,0 +1,69 @@
+<main>
+  <section class="rates container">
+    <h2>My bets</h2>
+    <table class="rates__list">
+      <tr class="rates__item">
+        <th class="rates__title rates__title--info">Name</th>
+        <th class="rates__title rates__title--category">Category</th>
+        <th class="rates__title rates__title--timer">End of auction</th>
+        <th class="rates__title rates__title--price">Price</th>
+        <th class="rates__title rates__title--time">Bet time</th>
+      </tr>
+
+      <% bets.forEach((bet) => { %>
+      <%
+          let itemClassName = '';
+          let timerClassName = '';
+          let timerContent = '';
+
+          if (bet.isWinner) {
+            itemClassName = 'rates__item--end rates__item--win';
+            timerClassName = 'timer--win';
+            timerContent = 'Bet won';
+          } else if (helper.isTimeFinished(bet.endDate)) {
+            itemClassName = 'rates__item--end';
+            timerClassName = 'timer--end';
+            timerContent = 'Bidding ended';
+          } else if (helper.isTimeFinishing(bet.endDate)) {
+            timerClassName = 'timer--finishing';
+            timerContent = helper.getTimeLeft(bet.endDate);
+          } else {
+            timerContent = helper.getTimeLeft(bet.endDate);
+          }
+        %>
+
+      <tr class="rates__item <%= itemClassName %>">
+        <td class="rates__info">
+          <div class="rates__img">
+            <img src="<%= bet.imageUrl %>" width="54" height="40" alt="<%= bet.title %>">
+          </div>
+          <div>
+            <h3 class="rates__title">
+              <a href="/lots/<%= bet.lotId %>">
+                <%= bet.title %>
+              </a>
+            </h3>
+            <p>
+              <%= bet.contacts %>
+            </p>
+          </div>
+        </td>
+        <td class="rates__category">
+          <%= bet.categoryName %>
+        </td>
+        <td class="rates__timer">
+          <div class="timer <%= timerClassName %>">
+            <%= timerContent %>
+          </div>
+        </td>
+        <td class="rates__price">
+          <%= helper.formatPrice(bet.price) %>
+        </td>
+        <td class="rates__time">
+          <%= helper.getTimeAgo(bet.createDate) %>
+        </td>
+      </tr>
+      <% }) %>
+    </table>
+  </section>
+</main>

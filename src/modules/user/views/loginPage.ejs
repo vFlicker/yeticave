@@ -1,0 +1,11 @@
+<% const form = new Form(user, validation); %>
+
+<main class="login container">
+  <%- form.begin('/login', 'post', { className: 'form-register' }); %>
+  <h2>Login</h2>
+  <%- form.field('Email *', 'email', 'Enter e-mail'); %>
+  <%- form.field('Password *', 'password', 'Enter password').passwordField(); %>
+  <%- form.errorBlock(); %>
+  <button type="submit" class="button">Login</button>
+  <%- form.end(); %>
+</main>

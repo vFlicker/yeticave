@@ -1,43 +1,33 @@
-# Личный проект «YetiCave»
+# YetiCave
 
-Онлайн курс HTML Academy.
-PHP. Профессиональная веб-разработка.
+YetiCave is an online auction platform for the sale of snowboard and ski equipment. Registered users can create their own auction listings to sell items within a specified time frame. The highest bidder within the agreed-upon time period wins the item.
 
-1 модуль.
-Начал проект. Настроил Open Server.
+## Downloading
 
-2 модуль.
-Написал ф-цию форматирования цены.
+```bash
+git clone {repository URL}
+```
 
-3 модуль.
-Написал ф-цию шаблонизатор.
-Написал ф-цию таймер.
+## unning the Application
 
-4 модуль.
-Поработал с формами, POST и GET запросами.
-Выполнил валидацию. Загрузку фото на сервер.
+### Installing NPM Modules
 
-5 модуль.
-Сделал историю на сайте с помощью Cookies.
-Сделал регистрацию пользователя, с хэшированием пароля.
-Сделал публичные и закрытые части сайта для разных пользователей.
+```bash
+npm install
+```
 
-6 модуль.
-Работа с mySQL.
-Создал таблицы.
-Написал Запрос SQL на добавление.
+### Building
 
-7 модуль.
-Интегрировал PHP-сценарии с базой данных (БД).
-Заменил данные из массивов на настоящие из БД и вывел их на сайт.
-Выводить информацию из БД на страницах сайта.
+```bash
+npm run docker:build
+```
 
-8 модуль.
-Сделал пагинацию на сайте.
-Сделал поиск по сайту.
-Добавил меню сайте.
+### Creating Tables After Starting the Application
 
-9 модуль.
-Настроил Composer.
-Сделал отправку сообщения на почту победителю.
-Добавил мои ставки.
+Execute all SQL instructions located in the `src/database` directory, specifically the `schema.sql` file.
+
+### Starting the Application
+
+```bash
+npm run start:dev
+```
