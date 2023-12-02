@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <main class="register container">
+        <form
+            action="{% url 'accounts:register' %}"
+            method="POST"
+            class="form form-login {% if form.errors %}form__item--invalid{% endif %}"
+        >
+            <h2>Sign up</h2>
+
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="form__item">
+                    <label for="{{ field.id_for_label }}">
+                        {{ field.label }}{% if field.field.required %}*{% endif %}
+                    </label>
+                    {{ field }}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="button">Register</button>
+
+            {% if form.errors %}
+                <ul class="error-messages">
+                    {% for field, error in form.errors.items %}
+                        <li>{{field}}: {{ error | escape }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <p>Already have an account? <a href="{% url 'accounts:login' %}">Log In here.</a></p>
+        </form>
+    </main>
+{% endblock %}

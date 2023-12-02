@@ -1,0 +1,5 @@
+<li class="comment__item">
+    <div class="comment__sender">{{ comment.user.username }}</div>
+    <p class="comment__text">{{ comment.text }}</p>
+    <time class="comment__time" datetime="{{ comment.created_at }}">{{ comment.created_at }}</time>
+</li>

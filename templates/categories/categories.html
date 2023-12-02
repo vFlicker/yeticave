@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <main class="container">
+        <section class="lots">
+            <h2>{{ category.name }}</h2>
+
+            {% if listings %}
+                <ul class="lots__list">
+                    {% for listing in listings %}
+                        {% include "auctions/_card_item.html" with listing_id=listing.id %}
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <h3>Category list {{ category.name | lower }} is empty.</h3>
+            {% endif %}
+        </section>
+    </main>
+{% endblock %}

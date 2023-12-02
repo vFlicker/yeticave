@@ -1,0 +1,31 @@
+{% load auctions_extras %}
+
+<li class="lot lots__item">
+    <div class="lot__image">
+        <a href="{% url 'auctions:listing' listing_id %}">
+            <img src="{{ listing.image_url }}" width="350" height="260" alt="{{ listing.title }}" />
+        </a>
+    </div>
+    <div class="lot__info">
+        <div class="lot__header">
+            <span class="lot__category">{{ listing.category }}</span>
+
+            {% if user.is_authenticated %}
+                {% include "watchlist/_toggle_watchlist.html" with listing_id=listing.id width="18" height="19" %}
+            {% endif %}
+        </div>
+
+        <h3 class="lot__title">
+            <a class="text-link" href="{% url 'auctions:listing' listing_id %}">
+                {{ listing.title }}
+            </a>
+        </h3>
+
+        <div class="lot__state">
+            <div class="lot__rate">
+                <span class="lot__amount">Price</span>
+                <span class="lot__cost">{{ listing.current_price | usd}}</span>
+            </div>
+        </div>
+    </div>
+</li>
