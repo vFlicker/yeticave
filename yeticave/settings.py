@@ -33,7 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "yeticave.accounts",
-    "yeticave.auctions",
+    "yeticave.lots",
     "yeticave.categories",
     "yeticave.watchlist",
     "django.contrib.admin",

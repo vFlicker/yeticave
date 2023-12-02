@@ -5,10 +5,10 @@
         <section class="lots">
             <h2>Watchlist</h2>
 
-            {% if listings %}
+            {% if lots %}
                 <ul class="lots__list">
-                    {% for listing in listings %}
-                        {% include "auctions/_card_item.html" with listing_id=listing.id %}
+                    {% for lot in lots %}
+                        {% include "lots/_card_item.html" with lot_id=lot.id %}
                     {% endfor %}
                 </ul>
             {% else %}

@@ -1,8 +1,11 @@
-<form action="{% url 'watchlist:toggle_watchlist' listing_id %}" method="POST">
+<form action="{% url 'watchlist:toggle_watchlist' lot_id %}" method="POST">
     {% csrf_token %}
 
-    <button type="submit" class="bookmark-button {% if listing.in_watchlist %}bookmark-button--active{% endif %}">
-        <svg class="bookmark-button__icon" width="{{ width }}" height="{{ height }}">
+    <button type="submit"
+            class="bookmark-button {% if lot.in_watchlist %}bookmark-button--active{% endif %}">
+        <svg class="bookmark-button__icon"
+             width="{{ width }}"
+             height="{{ height }}">
             <use xlink:href="#icon-bookmark"></use>
         </svg>
         <span class="visually-hidden">To bookmarks</span>

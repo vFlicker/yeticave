@@ -1,0 +1,25 @@
+<form action="{% url 'lots:lot' lot.id %}"
+      method="POST"
+      class="form comments__form {% if form.errors %}form__item--invalid{% endif %}">
+    {% csrf_token %}
+
+    <input type="hidden" name="form_type" value="comment" />
+
+    {% for field in comment_form %}
+        <div class="form__item">
+            <label for="{{ field.id_for_label }}">
+                {{ field.label }}
+                {% if field.field.required %}*{% endif %}
+            </label>
+            {{ field }}
+        </div>
+    {% endfor %}
+
+    <button type="submit" class="button">Add comment</button>
+
+    {% if comment_form.errors %}
+        <ul class="error-messages">
+            {% for field, error in comment_form.errors.items %}<li>{{ field }}: {{ error | escape }}</li>{% endfor %}
+        </ul>
+    {% endif %}
+</form>

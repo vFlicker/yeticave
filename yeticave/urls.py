@@ -19,7 +19,7 @@ from django.urls import include, path
 
 urlpatterns = [
     path("", include("yeticave.accounts.urls")),
-    path("", include("yeticave.auctions.urls")),
+    path("", include("yeticave.lots.urls")),
     path("categories/", include("yeticave.categories.urls")),
     path("watchlist/", include("yeticave.watchlist.urls")),
     path("admin/", admin.site.urls),

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <main class="container">
+        <section class="promo">
+            <h2 class="promo__title">Need staff for the skating rink?</h2>
+            <p class="promo__text">In our online auction you will find the most exclusive snowboard and ski equipment.</p>
+            <ul class="promo__list">
+
+                {% for category in categories %}
+                    <li class="promo__item promo__item--{{ category.name | lower }}">
+                        <a class="promo__link"
+                           href="{% url "categories:category" category.id %}">{{ category.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+        <section class="lots">
+            <div class="lots__header">
+                <h2>Active lots</h2>
+            </div>
+            <ul class="lots__list">
+                {% for lot in lots %}
+                    {% include "lots/_card_item.html" with lot_id=lot.id %}
+                {% endfor %}
+            </ul>
+        </section>
+    </main>
+{% endblock %}
