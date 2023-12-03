@@ -8,7 +8,7 @@ YetiCave is an online auction platform for the sale of snowboard and ski equipme
 git clone {repository URL}
 ```
 
-## unning the Application
+## Running the Application
 
 ### Installing NPM Modules
 
