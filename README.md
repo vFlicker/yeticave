@@ -12,15 +12,6 @@ git clone {repository URL}
 
 ### Create and activate a virtual environment
 
-#### On GNU/Linux or MacOS
-
-```bash
-python3.8 -m venv .venv
-source .venv/bin/activate
-```
-
-#### On Windows
-
 ```bash
 python -m venv .venv
 cd .venv/Scripts/
@@ -35,14 +26,14 @@ pip install -r requirements.txt
 
 ### Starting the Application
 
-#### On GNU/Linux or MacOS
-
 ```bash
-python3.8 manage.py runserver
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver
 ```
 
-#### On Windows
+## Create superuser
 
 ```bash
-python manage.py runserver
+python manage.py createsuperuser
 ```
