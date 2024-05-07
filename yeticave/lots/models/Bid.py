@@ -8,7 +8,6 @@ User = get_user_model()
 
 class Bid(models.Model):
     bid_amount = models.DecimalField(max_digits=10, decimal_places=2)
-
     bid_time = models.DateTimeField(auto_now_add=True)
 
     lot = models.ForeignKey(Lot, on_delete=models.CASCADE)

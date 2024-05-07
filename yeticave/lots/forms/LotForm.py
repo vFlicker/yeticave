@@ -13,13 +13,3 @@ class LotForm(forms.ModelForm):
             "starting_bid": forms.TextInput(attrs={"placeholder": "Enter bid"}),
             "image_url": forms.URLInput(attrs={"placeholder": "Enter image url"}),
         }
-
-    def save(self, commit: bool = True) -> Lot:
-        lot = super().save(commit=False)
-
-        lot.current_price = lot.starting_bid
-
-        if commit:
-            lot.save()
-
-        return lot

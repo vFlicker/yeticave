@@ -8,7 +8,6 @@ User = get_user_model()
 
 class Comment(models.Model):
     text = models.TextField("Comment")
-
     created_at = models.DateTimeField(auto_now_add=True)
 
     lot = models.ForeignKey(Lot, on_delete=models.CASCADE)
