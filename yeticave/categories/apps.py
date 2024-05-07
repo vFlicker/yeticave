@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class WatchlistConfig(AppConfig):
+class CategoriesConfig(AppConfig):
     name = "yeticave.categories"

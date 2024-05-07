@@ -12,9 +12,7 @@ User = get_user_model()
 
 @require_http_methods(["GET", "POST"])
 def register(request: HttpRequest) -> HttpResponse:
-    if request.method == "GET":
-        form = UserCreationForm()
-        return render(request, "registration/register.html", {"form": form})
+    form = UserCreationForm(request.POST or None)
 
     if (form := UserCreationForm(request.POST)).is_valid():
         user = form.save()

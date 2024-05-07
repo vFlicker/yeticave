@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth import get_user_model
 
+from .models import User as UserType
+
 User = get_user_model()
 
 
@@ -15,8 +17,8 @@ class UserCreationForm(forms.ModelForm):
         fields = ["username", "email", "password"]
         widgets = {
             "username": forms.TextInput(attrs={"placeholder": "Enter username"}),
-            "email": forms.TextInput(attrs={"placeholder": "Enter email"}),
-            "password": forms.TextInput(attrs={"placeholder": "Enter password"}),
+            "email": forms.EmailInput(attrs={"placeholder": "Enter email"}),
+            "password": forms.PasswordInput(attrs={"placeholder": "Enter password"}),
         }
 
     def clean(self):
@@ -29,8 +31,8 @@ class UserCreationForm(forms.ModelForm):
 
         return cleaned_data
 
-    def save(self, commit: bool = True) -> User:
-        user: User = super().save(commit=False)
+    def save(self, commit: bool = True) -> UserType:
+        user: UserType = super().save(commit=False)
         user.set_password(self.cleaned_data["password"])
 
         if commit:

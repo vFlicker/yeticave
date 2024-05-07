@@ -6,4 +6,4 @@ class User(AbstractUser):
     first_name = None
     last_name = None
 
-    email: str = models.EmailField("Email Address", unique=True)
+    email = models.EmailField("Email Address", unique=True)
