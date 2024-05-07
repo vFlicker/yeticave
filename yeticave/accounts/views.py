@@ -14,7 +14,7 @@ User = get_user_model()
 def register(request: HttpRequest) -> HttpResponse:
     form = UserCreationForm(request.POST or None)
 
-    if (form := UserCreationForm(request.POST)).is_valid():
+    if form.is_valid():
         user = form.save()
         auth_login(request, user)
         return HttpResponseRedirect(reverse("lots:index"))

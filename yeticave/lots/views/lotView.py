@@ -1,22 +1,10 @@
-from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import View
-from django.views.decorators.http import require_http_methods
 
-from .forms import BidForm, CommentForm, LotForm
-from .models import Bid, Comment, Lot, Watchlist
-
-# TODO: Додати сторінку мої ставки/.
-
-# TODO: Якщо користувач увійшов до облікового запису і він є автором аукціону,
-# він повинен мати змогу «закрити» аукціон на цій сторінці, що зробить автора
-# найбільшої ставки переможцем аукціону, а сам аукціон стане неактивним.
-
-# TODO: Якщо користувач увійшов до облікового запису на сторінці закритого
-# аукціону і він є переможцем цього аукціону, він має отримати повідомлення
-# про це.
+from ..forms import BidForm, CommentForm
+from ..models import Bid, Comment, Lot
 
 
 class lotView(View):
@@ -88,64 +76,3 @@ class lotView(View):
                     "bid_amount", "Bid must be greater than the current price"
                 )
         return self.render_lot_page(request, lot_id)
-
-
-@require_http_methods(["GET"])
-def index(request: HttpRequest) -> HttpResponse:
-    # TODO: Має дозволити користувачам переглянути всі АКТИВНІ АУКЦІОНИ.
-    if request.user.is_authenticated:
-        lots = Lot.objects.all().with_in_watchlist(request.user)
-    else:
-        lots = Lot.objects.all()
-
-    return render(
-        request,
-        "lots/index.html",
-        {
-            "lots": lots,
-        },
-    )
-
-
-@require_http_methods(["GET", "POST"])
-@login_required
-def create_lot(request: HttpRequest) -> HttpResponse:
-    if request.method == "GET":
-        form = LotForm()
-        return render(request, "lots/create_lot.html", {"form": form})
-
-    if (form := LotForm(request.POST)).is_valid():
-        lot = form.save(commit=False)
-        lot.creator = request.user
-        lot.save()
-        return HttpResponseRedirect(reverse("lots:index"))
-
-    return render(request, "lots/create_lot.html", {"form": form})
-
-
-@require_http_methods(["GET"])
-@login_required
-def watchlist(request):
-    lots = Lot.objects.with_in_watchlist(request.user).filter(in_watchlist=True)
-
-    return render(
-        request,
-        "watchlist/watchlist.html",
-        {
-            "lots": lots,
-        },
-    )
-
-
-@require_http_methods(["POST"])
-@login_required
-def toggle_watchlist(request, lot_id):
-    lot = get_object_or_404(Lot, pk=lot_id)
-    watchlist_item, created = Watchlist.objects.get_or_create(
-        owner=request.user, item=lot
-    )
-
-    if not created:
-        watchlist_item.delete()
-
-    return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
