@@ -10,18 +10,10 @@ git clone {repository URL}
 
 ## Running the Application
 
-### Create and activate a virtual environment
-
-```bash
-python -m venv .venv
-cd .venv/Scripts/
-. Activate
-```
-
 ### Install project dependencies
 
 ```bash
-pip install -r requirements.txt
+pipenv install
 ```
 
 ### Starting the Application
