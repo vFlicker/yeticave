@@ -1,5 +1,5 @@
+/** Menu toggler */
 (() => {
-  /* Menu toggler */
   const buttonElement = document.querySelector(".button__menu-open");
   const actionElement = document.querySelector(".user-menu--login");
 
@@ -11,8 +11,8 @@
   if (actionElement) buttonElement.addEventListener("click", onButtonClick);
 })();
 
+/** Date picker */
 (() => {
-  /* Date picker */
   const datePickerElement = document.querySelector("#endDate");
 
   if (datePickerElement) {
@@ -24,8 +24,8 @@
   }
 })();
 
+/** Lot preview */
 (() => {
-  /* Lot preview */
   const FILE_TYPES = ["jpg", "jpeg", "png"];
 
   const uploaderElement = document.querySelector(".uploader");
@@ -53,5 +53,16 @@
     };
 
     chooseFileElement.addEventListener("change", onFileChange);
+  }
+})();
+
+/** Hide message */
+(() => {
+  const messageElements = document.querySelectorAll(".messages__item");
+  if (!messageElements.length) return;
+
+  for (const messageElement of messageElements) {
+    const closeButtonElement = messageElement.querySelector(".message__close");
+    closeButtonElement.addEventListener("click", () => messageElement.remove());
   }
 })();

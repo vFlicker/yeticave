@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "yeticave.core",
     "yeticave.accounts",
     "yeticave.lots",
     "yeticave.categories",
@@ -62,11 +63,12 @@ TEMPLATES = [
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
-                "yeticave.categories.context_processors.categories",
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "yeticave.core.context_processors.custom_message_levels",
+                "yeticave.categories.context_processors.categories",
             ],
         },
     },
@@ -130,3 +132,10 @@ STATICFILES_DIRS = (path.join(BASE_DIR, "static"),)
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "accounts.User"
+
+# Add custom message tag for custom notifications
+NOTIFICATION_LEVEL = 100
+
+MESSAGE_TAGS = {
+    NOTIFICATION_LEVEL: "notification",
+}

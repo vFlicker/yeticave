@@ -2,11 +2,12 @@
 
 <body>
     {% include "sprite.html" %}
+
+    {% include "notification.html" %}
+
     {% include "header.html" %}
 
-
-    {% block content %}
-    {% endblock %}
+    {% block content %}{% endblock content %}
 
     {% include "footer.html" %}
     {% include "scripts.html" %}
