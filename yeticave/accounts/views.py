@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
 from .forms import UserCreationForm
+from .services import UserService
 
 User = get_user_model()
 
@@ -15,8 +16,14 @@ def register(request: HttpRequest) -> HttpResponse:
     form = UserCreationForm(request.POST or None)
 
     if form.is_valid():
-        user = form.save()
+        user = UserService.create_user(
+            username=form.cleaned_data["username"],
+            email=form.cleaned_data["email"],
+            password=form.cleaned_data["password"],
+        )
+
         auth_login(request, user)
+
         return HttpResponseRedirect(reverse("lots:index"))
 
     return render(request, "registration/register.html", {"form": form})

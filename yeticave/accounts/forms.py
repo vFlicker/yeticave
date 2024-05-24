@@ -1,9 +1,5 @@
 from django import forms
-from django.contrib.auth import get_user_model
-
-from .models import User as UserType
-
-User = get_user_model()
+from django.contrib.auth.models import User
 
 
 class UserCreationForm(forms.ModelForm):
@@ -23,6 +19,7 @@ class UserCreationForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super(UserCreationForm, self).clean()
+
         password = cleaned_data.get("password")
         confirm_password = cleaned_data.get("confirm_password")
 
@@ -30,12 +27,3 @@ class UserCreationForm(forms.ModelForm):
             self.add_error("confirm_password", "Password does not match")
 
         return cleaned_data
-
-    def save(self, commit: bool = True) -> UserType:
-        user: UserType = super().save(commit=False)
-        user.set_password(self.cleaned_data["password"])
-
-        if commit:
-            user.save()
-
-        return user
