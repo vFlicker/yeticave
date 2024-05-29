@@ -13,6 +13,8 @@ User = get_user_model()
 
 @require_http_methods(["GET", "POST"])
 def register(request: HttpRequest) -> HttpResponse:
+    TEMPLATE = "registration/register.html"
+
     form = UserCreationForm(request.POST or None)
 
     if form.is_valid():
@@ -24,6 +26,10 @@ def register(request: HttpRequest) -> HttpResponse:
 
         auth_login(request, user)
 
-        return HttpResponseRedirect(reverse("lots:index"))
+        return HttpResponseRedirect(reverse("lots:lot_list"))
 
-    return render(request, "registration/register.html", {"form": form})
+    context = {
+        "form": form,
+    }
+
+    return render(request, TEMPLATE, context)

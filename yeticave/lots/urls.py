@@ -1,13 +1,17 @@
 from django.urls import path
 
-from . import views
+from .views.create_lot import create_lot
+from .views.lot import lot
+from .views.lot_list import lot_list
+from .views.toggle_watchlist import toggle_watchlist
+from .views.watchlist import watchlist
 
 app_name = "lots"
 
 urlpatterns = [
-    path("", views.lot_list, name="lot_list"),
-    path("lots/<int:lot_id>/", views.lot, name="lot"),
-    path("create_lot/", views.create_lot, name="create_lot"),
-    path("watchlist/", views.watchlist, name="watchlist"),
-    path("watchlist/<int:lot_id>/", views.toggle_watchlist, name="toggle_watchlist"),
+    path("", lot_list, name="lot_list"),
+    path("lots/<int:lot_id>/", lot, name="lot"),
+    path("create_lot/", create_lot, name="create_lot"),
+    path("watchlist/", watchlist, name="watchlist"),
+    path("watchlist/<int:lot_id>/", toggle_watchlist, name="toggle_watchlist"),
 ]

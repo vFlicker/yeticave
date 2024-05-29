@@ -1,55 +1,61 @@
-from django.contrib.auth.decorators import login_required
+from typing import cast
+
+from django.contrib.auth.models import User
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
-from ..forms import BidForm, CommentForm
-from ..models import Bid, Comment, Lot
+from ..forms.BidForm import BidForm
+from ..forms.CommentForm import CommentForm
+from ..models.Bid import Bid
+from ..models.Comment import Comment
+from ..models.Lot import Lot
+from ..services.BidService import BidAmountError, BidService
+from ..services.CommentService import CommentService
+from ..services.LotService import LotService
 
 
 @require_http_methods(["GET", "POST"])
-@login_required
 def lot(request: HttpRequest, lot_id: int) -> HttpResponse:
-    form_type = request.POST.get("form_type")
+    TEMPLATE = "lots/lot.html"
 
-    comment_form = CommentForm(request.POST or None)
-    bid_form = BidForm(request.POST or None)
+    user = request.user
+    is_creator = False
+    comment_form = None
+    bid_form = None
 
-    if form_type == "comment":
-        comment = comment_form.save(commit=False)
-        comment.lot = get_object_or_404(Lot, pk=lot_id)
-        comment.user = request.user
-        comment.save()
-        return HttpResponseRedirect(reverse("lots:lot", args=[lot_id]))
-    elif form_type == "bid":
-        bid = bid_form.save(commit=False)
+    if user.is_anonymous:
         lot = get_object_or_404(Lot, pk=lot_id)
-        bid.lot = lot
-        bid.bidder = request.user
+    else:
+        user = cast(User, user)
 
-        if bid.bid_amount > lot.current_price:
-            bid.save()
-            lot.current_price = bid.bid_amount
-            lot.save()
+        form_type = request.POST.get("form_type")
+
+        comment_form = CommentForm(request.POST or None)
+        bid_form = BidForm(request.POST or None)
+
+        lot = get_object_or_404(Lot.objects.with_watchlist_status(user), pk=lot_id)
+        is_creator = LotService.check_creator(lot, user)
+
+        if form_type == "comment" and comment_form.is_valid():
+            CommentService.add_comment(**comment_form.cleaned_data, user=user, lot=lot)
             return HttpResponseRedirect(reverse("lots:lot", args=[lot_id]))
-        else:
-            bid_form.add_error(
-                "bid_amount", "Bid must be greater than the current price"
-            )
 
-    lot = get_object_or_404(Lot.objects.with_in_watchlist(request.user), pk=lot_id)
-    is_creator = lot.creator == request.user
-    comments = Comment.objects.filter(lot=lot).order_by("-created_at")
-    bids = Bid.objects.filter(lot=lot).order_by("-bid_time")[:10]
+        if form_type == "bid" and bid_form.is_valid():
+            try:
+                BidService.place_bid(**bid_form.cleaned_data, bidder=user, lot=lot)
+                return HttpResponseRedirect(reverse("lots:lot", args=[lot_id]))
+            except BidAmountError as error:
+                bid_form.add_error("bid_amount", str(error))
 
     context = {
         "lot": lot,
         "is_creator": is_creator,
         "bid_form": bid_form,
         "comment_form": comment_form,
-        "bids": bids,
-        "comments": comments,
+        "bids": Bid.objects.get_bids(lot_id=lot_id)[:10],
+        "comments": Comment.objects.get_comments(lot_id=lot_id)[:10],
     }
 
-    return render(request, "lots/lot.html", context)
+    return render(request, TEMPLATE, context)

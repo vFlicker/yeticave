@@ -1,25 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.db.models import BooleanField, Case, Value, When
 
 from yeticave.categories.choices import DEFAULT_CATEGORY
 from yeticave.categories.models import Category
 
+from ..managers.LotManager import LotManager
+
 User = get_user_model()
-
-
-class LotQuerySet(models.QuerySet):
-    def with_in_watchlist(self, user) -> models.QuerySet:
-        return self.annotate(
-            in_watchlist=Case(
-                When(watchlist__owner=user, then=Value(True)),
-                default=Value(False),
-                output_field=BooleanField(),
-            )
-        )
-
-
-LotManager = models.Manager.from_queryset(LotQuerySet)
 
 
 class Lot(models.Model):
@@ -37,7 +24,7 @@ class Lot(models.Model):
     )
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    objects = LotManager()
+    objects: LotManager = LotManager()
 
     def __str__(self):
         return self.title

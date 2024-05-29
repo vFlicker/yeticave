@@ -12,10 +12,12 @@ class Watchlist(models.Model):
         on_delete=models.CASCADE,
         related_name="watchlist",
     )
-    item = models.ForeignKey(Lot, on_delete=models.CASCADE)
+    lot = models.ForeignKey(Lot, on_delete=models.CASCADE, related_name="watchlist")
 
     class Meta:
-        unique_together = ("owner", "item")
+        unique_together = ("owner", "lot")
 
     def __str__(self):
-        return f"Watchlist for user {self.owner.get_username()} with item {self.item.title}"
+        return (
+            f"Watchlist for user {self.owner.get_username()} with item {self.lot.title}"
+        )

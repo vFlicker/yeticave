@@ -2,16 +2,20 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 
-from ..models import Lot
+from yeticave.core.types import AuthenticatedHttpRequest
+
+from ..models.Lot import Lot
 
 
 @require_http_methods(["GET"])
 @login_required
-def watchlist(request):
-    lots = Lot.objects.with_in_watchlist(request.user).filter(in_watchlist=True)
+def watchlist(request: AuthenticatedHttpRequest):
+    TEMPLATE = "watchlist/watchlist.html"
+
+    lots = Lot.objects.get_user_watchlist(request.user)
 
     context = {
         "lots": lots,
     }
 
-    return render(request, "watchlist/watchlist.html", context)
+    return render(request, TEMPLATE, context)

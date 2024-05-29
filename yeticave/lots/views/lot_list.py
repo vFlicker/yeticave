@@ -2,7 +2,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 
-from ..models import Lot
+from ..models.Lot import Lot
 
 # TODO: Додати сторінку мої ставки/.
 
@@ -17,15 +17,17 @@ from ..models import Lot
 
 @require_http_methods(["GET"])
 def lot_list(request: HttpRequest) -> HttpResponse:
-    # TODO: Має дозволити користувачам переглянути всі АКТИВНІ АУКЦІОНИ.
+    TEMPLATE = "lots/index.html"
 
     if request.user.is_authenticated:
-        lots = Lot.objects.all().with_in_watchlist(request.user)
+        # TODO: make with active as default
+        # TODO: fix this error
+        lots = Lot.objects.with_watchlist_status(request.user).with_active()
     else:
-        lots = Lot.objects.all()
+        lots = Lot.objects.with_active()
 
     context = {
         "lots": lots,
     }
 
-    return render(request, "lots/index.html", context)
+    return render(request, TEMPLATE, context)

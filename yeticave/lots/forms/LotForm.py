@@ -1,6 +1,6 @@
 from django import forms
 
-from ..models import Lot
+from ..models.Lot import Lot
 
 
 class LotForm(forms.ModelForm):
