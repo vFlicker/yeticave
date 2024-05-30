@@ -6,12 +6,12 @@ from ..models.Lot import Lot
 class LotService:
     @staticmethod
     def create_lot(
+        creator: User,
         title: str,
         description: str,
         starting_bid: int,
         image_url: str,
         category: str,
-        creator: User,
     ) -> Lot:
         lot = Lot.objects.create(
             title=title,
@@ -25,4 +25,4 @@ class LotService:
 
     @staticmethod
     def check_creator(lot: Lot, user: User) -> bool:
-        return lot.creator == user
+        return lot.creator.pk == user.pk

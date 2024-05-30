@@ -12,7 +12,7 @@ class Watchlist(models.Model):
         on_delete=models.CASCADE,
         related_name="watchlist",
     )
-    lot = models.ForeignKey(Lot, on_delete=models.CASCADE, related_name="watchlist")
+    lot = models.ForeignKey(Lot, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = ("owner", "lot")

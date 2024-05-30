@@ -1,15 +1,18 @@
 from decimal import Decimal
-
-from django.contrib.auth.models import User
+from typing import TYPE_CHECKING
 
 from ..errors import BidAmountError
 from ..models.Bid import Bid
-from ..models.Lot import Lot
+
+if TYPE_CHECKING:
+    from django.contrib.auth.models import User
+
+    from ..models.Lot import Lot
 
 
 class BidService:
     @staticmethod
-    def place_bid(bidder: User, lot: Lot, bid_amount: int) -> None:
+    def place_bid(bidder: "User", lot: "Lot", bid_amount: int) -> None:
         if lot.current_price >= bid_amount:
             raise BidAmountError("Your bid must be higher than the current price.")
 

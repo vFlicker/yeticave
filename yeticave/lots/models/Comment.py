@@ -12,9 +12,9 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     lot = models.ForeignKey(Lot, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     objects: CommentManager = CommentManager()
 
     def __str__(self):
-        return f"Comment on {self.lot.title} by {self.user.get_username()}"
+        return f"Comment on {self.lot.title} by {self.author.get_username()}"

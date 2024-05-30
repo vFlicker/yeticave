@@ -18,7 +18,15 @@ def create_lot(request: AuthenticatedHttpRequest) -> HttpResponse:
     form = LotForm(request.POST or None)
 
     if form.is_valid():
-        LotService.create_lot(**form.cleaned_data, creator=request.user)
+        LotService.create_lot(
+            creator=request.user,
+            title=form.cleaned_data["title"],
+            description=form.cleaned_data["description"],
+            starting_bid=form.cleaned_data["starting_bid"],
+            image_url=form.cleaned_data["image_url"],
+            category=form.cleaned_data["category"],
+        )
+
         return HttpResponseRedirect(reverse("lots:lot_list"))
 
     context = {

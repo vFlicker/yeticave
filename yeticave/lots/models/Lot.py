@@ -30,7 +30,10 @@ class Lot(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        if not self.pk:
-            self.current_price = self.starting_bid
+        self.__set_initial_price()
 
         super().save(*args, **kwargs)
+
+    def __set_initial_price(self):
+        if not self.pk:
+            self.current_price = self.starting_bid

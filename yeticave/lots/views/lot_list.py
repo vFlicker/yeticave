@@ -1,8 +1,13 @@
+from typing import TYPE_CHECKING, cast
+
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 
 from ..models.Lot import Lot
+
+if TYPE_CHECKING:
+    from django.contrib.auth.models import User
 
 # TODO: Додати сторінку мої ставки/.
 
@@ -19,12 +24,11 @@ from ..models.Lot import Lot
 def lot_list(request: HttpRequest) -> HttpResponse:
     TEMPLATE = "lots/index.html"
 
+    lots = Lot.objects.with_active()
+
     if request.user.is_authenticated:
-        # TODO: make with active as default
-        # TODO: fix this error
-        lots = Lot.objects.with_watchlist_status(request.user).with_active()
-    else:
-        lots = Lot.objects.with_active()
+        user = cast("User", request.user)
+        lots = lots.with_watchlist_status(user)
 
     context = {
         "lots": lots,

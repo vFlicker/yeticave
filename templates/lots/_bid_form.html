@@ -1,5 +1,5 @@
-<form action="{% url 'lots:lot' lot.id %}"
-      method="POST"
+<form action="{% url 'lots:lot_details' lot.id %}"
+      method="post"
       class="form bet__form {% if form.errors %}form__item--invalid{% endif %}">
     {% csrf_token %}
 
