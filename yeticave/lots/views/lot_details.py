@@ -53,8 +53,8 @@ def lot_details(request: HttpRequest, lot_id: int) -> HttpResponse:
         "is_creator": LotService.check_creator(lot, user),
         "bid_form": bid_form,
         "comment_form": comment_form,
-        "bids": Bid.objects.get_all_bids(lot_id=lot_id)[:10],
-        "comments": Comment.objects.get_all_comments(lot_id=lot_id)[:10],
+        "bids": Bid.objects.get_latest_bids_by_id(lot_id)[:10],
+        "comments": Comment.objects.get_latest_comments_by_id(lot_id)[:10],
     }
 
     return render(request, TEMPLATE, context)

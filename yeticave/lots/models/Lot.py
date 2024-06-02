@@ -25,6 +25,7 @@ class Lot(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
 
     objects: LotManager = LotManager()
+    historical = models.Manager()
 
     def __str__(self):
         return self.title

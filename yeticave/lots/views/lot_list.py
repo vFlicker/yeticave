@@ -24,7 +24,7 @@ if TYPE_CHECKING:
 def lot_list(request: HttpRequest) -> HttpResponse:
     TEMPLATE = "lots/index.html"
 
-    lots = Lot.objects.with_active()
+    lots = Lot.objects.all()
 
     if request.user.is_authenticated:
         user = cast("User", request.user)

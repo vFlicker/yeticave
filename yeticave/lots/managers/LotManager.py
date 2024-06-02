@@ -19,14 +19,10 @@ class LotQuerySet(models.QuerySet):
             )
         )
 
-    # TODO: make with active by default
-    def with_active(self) -> "LotQuerySet":
-        return self.filter(is_active=True)
-
 
 class LotManager(models.Manager):
     def get_queryset(self) -> "LotQuerySet":
-        return LotQuerySet(self.model, using=self._db)
+        return LotQuerySet(self.model, using=self._db).filter(is_active=True)
 
     def get_user_watchlist(self, user: User) -> "LotQuerySet":
         return self.get_queryset().get_user_watchlist(user).with_watchlist_status(user)
@@ -36,6 +32,3 @@ class LotManager(models.Manager):
 
     def with_watchlist_status(self, user: User) -> "LotQuerySet":
         return self.get_queryset().with_watchlist_status(user)
-
-    def with_active(self) -> "LotQuerySet":
-        return self.get_queryset().with_active()
