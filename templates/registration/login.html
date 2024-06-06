@@ -3,7 +3,7 @@
 {% block content %}
     <main class="login container">
         <form
-            action="{% url 'accounts:login' %}"
+            action="{% url 'users:login' %}"
             method="POST"
             class="form form-login {% if form.errors %}form__item--invalid{% endif %}"
         >
@@ -31,7 +31,7 @@
             {% endif %}
 
             <p>Don't have an account?
-                <a href="{% url 'accounts:register' %}">Register here.</a>
+                <a href="{% url 'users:register' %}">Register here.</a>
             </p>
         </form>
     </main>

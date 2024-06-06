@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, Optional
 from django.db import models
 
 if TYPE_CHECKING:
-    from yeticave.accounts.models import User
+    from yeticave.users.models import User
 
     from ..models.Bid import Bid
 

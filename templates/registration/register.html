@@ -3,7 +3,7 @@
 {% block content %}
     <main class="register container">
         <form
-            action="{% url 'accounts:register' %}"
+            action="{% url 'users:register' %}"
             method="POST"
             class="form form-login {% if form.errors %}form__item--invalid{% endif %}"
         >
@@ -30,7 +30,7 @@
                 </ul>
             {% endif %}
 
-            <p>Already have an account? <a href="{% url 'accounts:login' %}">Log In here.</a></p>
+            <p>Already have an account? <a href="{% url 'users:login' %}">Log In here.</a></p>
         </form>
     </main>
 {% endblock %}

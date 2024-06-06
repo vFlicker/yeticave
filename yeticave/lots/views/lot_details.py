@@ -15,7 +15,7 @@ from ..services.CommentService import CommentService
 from ..services.LotService import LotService
 
 if TYPE_CHECKING:
-    from yeticave.accounts.models import User
+    from yeticave.users.models import User
 
 
 @require_http_methods(["GET", "POST"])

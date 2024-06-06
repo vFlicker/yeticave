@@ -7,7 +7,7 @@ from django.views.decorators.http import require_http_methods
 from ..models.Lot import Lot
 
 if TYPE_CHECKING:
-    from yeticave.accounts.models import User
+    from yeticave.users.models import User
 
 
 @require_http_methods(["GET"])

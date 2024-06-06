@@ -6,7 +6,7 @@ from ..models.Bid import Bid
 from ..models.Lot import Lot
 
 if TYPE_CHECKING:
-    from yeticave.accounts.models import User
+    from yeticave.users.models import User
 
 
 class LotService:

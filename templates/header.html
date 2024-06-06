@@ -35,17 +35,17 @@
                 <nav class="user-menu user-menu--login">
                     <a class="user-menu__bets" href="{% url 'lots:my_bids' %}">My bets</a>
                     <a class="user-menu__bets" href="{% url 'lots:watchlist' %}">Watchlist</a>
-                    <a class="user-menu__logout" href="{% url 'accounts:logout' %}">Logout</a>
+                    <a class="user-menu__logout" href="{% url 'users:logout' %}">Logout</a>
                 </nav>
             </div>
         {% else %}
             <nav class="user-menu">
                 <ul class="user-menu__list">
                     <li class="user-menu__item">
-                        <a href="{% url 'accounts:login' %}">Login</a>
+                        <a href="{% url 'users:login' %}">Login</a>
                     </li>
                     <li class="user-menu__item">
-                        <a href="{% url 'accounts:register' %}">Register</a>
+                        <a href="{% url 'users:register' %}">Register</a>
                     </li>
                 </ul>
             </nav>

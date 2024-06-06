@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path("", include("yeticave.accounts.urls")),
+    path("", include("yeticave.users.urls")),
     path("", include("yeticave.lots.urls")),
     path("categories/", include("yeticave.categories.urls")),
     path("admin/", admin.site.urls),

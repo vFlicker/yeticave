@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models import BooleanField, Case, Value, When
 
 if TYPE_CHECKING:
-    from yeticave.accounts.models import User
+    from yeticave.users.models import User
 
 
 class LotQuerySet(models.QuerySet):

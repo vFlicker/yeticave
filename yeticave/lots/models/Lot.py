@@ -1,6 +1,6 @@
 from django.db import models
 
-from yeticave.accounts.models import User
+from yeticave.users.models import User
 from yeticave.categories.choices import DEFAULT_CATEGORY
 from yeticave.categories.models import Category
 

@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "yeticave.core",
-    "yeticave.accounts",
+    "yeticave.users",
     "yeticave.lots",
     "yeticave.categories",
 ]
@@ -132,7 +132,7 @@ STATICFILES_DIRS = (path.join(BASE_DIR, "static"),)
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Custom user model
-AUTH_USER_MODEL = "accounts.User"
+AUTH_USER_MODEL = "users.User"
 
 # Add custom message tag for custom notifications
 NOTIFICATION_LEVEL = 100

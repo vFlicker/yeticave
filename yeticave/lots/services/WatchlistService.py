@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from ..models.Watchlist import Watchlist
 
 if TYPE_CHECKING:
-    from yeticave.accounts.models import User
+    from yeticave.users.models import User
 
     from ..models.Lot import Lot
 

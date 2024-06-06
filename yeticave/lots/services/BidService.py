@@ -5,7 +5,7 @@ from ..errors import BidAmountError
 from ..models.Bid import Bid
 
 if TYPE_CHECKING:
-    from yeticave.accounts.models import User
+    from yeticave.users.models import User
 
     from ..models.Lot import Lot
 

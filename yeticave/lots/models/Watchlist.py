@@ -1,6 +1,6 @@
 from django.db import models
 
-from yeticave.accounts.models import User
+from yeticave.users.models import User
 
 from .Lot import Lot
 

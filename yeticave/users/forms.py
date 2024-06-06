@@ -1,6 +1,6 @@
 from django import forms
 
-from yeticave.accounts.models import User
+from yeticave.users.models import User
 
 
 class UserCreationForm(forms.ModelForm):
