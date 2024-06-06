@@ -25,7 +25,7 @@
                             Category: <span>{{ lot.category }}</span>
                         </p>
                         {% if user.is_authenticated %}
-                            {% include "watchlist/_toggle_watchlist.html" with lot_id=lot.id width="31" height="33" %}
+                            {% include "lots/_toggle_watchlist.html" with lot_id=lot.id width="31" height="33" %}
                         {% endif %}
                     </div>
 

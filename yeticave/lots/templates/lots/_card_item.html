@@ -14,7 +14,7 @@
             <span class="lot__category">{{ lot.category }}</span>
 
             {% if user.is_authenticated %}
-                {% include "watchlist/_toggle_watchlist.html" with lot_id=lot.id width="18" height="19" %}
+                {% include "lots/_toggle_watchlist.html" with lot_id=lot.id width="18" height="19" %}
             {% endif %}
         </div>
 

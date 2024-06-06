@@ -10,7 +10,7 @@ from .services import UserService
 
 @require_http_methods(["GET", "POST"])
 def register(request: HttpRequest) -> HttpResponse:
-    TEMPLATE = "registration/register.html"
+    TEMPLATE = "users/register.html"
 
     form = UserCreationForm(request.POST or None)
 

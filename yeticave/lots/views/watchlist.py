@@ -10,7 +10,7 @@ from ..models.Lot import Lot
 @require_http_methods(["GET"])
 @login_required
 def watchlist(request: AuthenticatedHttpRequest):
-    TEMPLATE = "watchlist/watchlist.html"
+    TEMPLATE = "lots/watchlist.html"
 
     lots = Lot.objects.get_user_watchlist(request.user)
 
