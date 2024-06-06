@@ -12,6 +12,7 @@ class LotService:
         starting_bid: int,
         image_url: str,
         category: str,
+        finished_at: str,
     ) -> Lot:
         lot = Lot.objects.create(
             title=title,
@@ -20,6 +21,7 @@ class LotService:
             image_url=image_url,
             category=category,
             creator=creator,
+            finished_at=finished_at,
         )
         return lot
 

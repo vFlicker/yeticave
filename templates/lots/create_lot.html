@@ -34,19 +34,27 @@
             </div>
             <div class="form__container">
                 <div class="form__item">
-                    <label for="{{ form.image_url.id_for_label }}">
-                        {{ form.image_url.label }}
-                        {% if form.image_url.field.required %}*{% endif %}
-                    </label>
-                    {{ form.image_url }}
-                </div>
-                <div class="form__item">
                     <label for="{{ form.starting_bid.id_for_label }}">
                         {{ form.starting_bid.label }}
-                        {% if orm.starting_bid.field.required %}*{% endif %}
+                        {% if form.starting_bid.field.required %}*{% endif %}
                     </label>
                     {{ form.starting_bid }}
                 </div>
+                <div class="form__item">
+                    <label for="{{ form.finished_at.id_for_label }}">
+                        {{ form.finished_at.label }}
+                        {% if form.finished_at.field.required %}*{% endif %}
+                    </label>
+                    {{ form.finished_at }}
+                </div>
+            </div>
+
+            <div class="form__item">
+                <label for="{{ form.image_url.id_for_label }}">
+                    {{ form.image_url.label }}
+                    {% if form.image_url.field.required %}*{% endif %}
+                </label>
+                {{ form.image_url }}
             </div>
 
             <button type="submit" class="button">Add lot</button>

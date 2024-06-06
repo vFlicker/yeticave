@@ -4,7 +4,7 @@
     <div class="main-header__container container">
         <h1 class="visually-hidden">YetiCave</h1>
 
-        <a href="/" class="main-header__logo">
+        <a href={% url 'lots:lot_list' %} class="main-header__logo">
             <img src="{% static 'img/logo.svg' %}"
                  width="160"
                  height="39"
@@ -33,7 +33,7 @@
                 </button>
 
                 <nav class="user-menu user-menu--login">
-                    <a class="user-menu__bets" href="/my-bets">My bets</a>
+                    <a class="user-menu__bets" href="{% url 'lots:my_bids' %}">My bets</a>
                     <a class="user-menu__bets" href="{% url 'lots:watchlist' %}">Watchlist</a>
                     <a class="user-menu__logout" href="{% url 'accounts:logout' %}">Logout</a>
                 </nav>

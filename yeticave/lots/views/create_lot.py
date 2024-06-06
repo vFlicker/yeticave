@@ -25,6 +25,7 @@ def create_lot(request: AuthenticatedHttpRequest) -> HttpResponse:
             starting_bid=form.cleaned_data["starting_bid"],
             image_url=form.cleaned_data["image_url"],
             category=form.cleaned_data["category"],
+            finished_at=form.cleaned_data["finished_at"],
         )
 
         return HttpResponseRedirect(reverse("lots:lot_list"))

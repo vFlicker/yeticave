@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load lots_extras %}
+
+{% block content %}
+    <main>
+        <section class="rates container">
+            <h2>My bets</h2>
+            <table class="rates__list">
+                <tbody>
+                    <tr class="rates__item">
+                        <th class="rates__title rates__title--info">Name</th>
+                        <th class="rates__title rates__title--category">Category</th>
+                        <th class="rates__title rates__title--timer">End of auction</th>
+                        <th class="rates__title rates__title--price">Price</th>
+                        <th class="rates__title rates__title--time">Bet time</th>
+                    </tr>
+
+                    {% for bid in bids %}
+                        <tr class="rates__item {{ bid|get_bid_class }}">
+                            <td class="rates__info">
+                                <div class="rates__img">
+                                    <img src="{{ bid.lot.image_url }}"
+                                         width="54"
+                                         height="40"
+                                         alt="{{ bid.lot.title }}">
+                                </div>
+                                <div>
+                                    <h3 class="rates__title">
+                                        <a href="{% url 'lots:lot_details' bid.lot.id %}">{{ bid.lot.title }}</a>
+                                    </h3>
+                                    <p>Creator email: {{ bid.lot.creator.email }}</p>
+                                </div>
+                            </td>
+                            <td class="rates__category">{{ bid.lot.category }}</td>
+                            <td class="rates__timer">
+                                <div class="timer {{ bid|get_timer_class }}">{{ bid|get_timer_content }}</div>
+                            </td>
+                            <td class="rates__price">${{ bid.bid_amount }}</td>
+                            <td class="rates__time">{{ bid.created_at|date:"y/m/d" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+{% endblock content %}

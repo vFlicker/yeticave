@@ -16,6 +16,8 @@ class Lot(models.Model):
     starting_bid = models.DecimalField(max_digits=10, decimal_places=2)
     current_price = models.DecimalField(max_digits=10, decimal_places=2)
     is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    finished_at = models.DateTimeField()
 
     category = models.ForeignKey(
         Category,

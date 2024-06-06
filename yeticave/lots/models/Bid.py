@@ -13,6 +13,7 @@ class Bid(models.Model):
 
     lot = models.ForeignKey(Lot, on_delete=models.CASCADE)
     bidder = models.ForeignKey(User, on_delete=models.CASCADE)
+    is_winner = models.BooleanField(default=False)
 
     objects: BidManager = BidManager()
 

@@ -12,17 +12,17 @@
 })();
 
 /** Date picker */
-(() => {
-  const datePickerElement = document.querySelector("#endDate");
+// (() => {
+//   const datePickerElement = document.querySelector("#id_finished_at");
 
-  if (datePickerElement) {
-    flatpickr(datePickerElement, {
-      enableTime: false,
-      dateFormat: "Y-m-d",
-      locale: "ru",
-    });
-  }
-})();
+//   if (datePickerElement) {
+//     flatpickr(datePickerElement, {
+//       enableTime: true,
+//       dateFormat: "y/m/d H:i",
+//       locale: "en",
+//     });
+//   }
+// })();
 
 /** Lot preview */
 (() => {
