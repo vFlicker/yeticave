@@ -131,6 +131,9 @@ STATICFILES_DIRS = (path.join(BASE_DIR, "static"),)
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Custom user model
+AUTH_USER_MODEL = "accounts.User"
+
 # Add custom message tag for custom notifications
 NOTIFICATION_LEVEL = 100
 

@@ -9,10 +9,6 @@ from ..models.Lot import Lot
 if TYPE_CHECKING:
     from yeticave.accounts.models import User
 
-# TODO: Якщо користувач увійшов до облікового запису на сторінці закритого
-# аукціону і він є переможцем цього аукціону, він має отримати повідомлення
-# про це.
-
 
 @require_http_methods(["GET"])
 def lot_list(request: HttpRequest) -> HttpResponse:
