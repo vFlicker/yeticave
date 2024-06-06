@@ -29,7 +29,8 @@
                         {% endif %}
                     </div>
 
-                    <p class="lot-item__description">{{ lot.description }}</p>
+                    {% if lot.description %}<p class="lot-item__description">{{ lot.description }}</p>{% endif %}
+
 
                     <div class="lot-item__comments comments">
                         <h2>Comments</h2>

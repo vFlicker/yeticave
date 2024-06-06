@@ -32,7 +32,7 @@ def get_timer_class(bid: "Bid"):
 
     if not bid.lot.is_active and bid.is_winner:
         return "timer--win"
-    elif not bid.lot.is_active:
+    elif not bid.lot.is_active or time_left < timedelta(seconds=0):
         return "timer--end"
     elif bid.lot.is_active and time_left < timedelta(hours=12):
         return "timer--finishing"
@@ -40,10 +40,11 @@ def get_timer_class(bid: "Bid"):
 
 @register.filter
 def get_timer_content(bid: "Bid"):
+    time_left = calculate_time_left(bid.lot.finished_at)
+
     if not bid.lot.is_active and bid.is_winner:
         return "Won"
-    elif not bid.lot.is_active:
+    elif not bid.lot.is_active or time_left < timedelta(seconds=0):
         return "End"
     else:
-        time_left = calculate_time_left(bid.lot.finished_at)
         return f"{time_left.days}d {time_left.seconds // 3600}h {time_left.seconds % 3600 // 60}m"

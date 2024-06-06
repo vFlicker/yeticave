@@ -9,7 +9,7 @@ class LotService:
         creator: User,
         title: str,
         description: str,
-        starting_bid: int,
+        starting_price: int,
         image_url: str,
         category: str,
         finished_at: str,
@@ -17,7 +17,7 @@ class LotService:
         lot = Lot.objects.create(
             title=title,
             description=description,
-            starting_bid=starting_bid,
+            starting_price=starting_price,
             image_url=image_url,
             category=category,
             creator=creator,

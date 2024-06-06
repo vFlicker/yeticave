@@ -43,10 +43,10 @@ def lot_details(request: HttpRequest, lot_id: int) -> HttpResponse:
                 BidService.place_bid(
                     bidder=user,
                     lot=lot,
-                    bid_amount=bid_form.cleaned_data["bid_amount"],
+                    amount=bid_form.cleaned_data["amount"],
                 )
             except BidAmountError as error:
-                bid_form.add_error("bid_amount", str(error))
+                bid_form.add_error("amount", str(error))
 
     context = {
         "lot": lot,

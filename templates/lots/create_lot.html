@@ -34,11 +34,11 @@
             </div>
             <div class="form__container">
                 <div class="form__item">
-                    <label for="{{ form.starting_bid.id_for_label }}">
-                        {{ form.starting_bid.label }}
-                        {% if form.starting_bid.field.required %}*{% endif %}
+                    <label for="{{ form.starting_price.id_for_label }}">
+                        {{ form.starting_price.label }}
+                        {% if form.starting_price.field.required %}*{% endif %}
                     </label>
-                    {{ form.starting_bid }}
+                    {{ form.starting_price }}
                 </div>
                 <div class="form__item">
                     <label for="{{ form.finished_at.id_for_label }}">

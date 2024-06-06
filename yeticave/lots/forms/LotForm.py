@@ -9,7 +9,7 @@ class LotForm(forms.ModelForm):
         fields = [
             "title",
             "description",
-            "starting_bid",
+            "starting_price",
             "image_url",
             "category",
             "finished_at",
@@ -17,7 +17,7 @@ class LotForm(forms.ModelForm):
         widgets = {
             "title": forms.TextInput(attrs={"placeholder": "Enter title"}),
             "description": forms.Textarea(attrs={"placeholder": "Enter description"}),
-            "starting_bid": forms.TextInput(attrs={"placeholder": "Enter bid"}),
+            "starting_price": forms.TextInput(attrs={"placeholder": "Enter bid"}),
             "image_url": forms.URLInput(attrs={"placeholder": "Enter image url"}),
             "finished_at": forms.DateTimeInput(
                 attrs={"placeholder": "Enter finish date", "type": "datetime-local"},

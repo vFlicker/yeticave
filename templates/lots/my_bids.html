@@ -35,7 +35,7 @@
                             <td class="rates__timer">
                                 <div class="timer {{ bid|get_timer_class }}">{{ bid|get_timer_content }}</div>
                             </td>
-                            <td class="rates__price">${{ bid.bid_amount }}</td>
+                            <td class="rates__price">${{ bid.amount }}</td>
                             <td class="rates__time">{{ bid.created_at|date:"y/m/d" }}</td>
                         </tr>
                     {% endfor %}

@@ -22,7 +22,7 @@ def create_lot(request: AuthenticatedHttpRequest) -> HttpResponse:
             creator=request.user,
             title=form.cleaned_data["title"],
             description=form.cleaned_data["description"],
-            starting_bid=form.cleaned_data["starting_bid"],
+            starting_price=form.cleaned_data["starting_price"],
             image_url=form.cleaned_data["image_url"],
             category=form.cleaned_data["category"],
             finished_at=form.cleaned_data["finished_at"],
