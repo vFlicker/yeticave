@@ -1,11 +1,11 @@
 from typing import TYPE_CHECKING
 
-from yeticave.lots.models.Watchlist import Watchlist
+from ..models.Watchlist import Watchlist
 
 if TYPE_CHECKING:
-    from django.contrib.auth.models import User
+    from yeticave.accounts.models import User
 
-    from yeticave.lots.models.Lot import Lot
+    from ..models.Lot import Lot
 
 
 class WatchlistService:

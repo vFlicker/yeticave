@@ -1,10 +1,9 @@
-from django.contrib.auth import get_user_model
 from django.db import models
+
+from yeticave.accounts.models import User
 
 from ..managers.CommentManager import CommentManager
 from .Lot import Lot
-
-User = get_user_model()
 
 
 class Comment(models.Model):

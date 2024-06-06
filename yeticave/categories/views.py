@@ -9,7 +9,7 @@ from yeticave.lots.models.Lot import Lot
 from .models import Category
 
 if TYPE_CHECKING:
-    from django.contrib.auth.models import User
+    from yeticave.accounts.models import User
 
 
 @require_http_methods(["GET"])

@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.contrib.auth import login as auth_login
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -7,8 +6,6 @@ from django.views.decorators.http import require_http_methods
 
 from .forms import UserCreationForm
 from .services import UserService
-
-User = get_user_model()
 
 
 @require_http_methods(["GET", "POST"])

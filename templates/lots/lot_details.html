@@ -7,8 +7,8 @@
             <div class="lot-item__header">
                 <h2>{{ lot.title }}</h2>
 
-                {% if user.is_authenticated %}
-                    {% include "lots/_close_bid.html" %}
+                {% if user.is_authenticated and is_creator %}
+                    {% include "lots/_close_bid_form.html" %}
                 {% endif %}
             </div>
 
@@ -30,7 +30,6 @@
                     </div>
 
                     {% if lot.description %}<p class="lot-item__description">{{ lot.description }}</p>{% endif %}
-
 
                     <div class="lot-item__comments comments">
                         <h2>Comments</h2>

@@ -5,7 +5,7 @@ from ..errors import BidAmountError
 from ..models.Bid import Bid
 
 if TYPE_CHECKING:
-    from django.contrib.auth.models import User
+    from yeticave.accounts.models import User
 
     from ..models.Lot import Lot
 

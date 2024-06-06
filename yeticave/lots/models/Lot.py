@@ -1,12 +1,10 @@
-from django.contrib.auth import get_user_model
 from django.db import models
 
+from yeticave.accounts.models import User
 from yeticave.categories.choices import DEFAULT_CATEGORY
 from yeticave.categories.models import Category
 
 from ..managers.LotManager import LotManager
-
-User = get_user_model()
 
 
 class Lot(models.Model):
@@ -27,9 +25,7 @@ class Lot(models.Model):
         on_delete=models.CASCADE,
         default=DEFAULT_CATEGORY,
     )
-    creator = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="created_lots"
-    )
+    creator = models.ForeignKey(User, on_delete=models.CASCADE)
 
     objects: LotManager = LotManager()
     historical = models.Manager()
@@ -40,6 +36,10 @@ class Lot(models.Model):
     def save(self, *args, **kwargs):
         self.__set_initial_price()
         super().save(*args, **kwargs)
+
+    def deactivate(self):
+        self.is_active = False
+        self.save(update_fields=["is_active"])
 
     def __set_initial_price(self):
         if not self.pk:

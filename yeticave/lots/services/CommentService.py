@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from ..models.Comment import Comment
 
 if TYPE_CHECKING:
-    from django.contrib.auth.models import User
+    from yeticave.accounts.models import User
 
     from ..models.Lot import Lot
 

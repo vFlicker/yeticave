@@ -1,8 +1,8 @@
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
-from django.contrib.auth.models import User
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
 from ..forms.BidForm import BidForm
@@ -14,12 +14,15 @@ from ..services.BidService import BidAmountError, BidService
 from ..services.CommentService import CommentService
 from ..services.LotService import LotService
 
+if TYPE_CHECKING:
+    from yeticave.accounts.models import User
+
 
 @require_http_methods(["GET", "POST"])
 def lot_details(request: HttpRequest, lot_id: int) -> HttpResponse:
-    TEMPLATE = "lots/lot.html"
+    TEMPLATE = "lots/lot_details.html"
 
-    user = cast(User, request.user)
+    user = cast("User", request.user)
     lot = __get_lot(request, lot_id)
 
     bid_form = BidForm()
@@ -48,6 +51,10 @@ def lot_details(request: HttpRequest, lot_id: int) -> HttpResponse:
             except BidAmountError as error:
                 bid_form.add_error("amount", str(error))
 
+    if request.method == "POST" and form_type == "complete_auction":
+        LotService.complete_auction(lot)
+        return HttpResponseRedirect(reverse("lots:lot_list"))
+
     context = {
         "lot": lot,
         "is_creator": LotService.check_creator(lot, user),
@@ -64,5 +71,5 @@ def __get_lot(request: HttpRequest, lot_id: int) -> Lot:
     if request.user.is_anonymous:
         return get_object_or_404(Lot, pk=lot_id)
 
-    user = cast(User, request.user)
+    user = cast("User", request.user)
     return get_object_or_404(Lot.objects.with_watchlist_status(user), pk=lot_id)

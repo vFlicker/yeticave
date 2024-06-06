@@ -7,11 +7,7 @@ from django.views.decorators.http import require_http_methods
 from ..models.Lot import Lot
 
 if TYPE_CHECKING:
-    from django.contrib.auth.models import User
-
-# TODO: Якщо користувач увійшов до облікового запису і він є автором аукціону,
-# він повинен мати змогу «закрити» аукціон на цій сторінці, що зробить автора
-# найбільшої ставки переможцем аукціону, а сам аукціон стане неактивним.
+    from yeticave.accounts.models import User
 
 # TODO: Якщо користувач увійшов до облікового запису на сторінці закритого
 # аукціону і він є переможцем цього аукціону, він має отримати повідомлення

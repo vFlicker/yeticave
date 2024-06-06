@@ -13,12 +13,8 @@ from ..models.Bid import Bid
 def my_bids(request: AuthenticatedHttpRequest) -> HttpResponse:
     TEMPLATE = "lots/my_bids.html"
 
-    user = request.user
-    bids = Bid.objects.get_user_bids(user)
-
     context = {
-        "bids": bids,
-        "user": user,
+        "bids": Bid.objects.get_user_bids(request.user)
     }
 
     return render(request, TEMPLATE, context)

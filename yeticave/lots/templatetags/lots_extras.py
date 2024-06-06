@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 from django import template
 
 from yeticave.core.utils import calculate_time_left
+from yeticave.lots.constants import BidStatus
 
 if TYPE_CHECKING:
     from ..models.Bid import Bid
@@ -20,9 +21,9 @@ def usd(value: int) -> str:
 
 @register.filter
 def get_bid_class(bid: "Bid"):
-    if bid.is_winner:
+    if bid.status == BidStatus.WON:
         return "rates__item--end rates__item--win"
-    elif not bid.lot.is_active:
+    elif bid.status == BidStatus.LOST:
         return "rates__item--end"
 
 
@@ -30,21 +31,21 @@ def get_bid_class(bid: "Bid"):
 def get_timer_class(bid: "Bid"):
     time_left = calculate_time_left(bid.lot.finished_at)
 
-    if not bid.lot.is_active and bid.is_winner:
-        return "timer--win"
-    elif not bid.lot.is_active or time_left < timedelta(seconds=0):
-        return "timer--end"
-    elif bid.lot.is_active and time_left < timedelta(hours=12):
+    if not bid.status == BidStatus.ACTIVE and time_left < timedelta(hours=12):
         return "timer--finishing"
+    elif bid.status == BidStatus.WON:
+        return "timer--win"
+    elif bid.status == BidStatus.LOST:
+        return "timer--end"
 
 
 @register.filter
 def get_timer_content(bid: "Bid"):
     time_left = calculate_time_left(bid.lot.finished_at)
 
-    if not bid.lot.is_active and bid.is_winner:
+    if bid.status == BidStatus.WON:
         return "Won"
-    elif not bid.lot.is_active or time_left < timedelta(seconds=0):
+    elif bid.status == BidStatus.LOST:
         return "End"
     else:
         return f"{time_left.days}d {time_left.seconds // 3600}h {time_left.seconds % 3600 // 60}m"

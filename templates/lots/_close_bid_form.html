@@ -3,5 +3,7 @@
       class="form close-bid__form {% if form.errors %}form__item--invalid{% endif %}">
     {% csrf_token %}
 
-    <button type="submit" class="button">Close the bid</button>
+    <input type="hidden" name="form_type" value="complete_auction">
+
+    <button type="submit" class="button">Close bid</button>
 </form>

@@ -1,9 +1,8 @@
-from django.contrib.auth import get_user_model
 from django.db import models
 
-from .Lot import Lot
+from yeticave.accounts.models import User
 
-User = get_user_model()
+from .Lot import Lot
 
 
 class Watchlist(models.Model):
