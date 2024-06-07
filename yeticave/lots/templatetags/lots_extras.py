@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 
 from django import template
 
-from yeticave.core.utils import calculate_time_left
+from yeticave.core.utils.calculate_time_left import calculate_time_left
 from yeticave.lots.constants import BidStatus
 
 if TYPE_CHECKING:

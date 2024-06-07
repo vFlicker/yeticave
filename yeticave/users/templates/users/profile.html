@@ -3,17 +3,20 @@
 {% block content %}
     <main class="container">
         <section class="profile">
-            <h1>Profile</h1>
-            <ul class="profile__list">
-                <li class="profile__item">
-                    <span class="profile__label">Username:</span>
-                    <span class="profile__value">{{ user.username }}</span>
-                </li>
-                <li class="profile__item">
-                    <span class="profile__label">Email:</span>
-                    <span class="profile__value">{{ user.email }}</span>
-                </li>
-            </ul>
+            <div>
+                <h1>Profile {{ profile_user.username }}</h1>
+
+                {% if user.is_authenticated %}
+                    {% include "followers/following_form.html" %}
+                {% endif %}
+            </div>
+
+            <p>
+                <span>Followers: {{ profile_user.followers.get_total_count }}</span>
+                <span>Following: {{ profile_user.following.get_total_count }}</span>
+            </p>
+
+            <p>Your email: {{ profile_user.email }}</p>
         </section>
     </main>
 {% endblock content %}

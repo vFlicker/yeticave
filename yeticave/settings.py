@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "yeticave.core",
     "yeticave.users",
+    "yeticave.followers",
     "yeticave.lots",
     "yeticave.categories",
 ]

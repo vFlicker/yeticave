@@ -1,0 +1,12 @@
+<form method="post"
+      action="{% url 'followers:toggle_follow' profile_user.username %}">
+    {% csrf_token %}
+
+    <button class="button">
+        {% if is_followed %}
+            Unfollow
+        {% else %}
+            Follow
+        {% endif %}
+    </button>
+</form>

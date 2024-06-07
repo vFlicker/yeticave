@@ -21,6 +21,7 @@ from django.urls import include, path
 urlpatterns = [
     path("", include("yeticave.users.urls")),
     path("", include("yeticave.lots.urls")),
+    path("", include("yeticave.followers.urls")),
     path("categories/", include("yeticave.categories.urls")),
     path("admin/", admin.site.urls),
 ]
