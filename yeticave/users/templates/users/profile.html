@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <main class="container">
+        <section class="profile">
+            <h1>Profile</h1>
+            <ul class="profile__list">
+                <li class="profile__item">
+                    <span class="profile__label">Username:</span>
+                    <span class="profile__value">{{ user.username }}</span>
+                </li>
+                <li class="profile__item">
+                    <span class="profile__label">Email:</span>
+                    <span class="profile__value">{{ user.email }}</span>
+                </li>
+            </ul>
+        </section>
+    </main>
+{% endblock content %}

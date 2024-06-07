@@ -11,6 +11,7 @@
                  alt="YetiCave Logo">
         </a>
 
+        {# TODO: пошук #}
         <form method="get" action="/search" class="main-header__search">
             <input type="search" name="text" placeholder="Find lot">
             <button class="main-header__search-btn" type="submit">
@@ -33,6 +34,8 @@
                 </button>
 
                 <nav class="user-menu user-menu--login">
+                    <a class="user-menu__profile"
+                       href="{% url 'users:profile' user.username %}">Profile</a>
                     <a class="user-menu__bets" href="{% url 'lots:my_bids' %}">My bets</a>
                     <a class="user-menu__bets" href="{% url 'lots:watchlist' %}">Watchlist</a>
                     <a class="user-menu__logout" href="{% url 'users:logout' %}">Logout</a>

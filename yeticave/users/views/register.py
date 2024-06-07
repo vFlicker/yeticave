@@ -4,8 +4,8 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
-from .forms import UserCreationForm
-from .services import UserService
+from ..forms import UserCreationForm
+from ..services import UserService
 
 
 @require_http_methods(["GET", "POST"])
