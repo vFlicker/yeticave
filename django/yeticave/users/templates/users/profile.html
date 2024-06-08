@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <main class="container">
+        <section class="profile">
+            <div>
+                <h1>Profile {{ profile_user.username }}</h1>
+
+                {% if user.is_authenticated %}
+                    {% include "followers/following_form.html" %}
+                {% endif %}
+            </div>
+
+            <p>
+                <span>Followers: {{ profile_user.followers.get_total_count }}</span>
+                <span>Following: {{ profile_user.following.get_total_count }}</span>
+            </p>
+
+            <p>Your email: {{ profile_user.email }}</p>
+        </section>
+    </main>
+{% endblock content %}

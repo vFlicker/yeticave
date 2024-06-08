@@ -1,0 +1,2 @@
+class BidAmountError(Exception):
+    pass

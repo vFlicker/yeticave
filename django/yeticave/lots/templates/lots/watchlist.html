@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <main class="container">
+        <section class="lots">
+            <h2>Watchlist</h2>
+
+            {% if lots %}
+                <ul class="lots__list">
+                    {% for lot in lots %}
+                        {% include "lots/_card_item.html" with lot_id=lot.id %}
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <h3>Watchlist is empty.</h3>
+            {% endif %}
+        </section>
+    </main>
+{% endblock content %}

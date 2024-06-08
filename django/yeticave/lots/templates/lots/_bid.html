@@ -1,0 +1,7 @@
+{% load lots_extras %}
+
+<tr class="history__item">
+    <td class="history__name">{{ bid.bidder.username }}</td>
+    <td class="history__price">{{ bid.amount | usd }}</td>
+    <td class="history__time">{{ bid.created_at }}</td>
+</tr>

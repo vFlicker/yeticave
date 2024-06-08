@@ -1,0 +1,57 @@
+{% load static %}
+
+<header class="main-header">
+    <div class="main-header__container container">
+        <h1 class="visually-hidden">YetiCave</h1>
+
+        <a href={% url 'lots:lot_list' %} class="main-header__logo">
+            <img src="{% static 'img/logo.svg' %}"
+                 width="160"
+                 height="39"
+                 alt="YetiCave Logo">
+        </a>
+
+        {# TODO: пошук #}
+        <form method="get" action="/search" class="main-header__search">
+            <input type="search" name="text" placeholder="Find lot">
+            <button class="main-header__search-btn" type="submit">
+                <span class="visually-hidden">Search</span>
+            </button>
+        </form>
+
+        {% if user.is_authenticated %}
+            <a class="main-header__add-lot button"
+               href="{% url 'lots:create_lot' %}">Create lot</a>
+
+            <div class="user-menu__wrapper">
+                <button class="button__menu-open menu-open">
+                    <span class="menu-open__name">{{ user.username }}</span>
+                    <img class="menu-open__image"
+                         src="{% static 'img/user.png' %}"
+                         width="32"
+                         height="32"
+                         alt="User avatar">
+                </button>
+
+                <nav class="user-menu user-menu--login">
+                    <a class="user-menu__profile"
+                       href="{% url 'users:profile' user.username %}">Profile</a>
+                    <a class="user-menu__bets" href="{% url 'lots:my_bids' %}">My bets</a>
+                    <a class="user-menu__bets" href="{% url 'lots:watchlist' %}">Watchlist</a>
+                    <a class="user-menu__logout" href="{% url 'users:logout' %}">Logout</a>
+                </nav>
+            </div>
+        {% else %}
+            <nav class="user-menu">
+                <ul class="user-menu__list">
+                    <li class="user-menu__item">
+                        <a href="{% url 'users:login' %}">Login</a>
+                    </li>
+                    <li class="user-menu__item">
+                        <a href="{% url 'users:register' %}">Register</a>
+                    </li>
+                </ul>
+            </nav>
+        {% endif %}
+    </div>
+</header>

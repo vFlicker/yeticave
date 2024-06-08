@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load lots_extras %}
+
+{% block content %}
+    <main>
+        <section class="lot-item container">
+            <div class="lot-item__header">
+                <h2>{{ lot.title }}</h2>
+
+                {% if user.is_authenticated and is_creator %}
+                    {% include "lots/_close_bid_form.html" %}
+                {% endif %}
+            </div>
+
+            <div class="lot-item__content">
+                <div class="lot-item__left">
+                    <img src="{{ lot.image_url }}"
+                         class="lot-item__image"
+                         width="730"
+                         height="548"
+                         alt="{{ lot.title }}" />
+
+                    <div class="lot-item__row">
+                        <p class="lot-item__category">
+                            Category: <span>{{ lot.category }}</span>
+                        </p>
+                        {% if user.is_authenticated %}
+                            {% include "lots/_toggle_watchlist.html" with lot_id=lot.id width="31" height="33" %}
+                        {% endif %}
+                    </div>
+
+                    {% if lot.description %}<p class="lot-item__description">{{ lot.description }}</p>{% endif %}
+
+                    <div class="lot-item__comments comments">
+                        <h2>Comments</h2>
+
+                        {% if user.is_authenticated and not is_creator %}
+                            {% include "lots/_comment_form.html" %}
+                        {% endif %}
+
+                        <ul class="comment__list">
+                            {% for comment in comments %}
+                                {% include "lots/_comment.html" %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="lot-item__right">
+                    <div class="bet">
+                        <div class="lot-item__cost-state">
+                            <div class="lot-item__rate">
+                                <div class="lot-item__amount">Current price</div>
+                                <div class="lot-item__cost">{{ lot.current_price | usd }}</div>
+                            </div>
+                        </div>
+
+                        {% if user.is_authenticated and not is_creator %}
+                            {% include "lots/_bid_form.html" %}
+                        {% endif %}
+                    </div>
+
+                    <div class="history">
+                        <h3>
+                            History of rates (<span>{{ bids | length }}</span>)
+                        </h3>
+                        <table class="history__list">
+                            {% for bid in bids %}
+                                {% include "lots/_bid.html" %}
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock content %}

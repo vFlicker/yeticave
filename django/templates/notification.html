@@ -1,0 +1,14 @@
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            {% if message.level == NOTIFICATION_LEVEL %}
+                <li class="messages__item  messages__item--{{ message.tags }}">
+                    <button class="message__close">
+                        <span class="visually-hidden">Close the message</span>
+                    </button>
+                    <div class="message__text">{{ message }}</div>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endif %}

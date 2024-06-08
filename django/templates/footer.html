@@ -1,0 +1,50 @@
+<footer class="main-footer">
+    <nav class="nav">
+        <ul class="nav__list container">
+            {% for category in categories %}
+                <li class="nav__item">
+                    <a href="{% url "categories:category" category.id %}">
+                        {{ category.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </nav>
+    <div class="main-footer__bottom container">
+        <div class="main-footer__copyright">
+            <p>© 2023, YetiCave</p>
+            <p>Online auction of snowboard and ski equipment</p>
+        </div>
+        <div class="main-footer__social">
+            <a href="#" class="social-link">
+                <span class="visually-hidden">Facebook</span>
+                <svg width="27" height="27" class="social-link__item">
+                    <use xlink:href="#facebook"></use>
+                </svg>
+            </a>
+
+            <a href="#" class="social-link">
+                <span class="visually-hidden">Twitter</span>
+                <svg width="27" height="27" class="social-link__item">
+                    <use xlink:href="#twitter"></use>
+                </svg>
+            </a>
+
+            <a href="#" class="social-link">
+                <span class="visually-hidden">Instagram</span>
+                <svg width="27" height="27" class="social-link__item">
+                    <use xlink:href="#instagram"></use>
+                </svg>
+            </a>
+        </div>
+        <div class="main-footer__developed-by">
+            <span class="visually-hidden">Development</span>
+            <a href="https://github.com/vFlicker" class="social-link">
+                <span class="visually-hidden">Github</span>
+                <svg width="32" height="32" class="social-link__item">
+                    <use xlink:href="#github"></use>
+                </svg>
+            </a>
+        </div>
+    </div>
+</footer>

@@ -1,0 +1,9 @@
+<form action="{% url 'lots:lot_details' lot.id %}"
+      method="post"
+      class="form close-bid__form {% if form.errors %}form__item--invalid{% endif %}">
+    {% csrf_token %}
+
+    <input type="hidden" name="form_type" value="complete_auction">
+
+    <button type="submit" class="button">Close bid</button>
+</form>
