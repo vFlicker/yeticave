@@ -1,0 +1,23 @@
+<% const form = new Form(lot, validation); %>
+
+<main class="container">
+  <%- form.begin('/lots/new', 'post', {
+    enctype: 'multipart/form-data',
+    className: 'form--lot',
+  }); %>
+    <h2>Add a lot</h2>
+    <div class="form__container">
+      <%- form.field('Name *', 'title', 'Enter lot name'); %>
+      <%- form.field('Category *', 'category').selectField(categories); %>
+    </div>
+    <%- form.field('Description *', 'description', 'Write a description of the lot').textareaField(); %>
+    <%- form.field('Image *', 'image').fileField(); %>
+    <div class="form__container">
+      <%- form.field('Starting price *', 'price', '0').numberField(); %>
+      <%- form.field('Bet step *', 'step', '0').numberField(); %>
+      <%- form.field('End date of auction *', 'endDate', 'Please enter a date'); %>
+    </div>
+    <%- form.errorBlock(); %>
+    <button type="submit" class="button">Add lot</button>
+  <%- form.end(); %>
+</main>

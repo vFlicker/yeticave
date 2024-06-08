@@ -1,0 +1,58 @@
+<main>
+  <section class="lot-item container">
+    <h2><%= lot.title %></h2>
+    <div class="lot-item__content">
+      <div class="lot-item__left">
+        <div class="lot-item__image">
+          <img src="<%= lot.imageUrl %>" width="730" height="548" alt="<%= lot.title %>">
+        </div>
+        <p class="lot-item__category">
+          Category: <span><%= lot.category %></span>
+        </p>
+        <p class="lot-item__description">
+          <%= lot.description %>
+        </p>
+      </div>
+      <% if (isShowBetForm) { %>
+      <div class="lot-item__right">
+        <div class="bet">
+          <div class="lot-item__timer timer">10:54:12</div>
+          <div class="lot-item__cost-state">
+            <div class="lot-item__rate">
+              <span class="lot-item__amount">Current price</span>
+              <span class="lot-item__cost"><%= helper.formatPrice(Math.max(lot.price, maxPrice.price)) %></span>
+            </div>
+            <div class="lot-item__min-cost">
+              Minimum step &ndash;&nbsp;<span><%= helper.formatPrice(lot.step) %></span>
+            </div>
+          </div>
+
+          <form action="/lots/<%= lot.id %>" method="post" class="bet__form <%= hasErrors ? 'form--invalid' : '' %>">
+            <div class="bet__form-item <%= errors.hasOwnProperty('price') ? 'form__item--invalid' : '' %>">
+              <label for="cost">Your bet</label>
+              <input id="lot_id" name="lotId" value="<%= lot.id %>" type="hidden">
+              <input id="cost" class="input-cost" type="number" name="price"
+                placeholder="<%= helper.getMinRate(Math.max(lot.price, maxPrice.price), lot.step) %>">
+              <span class="form__error form__error--bet"><%= errors.price %></span>
+            </div>
+            <button type="submit" class="button">Make a bet</button>
+          </form>
+        </div>
+        <% } %>
+
+        <div class="history">
+          <h3>History of rates (<span><%= bets.length %></span>)</h3>
+          <table class="history__list">
+            <% bets.forEach((bet) => { %>
+            <tr class="history__item">
+              <td class="history__name"><%= bet.userName %></td>
+              <td class="history__price"><%= helper.formatPrice(bet.price) %></td>
+              <td class="history__time"><%= helper.getTimeAgo(bet.createDate) %></td>
+            </tr>
+            <% }) %>
+          </table>
+        </div>%>
+      </div>
+    </div>
+  </section>
+</main>
