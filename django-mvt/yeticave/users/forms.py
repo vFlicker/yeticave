@@ -1,6 +1,8 @@
 from django import forms
 
-from yeticave.users.models import User
+from yeticave.core.utils import get_user_model
+
+User = get_user_model()
 
 
 class UserCreationForm(forms.ModelForm):

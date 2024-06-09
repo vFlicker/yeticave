@@ -4,9 +4,11 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views.decorators.http import require_http_methods
 
 from yeticave.core.types import AuthenticatedHttpRequest
-from yeticave.users.models import User
+from yeticave.core.utils import get_user_model
 
 from .services import FollowService
+
+User = get_user_model()
 
 
 @login_required

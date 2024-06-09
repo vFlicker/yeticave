@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
-from yeticave.core.utils.get_authenticated_user import get_authenticated_user
+from yeticave.core.utils import get_authenticated_user
 
 from ..forms.BidForm import BidForm
 from ..forms.CommentForm import CommentForm

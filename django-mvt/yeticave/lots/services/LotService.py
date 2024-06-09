@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from yeticave.core.services.NotificationService import NotificationService
+from yeticave.core.services import NotificationService
 
 from ..models.Bid import Bid
 from ..models.Lot import Lot

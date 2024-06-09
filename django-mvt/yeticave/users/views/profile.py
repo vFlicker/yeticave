@@ -2,8 +2,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
-from yeticave.core.utils.get_authenticated_user import get_authenticated_user
-from yeticave.core.utils.get_user_model import get_user_model
+from yeticave.core.utils import get_authenticated_user, get_user_model
 from yeticave.followers.models import Follow
 
 User = get_user_model()

@@ -1,9 +1,11 @@
 from django.db import models
 
-from yeticave.users.models import User
+from yeticave.core.utils import get_user_model
 
 from ..managers.CommentManager import CommentManager
 from .Lot import Lot
+
+User = get_user_model()
 
 
 class Comment(models.Model):

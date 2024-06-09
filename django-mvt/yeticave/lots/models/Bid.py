@@ -1,10 +1,12 @@
 from django.db import models
 
-from yeticave.users.models import User
+from yeticave.core.utils import get_user_model
 
 from ..constants import BidStatus
 from ..managers.BidManager import BidManager
 from .Lot import Lot
+
+User = get_user_model()
 
 
 class Bid(models.Model):
@@ -19,7 +21,7 @@ class Bid(models.Model):
         return f"Bid on {self.lot.title} by {self.bidder}"
 
     @property
-    def status(self):
+    def status(self) -> BidStatus:
         if self.lot.is_active:
             return BidStatus.ACTIVE
         elif self.amount == self.lot.current_price:

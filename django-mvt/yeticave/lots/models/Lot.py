@@ -2,9 +2,11 @@ from django.db import models
 
 from yeticave.categories.choices import DEFAULT_CATEGORY
 from yeticave.categories.models import Category
-from yeticave.users.models import User
+from yeticave.core.utils import get_user_model
 
 from ..managers.LotManager import LotManager
+
+User = get_user_model()
 
 
 class Lot(models.Model):

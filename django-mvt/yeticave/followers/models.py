@@ -1,8 +1,10 @@
 from django.db import models
 
-from yeticave.users.models import User
+from yeticave.core.utils import get_user_model
 
 from .managers import FollowManager
+
+User = get_user_model()
 
 
 class Follow(models.Model):

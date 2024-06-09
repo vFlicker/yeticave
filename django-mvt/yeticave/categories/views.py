@@ -2,7 +2,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 
-from yeticave.core.utils.get_authenticated_user import get_authenticated_user
+from yeticave.core.utils import get_authenticated_user
 from yeticave.lots.models.Lot import Lot
 
 from .models import Category

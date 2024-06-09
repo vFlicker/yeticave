@@ -10,5 +10,5 @@ if TYPE_CHECKING:
 
 class CommentService:
     @staticmethod
-    def add_comment(author: "User", lot: "Lot", text: str):
+    def add_comment(author: "User", lot: "Lot", text: str) -> None:
         Comment.objects.create(author=author, lot=lot, text=text)

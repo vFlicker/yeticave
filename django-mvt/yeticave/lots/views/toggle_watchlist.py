@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_http_methods
 
-from yeticave.core.services.MessageService import MessageService, MessageTemplates
+from yeticave.core.services import MessageService, MessageTemplates
 from yeticave.core.types import AuthenticatedHttpRequest
 
 from ..models.Lot import Lot

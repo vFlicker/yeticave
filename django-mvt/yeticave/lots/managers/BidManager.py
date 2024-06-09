@@ -23,7 +23,7 @@ class BidQuerySet(models.QuerySet):
 
 
 class BidManager(models.Manager):
-    def get_queryset(self):
+    def get_queryset(self) -> "BidQuerySet":
         return BidQuerySet(self.model, using=self._db)
 
     def get_bids_by_lot_id(self, lot_id: int) -> "BidQuerySet":
