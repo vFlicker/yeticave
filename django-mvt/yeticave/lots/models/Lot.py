@@ -1,8 +1,8 @@
 from django.db import models
 
-from yeticave.users.models import User
 from yeticave.categories.choices import DEFAULT_CATEGORY
 from yeticave.categories.models import Category
+from yeticave.users.models import User
 
 from ..managers.LotManager import LotManager
 

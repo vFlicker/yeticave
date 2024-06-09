@@ -1,15 +1,11 @@
-from typing import TYPE_CHECKING, cast
-
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 
+from yeticave.core.utils.get_authenticated_user import get_authenticated_user
 from yeticave.lots.models.Lot import Lot
 
 from .models import Category
-
-if TYPE_CHECKING:
-    from yeticave.users.models import User
 
 
 @require_http_methods(["GET"])
@@ -20,9 +16,8 @@ def category(request: HttpRequest, category_id: int) -> HttpResponse:
 
     lots = Lot.objects.get_all_by_category(category_id)
 
-    if request.user.is_authenticated:
-        user = cast("User", request.user)
-        lots = lots.with_watchlist_status(user)
+    if auth_user := get_authenticated_user(request):
+        lots = lots.with_watchlist_status(auth_user)
 
     context = {
         "category": category,

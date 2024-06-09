@@ -1,9 +1,11 @@
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING, Optional
 
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
+
+from yeticave.core.utils.get_authenticated_user import get_authenticated_user
 
 from ..forms.BidForm import BidForm
 from ..forms.CommentForm import CommentForm
@@ -22,42 +24,26 @@ if TYPE_CHECKING:
 def lot_details(request: HttpRequest, lot_id: int) -> HttpResponse:
     TEMPLATE = "lots/lot_details.html"
 
-    user = cast("User", request.user)
-    lot = __get_lot(request, lot_id)
-
     bid_form = BidForm()
     comment_form = CommentForm()
 
-    form_type = request.POST.get("form_type")
+    auth_user = get_authenticated_user(request)
+    lot = __get_lot(auth_user, lot_id)
 
-    if request.method == "POST" and form_type == "comment":
-        comment_form = CommentForm(request.POST)
-        if comment_form.is_valid():
-            CommentService.add_comment(
-                author=user,
-                lot=lot,
-                text=comment_form.cleaned_data["text"],
-            )
+    if request.method == "POST" and auth_user:
+        form_type = request.POST.get("form_type")
 
-    if request.method == "POST" and form_type == "bid":
-        bid_form = BidForm(request.POST)
-        if bid_form.is_valid():
-            try:
-                BidService.place_bid(
-                    bidder=user,
-                    lot=lot,
-                    amount=bid_form.cleaned_data["amount"],
-                )
-            except BidAmountError as error:
-                bid_form.add_error("amount", str(error))
-
-    if request.method == "POST" and form_type == "complete_auction":
-        LotService.complete_auction(lot)
-        return HttpResponseRedirect(reverse("lots:lot_list"))
+        if form_type == "comment":
+            comment_form = __handle_comment_form(request, auth_user, lot)
+        elif form_type == "bid":
+            bid_form = __handle_bid_form(request, auth_user, lot)
+        elif form_type == "complete_auction":
+            LotService.complete_auction(lot)
+            return HttpResponseRedirect(reverse("lots:lot_list"))
 
     context = {
         "lot": lot,
-        "is_creator": LotService.check_creator(lot, user),
+        "is_creator": lot.creator == auth_user,
         "bid_form": bid_form,
         "comment_form": comment_form,
         "bids": Bid.objects.get_latest_bids_by_id(lot_id)[:10],
@@ -67,9 +53,36 @@ def lot_details(request: HttpRequest, lot_id: int) -> HttpResponse:
     return render(request, TEMPLATE, context)
 
 
-def __get_lot(request: HttpRequest, lot_id: int) -> Lot:
-    if request.user.is_anonymous:
+def __get_lot(user: Optional["User"], lot_id: int) -> Lot:
+    if user is None:
         return get_object_or_404(Lot, pk=lot_id)
-
-    user = cast("User", request.user)
     return get_object_or_404(Lot.objects.with_watchlist_status(user), pk=lot_id)
+
+
+def __handle_comment_form(request: HttpRequest, user: "User", lot: Lot) -> CommentForm:
+    comment_form = CommentForm(request.POST)
+
+    if comment_form.is_valid():
+        CommentService.add_comment(
+            author=user,
+            lot=lot,
+            text=comment_form.cleaned_data["text"],
+        )
+
+    return comment_form
+
+
+def __handle_bid_form(request: HttpRequest, user: "User", lot: Lot) -> BidForm:
+    bid_form = BidForm(request.POST)
+
+    if bid_form.is_valid():
+        try:
+            BidService.place_bid(
+                bidder=user,
+                lot=lot,
+                amount=bid_form.cleaned_data["amount"],
+            )
+        except BidAmountError as error:
+            bid_form.add_error("amount", str(error))
+
+    return bid_form
