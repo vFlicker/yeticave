@@ -7,6 +7,7 @@ from .managers import UserManager
 
 if TYPE_CHECKING:
     from yeticave.followers.managers import FollowManager
+    from yeticave.lots.managers.BidManager import BidManager
     from yeticave.lots.managers.CommentManager import CommentManager
 
 
@@ -22,6 +23,7 @@ class User(AbstractUser):
     objects: UserManager = UserManager()
 
     comments: "CommentManager"
+    bids: "BidManager"
     following: "FollowManager"
     followers: "FollowManager"
 
