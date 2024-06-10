@@ -5,7 +5,7 @@
         <form action="{% url 'users:login' %}"
               method="post"
               class="form form-login {% if form.errors %}form__item--invalid{% endif %}">
-            <h2>Login</h2>
+            <h1 class="login__heading">Login</h1>
 
             {% csrf_token %}
 

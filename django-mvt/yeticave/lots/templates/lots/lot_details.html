@@ -5,7 +5,7 @@
     <main>
         <section class="lot-item container">
             <div class="lot-item__header">
-                <h2>{{ lot.title }}</h2>
+                <h1>{{ lot.title }}</h1>
 
                 {% if user.is_authenticated and is_creator %}
                     {% include "lots/_close_bid_form.html" %}
@@ -61,9 +61,9 @@
                     </div>
 
                     <div class="history">
-                        <h3>
+                        <h2>
                             History of rates (<span>{{ bids | length }}</span>)
-                        </h3>
+                        </h2>
                         <table class="history__list">
                             {% for bid in bids %}
                                 {% include "lots/_bid.html" %}

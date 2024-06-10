@@ -9,7 +9,7 @@ from ..models.Lot import Lot
 
 @require_http_methods(["GET"])
 def lot_list(request: HttpRequest) -> HttpResponse:
-    TEMPLATE = "lots/index.html"
+    TEMPLATE = "lots/lot_list.html"
 
     lots = Lot.objects.all()
 

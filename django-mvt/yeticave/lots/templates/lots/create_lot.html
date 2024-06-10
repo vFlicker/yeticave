@@ -5,7 +5,7 @@
         <form action="{% url 'lots:create_lot' %}"
               method="post"
               class="form form--lot {% if form.errors %}form__item--invalid{% endif %}">
-            <h2>Create a new lot</h2>
+            <h1>Create a new lot</h1>
 
             {% csrf_token %}
 

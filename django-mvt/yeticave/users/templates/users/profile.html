@@ -3,20 +3,41 @@
 {% block content %}
     <main class="container">
         <section class="profile">
-            <div>
-                <h1>Profile {{ profile_user.username }}</h1>
+            <div class="profile__header">
+                <div class="header__left">
+                    <h1 class="profile__title">{{ profile_user.username|capfirst }}</h1>
 
-                {% if user.is_authenticated %}
-                    {% include "followers/following_form.html" %}
-                {% endif %}
+                    <small class="profile__follower-wrapper">
+                        <span>Followers: {{ profile_user.followers.get_total_count }}</span>
+                        <span>Following: {{ profile_user.following.get_total_count }}</span>
+                    </small>
+                </div>
+
+                <div class="header__right">
+                    {% if user.is_authenticated and profile_user != user %}
+                        {% include "followers/following_form.html" %}
+                    {% endif %}
+                </div>
             </div>
 
-            <p>
-                <span>Followers: {{ profile_user.followers.get_total_count }}</span>
-                <span>Following: {{ profile_user.following.get_total_count }}</span>
-            </p>
+            <div class="profile__info">
+                <h2>Profile info</h2>
+                <ul class="profile__info-list">
+                    <li class="profile__info-item">Email: {{ profile_user.email }}</li>
+                </ul>
+            </div>
 
-            <p>Your email: {{ profile_user.email }}</p>
+            <div class="profile__comments">
+                <h2>Comments</h2>
+                <ul class="profile__comment-list">
+                    {% for comment in profile_user.comments.get_all_recent %}
+                        <li class="profile__comment-item">
+                            <p class="profile__comment-text">{{ comment.text }}</p>
+                            <small class="profile__comment-date">{{ comment.created_at }}</small>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
         </section>
     </main>
 {% endblock content %}
