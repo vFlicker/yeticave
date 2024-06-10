@@ -27,17 +27,7 @@
                 </ul>
             </div>
 
-            <div class="profile__comments">
-                <h2>Comments</h2>
-                <ul class="profile__comment-list">
-                    {% for comment in profile_user.comments.get_all_recent %}
-                        <li class="profile__comment-item">
-                            <p class="profile__comment-text">{{ comment.text }}</p>
-                            <small class="profile__comment-date">{{ comment.created_at }}</small>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
+            {% include "lots/comments.html" with comments=profile_user.comments.get_all_recent author=False %}
         </section>
     </main>
 {% endblock content %}

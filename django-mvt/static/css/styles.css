@@ -556,6 +556,12 @@ h2 {
     padding: 23px 20px;
 }
 
+/* Subscriptions */
+
+.subscriptions {
+    padding-top: 50px;
+}
+
 /* Profile */
 
 .profile {
@@ -595,15 +601,15 @@ h2 {
     font-weight: 700;
 }
 
-.profile__comments {}
+.comments {}
 
-.profile__comment-list {
+.comments__list {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.profile__comment-item {
+.comments__item {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -613,14 +619,14 @@ h2 {
     border-bottom: 1px solid #dce1e6;
 }
 
-.profile__comment-text {
+.comments__text {
     margin: 0;
     font-size: 14px;
     line-height: 22px;
 
 }
 
-.profile__comment-date {
+.comments__date {
     font-size: 13px;
     color: #879296;
     flex-shrink: 0;

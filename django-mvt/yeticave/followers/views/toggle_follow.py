@@ -6,7 +6,7 @@ from django.views.decorators.http import require_http_methods
 from yeticave.core.types import AuthenticatedHttpRequest
 from yeticave.core.utils import get_user_model
 
-from .services import FollowService
+from ..services import FollowService
 
 User = get_user_model()
 

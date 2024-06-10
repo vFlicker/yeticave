@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <main>
+        <section class="subscriptions container">
+            <h1>Subscriptions</h1>
+
+            {% include "lots/comments.html" with comments=comments author=True %}
+        </section>
+    </main>
+{% endblock content %}

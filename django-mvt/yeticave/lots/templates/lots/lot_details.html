@@ -51,7 +51,7 @@
                         <div class="lot-item__cost-state">
                             <div class="lot-item__rate">
                                 <div class="lot-item__amount">Current price</div>
-                                <div class="lot-item__cost">{{ lot.current_price | usd }}</div>
+                                <div class="lot-item__cost">{{ lot.current_price|usd }}</div>
                             </div>
                         </div>
 
@@ -62,7 +62,7 @@
 
                     <div class="history">
                         <h2>
-                            History of rates (<span>{{ bids | length }}</span>)
+                            History of rates (<span>{{ bids|length }}</span>)
                         </h2>
                         <table class="history__list">
                             {% for bid in bids %}

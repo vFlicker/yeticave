@@ -1,4 +1,9 @@
+from typing import TYPE_CHECKING
+
 from django.db import models
+
+if TYPE_CHECKING:
+    from yeticave.users.models import User
 
 
 class CommentQuerySet(models.QuerySet):
@@ -10,6 +15,10 @@ class CommentQuerySet(models.QuerySet):
 
     def get_latest_comments_by_id(self, lot_id) -> "CommentQuerySet":
         return self.get_comments_by_id(lot_id).order_by("-created_at")
+
+    def get_subscriptions_comments(self, user: "User") -> "CommentQuerySet":
+        following_users_ids = user.following.values_list("following_id", flat=True)
+        return self.filter(author__in=following_users_ids).order_by("-created_at")
 
 
 class CommentManager(models.Manager):
@@ -24,3 +33,6 @@ class CommentManager(models.Manager):
 
     def get_latest_comments_by_id(self, lot_id) -> "CommentQuerySet":
         return self.get_queryset().get_latest_comments_by_id(lot_id)
+
+    def get_subscriptions_comments(self, user: "User") -> "CommentQuerySet":
+        return self.get_queryset().get_subscriptions_comments(user)
