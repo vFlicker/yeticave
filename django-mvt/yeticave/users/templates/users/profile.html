@@ -27,7 +27,7 @@
                 </ul>
             </div>
 
-            {% include "lots/comments.html" with comments=profile_user.comments.get_all_recent author=False %}
+            {% include "lots/comments.html" with comments=page author=False %}
         </section>
     </main>
 {% endblock content %}

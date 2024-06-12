@@ -2,12 +2,17 @@
     <h2>Comments</h2>
     <div class="comments__list">
         {% for comment in comments %}
-            {% if author %}<h3>{{ comment.author.username }}</h3>{% endif %}
-
             <div class="comments__item">
-                <p class="comments__text">{{ comment.text }}</p>
-                <small class="comments__date">{{ comment.created_at }}</small>
+                {% if author %}<h3>{{ comment.author.username }}</h3>{% endif %}
+                <div class="comments__description">
+                    <p class="comments__text">{{ comment.text }}</p>
+                    <small class="comments__date">{{ comment.created_at }}</small>
+                </div>
             </div>
         {% endfor %}
+
+        {% if page %}
+            {% include "pagination.html" %}
+        {% endif %}
     </div>
 </div>
