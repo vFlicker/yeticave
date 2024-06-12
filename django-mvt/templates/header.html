@@ -23,22 +23,33 @@
             <a class="main-header__add-lot button"
                href="{% url 'lots:create_lot' %}">Create lot</a>
 
-            <div class="user-menu__wrapper">
-                <button class="button__menu-open menu-open">
-                    <span class="menu-open__name">{{ user.username }}</span>
-                    <img class="menu-open__image"
-                         src="{% static 'img/user.png' %}"
+            <div class="main-header__menu-wrapper">
+                <button class="menu-toggler">
+                    <span>{{ user.username }}</span>
+                    <img src="{% static 'img/user.png' %}"
                          width="32"
                          height="32"
                          alt="User avatar">
                 </button>
 
-                <nav class="user-menu user-menu--login">
-                    <a class="user-menu__profile"
-                       href="{% url 'users:profile' user.username %}">Profile</a>
-                    <a class="user-menu__bets" href="{% url 'lots:my_bids' %}">My bets</a>
-                    <a class="user-menu__bets" href="{% url 'lots:watchlist' %}">Watchlist</a>
-                    <a class="user-menu__logout" href="{% url 'users:logout' %}">Logout</a>
+                <nav class="user-menu user-menu--logged-in">
+                    <ul class="user-menu__list">
+                        <li class="user-menu__item">
+                            <a href="{% url 'users:profile' user.username %}">Profile</a>
+                        </li>
+                        <li class="user-menu__item">
+                            <a href="{% url 'followers:subscriptions' %}">Subscriptions</a>
+                        </li>
+                        <li class="user-menu__item">
+                            <a href="{% url 'lots:my_bids' %}">My bets</a>
+                        </li>
+                        <li class="user-menu__item">
+                            <a href="{% url 'lots:watchlist' %}">Watchlist</a>
+                        </li>
+                        <li class="user-menu__item">
+                            <a href="{% url 'users:logout' %}">Logout</a>
+                        </li>
+                    </ul>
                 </nav>
             </div>
         {% else %}

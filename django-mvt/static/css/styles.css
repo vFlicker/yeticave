@@ -292,8 +292,72 @@ h2 {
     margin-right: 30px;
 }
 
+.main-header__menu-wrapper {
+    margin-left: auto;
+    position: relative;
+}
 
-/* user-menu */
+/* Menu toggler */
+.menu-toggler {
+    display: flex;
+    align-items: center;
+    min-height: 68px;
+    padding: 0 20px 0 20px;
+    position: relative;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.menu-toggler:hover {
+    background-color: #aeb7c21f;
+}
+
+.menu-toggler:active {
+    background-color: #edeef0;
+}
+
+.menu-toggler:focus {
+    background-color: #aeb7c21f;
+    outline: none;
+}
+
+.menu-toggler--active,
+.menu-toggler--active:hover,
+.menu-toggler--active:active {
+    background-color: #e7f3ff;
+}
+
+.menu-toggler::after {
+    content: '';
+    width: 12px;
+    height: 8px;
+    position: absolute;
+    top: 50%;
+    margin-top: -4px;
+    right: 4px;
+    background-image: url("../img/arrow.svg");
+}
+
+.menu-toggler span {
+    margin-right: 10px;
+    color: #25354e;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 22px;
+}
+
+.menu-toggler img {
+    display: flex;
+    width: 32px;
+    height: 32px;
+    margin: auto;
+    border-radius: 50%;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+/* User menu */
 .user-menu {
     margin-left: auto;
 }
@@ -302,7 +366,7 @@ h2 {
     display: flex;
     justify-content: flex-end;
     flex-wrap: wrap;
-    width: 250px;
+    max-width: 250px;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -327,79 +391,13 @@ h2 {
 
 .user-menu__item a:hover {
     background-color: #aeb7c21f;
-    ;
-
 }
 
 .user-menu__item a:active {
     color: #727b7f;
 }
 
-.user-menu__wrapper {
-    margin-left: auto;
-    position: relative;
-}
-
-.menu-open {
-    display: flex;
-    align-items: center;
-    min-height: 68px;
-    padding: 0 20px 0 20px;
-    position: relative;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-}
-
-.menu-open:hover {
-    background-color: #aeb7c21f;
-}
-
-.menu-open:active {
-    background-color: #edeef0;
-}
-
-.menu-open:focus {
-    background-color: #aeb7c21f;
-    outline: none;
-}
-
-.menu-open.menu-open--active,
-.menu-open.menu-open--active:hover,
-.menu-open.menu-open--active:active {
-    background-color: #e7f3ff;
-}
-
-.menu-open::after {
-    content: '';
-    width: 12px;
-    height: 8px;
-    position: absolute;
-    top: 50%;
-    margin-top: -4px;
-    right: 4px;
-    background-image: url("../img/arrow.svg");
-}
-
-.menu-open__name {
-    margin-right: 10px;
-    color: #25354e;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 22px;
-}
-
-.menu-open__image {
-    display: flex;
-    width: 32px;
-    height: 32px;
-    margin: auto;
-    border-radius: 50%;
-    background-color: #fff;
-    overflow: hidden;
-}
-
-.user-menu.user-menu--login {
+.user-menu--logged-in {
     min-width: 160px;
     min-height: 10px;
     position: absolute;
@@ -408,26 +406,34 @@ h2 {
     background: #fff;
     border: 1px solid #c5d0db;
     border-radius: 0 0 4px 4px;
-
     opacity: 0;
     visibility: hidden;
     transition: .1s opacity, .1s visibility;
     z-index: 10;
 }
 
-.user-menu.user-menu--active {
-    opacity: 1;
-    visibility: visible;
+.user-menu--logged-in .user-menu__list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
 
-.user-menu--login a {
+.user-menu--logged-in .user-menu__item {
+    width: 100%;
+    margin: 0;
+}
+
+.user-menu--logged-in a {
     display: block;
-    padding: 4px 10px;
+    width: 100%;
+    min-height: auto;
+    padding: 7px 10px;
     color: #2a5885;
     text-align: left;
 }
 
-.user-menu--login a:last-child::before {
+.user-menu--logged-in a:last-child::before {
     content: '';
     position: relative;
     width: 100%;
@@ -436,19 +442,25 @@ h2 {
     background-color: #dae2ea;
 }
 
-.user-menu--login a:last-child {
+.user-menu--logged-in a:last-child {
     margin-bottom: 0;
 }
 
-.user-menu--login a:hover {
+.user-menu--logged-in a:hover {
     background-color: #e7f3ff;
 }
 
-.user-menu--login a:focus {
+.user-menu--logged-in a:focus {
     background-color: #e7f3ff;
     outline: none;
 }
 
+.user-menu--active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Main footer */
 .main-footer {
     margin-top: 120px;
     background-color: #fff;
