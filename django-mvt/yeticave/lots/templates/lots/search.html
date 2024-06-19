@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <main class="container">
+        <section class="promo">
+            <h1>Search results</h1>
+
+            <ul class="lots__list">
+                {% for lot in lots %}
+                    {% include "lots/_card_item.html" with lot_id=lot.id %}
+                {% endfor %}
+            </ul>
+        </section>
+    </main>
+{% endblock content %}

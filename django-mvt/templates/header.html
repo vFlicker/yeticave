@@ -11,13 +11,7 @@
                  alt="YetiCave Logo">
         </a>
 
-        {# TODO: пошук #}
-        <form method="get" action="/search" class="main-header__search">
-            <input type="search" name="text" placeholder="Find lot">
-            <button class="main-header__search-btn" type="submit">
-                <span class="visually-hidden">Search</span>
-            </button>
-        </form>
+        {% include "search_form.html" %}
 
         {% if user.is_authenticated %}
             <a class="main-header__add-lot button"
