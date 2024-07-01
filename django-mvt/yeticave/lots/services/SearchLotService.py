@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 class SearchLotService:
     @staticmethod
     def search(lot_title: str, user: Optional["User"]) -> LotQuerySet:
-        lots = Lot.objects.get_all_by_title(lot_title)
+        lots = Lot.objects.select_related("category").get_all_by_title(lot_title)
 
         if user:
             return lots.with_watchlist_status(user)

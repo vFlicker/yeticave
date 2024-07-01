@@ -12,7 +12,7 @@ from ..models.Lot import Lot
 def watchlist(request: AuthenticatedHttpRequest):
     TEMPLATE = "lots/watchlist.html"
 
-    lots = Lot.objects.get_user_watchlist(request.user)
+    lots = Lot.objects.select_related("category").get_user_watchlist(request.user)
 
     context = {
         "lots": lots,

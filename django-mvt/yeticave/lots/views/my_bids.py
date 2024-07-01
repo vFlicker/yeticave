@@ -12,7 +12,7 @@ def my_bids(request: AuthenticatedHttpRequest) -> HttpResponse:
     TEMPLATE = "lots/my_bids.html"
 
     context = {
-        "bids": request.user.bids.all(),
+        "bids": request.user.bids.select_related("lot__creator", "lot__category").all()
     }
 
     return render(request, TEMPLATE, context)

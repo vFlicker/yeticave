@@ -17,7 +17,9 @@ def subscriptions(request: AuthenticatedHttpRequest) -> HttpResponse:
 
     profile_user = request.user
 
-    comments = Comment.objects.get_subscriptions_comments(profile_user)
+    comments = Comment.objects.select_related("author").get_subscriptions_comments(
+        profile_user
+    )
     paginator = Paginator(comments, COMMENTS_PER_PAGE)
     page_number = request.GET.get("page", DEFAULT_PAGE)
     page = paginator.get_page(page_number)

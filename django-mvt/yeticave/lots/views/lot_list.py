@@ -11,7 +11,7 @@ from ..models.Lot import Lot
 def lot_list(request: HttpRequest) -> HttpResponse:
     TEMPLATE = "lots/lot_list.html"
 
-    lots = Lot.objects.all()
+    lots = Lot.objects.select_related("category")
 
     if auth_user := get_authenticated_user(request):
         lots = lots.with_watchlist_status(auth_user)

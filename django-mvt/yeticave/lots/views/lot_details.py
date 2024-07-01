@@ -46,7 +46,7 @@ def lot_details(request: HttpRequest, lot_id: int) -> HttpResponse:
         "is_creator": lot.creator == auth_user,
         "bid_form": bid_form,
         "comment_form": comment_form,
-        "bids": Bid.objects.get_latest_bids_by_id(lot_id)[:10],
+        "bids": Bid.objects.select_related("bidder").get_latest_bids_by_id(lot_id)[:10],
         "comments": Comment.objects.get_latest_comments_by_id(lot_id)[:10],
     }
 
