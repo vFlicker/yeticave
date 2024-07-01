@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 django = "==4.2.13"
+django-debug-toolbar = "*"
+python-decouple = "*"
 
 [dev-packages]
 black = "==23.11.0"
