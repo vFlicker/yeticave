@@ -1275,6 +1275,16 @@ input::-webkit-inner-spin-button {
     font-weight: 500;
 }
 
+.comment__actions {
+    display: flex;
+    gap: 20px;
+}
+
+.comment__action {
+    display: flex;
+    gap: 5px;
+}
+
 .comment__text {
     margin: 0;
 }
@@ -1719,4 +1729,12 @@ input::-webkit-inner-spin-button {
 
 .pagination__current {
     color: #25354e;
+}
+
+.red {
+    color: red;
+}
+
+.blue {
+    color: #45abde;
 }

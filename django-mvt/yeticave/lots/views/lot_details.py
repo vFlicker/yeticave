@@ -40,6 +40,12 @@ def lot_details(request: HttpRequest, lot_id: int) -> HttpResponse:
         elif form_type == "complete_auction":
             LotService.complete_auction(lot)
             return HttpResponseRedirect(reverse("lots:lot_list"))
+        elif form_type == "comment_reaction":
+            CommentService.toggle_reaction(
+                user=auth_user,
+                comment_id=int(request.POST.get("comment_id")),
+                reaction_type=request.POST.get("reaction_type"),
+            )
 
     context = {
         "lot": lot,
@@ -47,7 +53,7 @@ def lot_details(request: HttpRequest, lot_id: int) -> HttpResponse:
         "bid_form": bid_form,
         "comment_form": comment_form,
         "bids": Bid.objects.select_related("bidder").get_latest_bids_by_id(lot_id)[:10],
-        "comments": Comment.objects.get_latest_comments_by_id(lot_id)[:10],
+        "comments": __get_comments(auth_user, lot_id),
     }
 
     return render(request, TEMPLATE, context)
@@ -56,7 +62,16 @@ def lot_details(request: HttpRequest, lot_id: int) -> HttpResponse:
 def __get_lot(user: Optional["User"], lot_id: int) -> Lot:
     if user is None:
         return get_object_or_404(Lot, pk=lot_id)
-    return get_object_or_404(Lot.objects.with_watchlist_status(user), pk=lot_id)
+    return get_object_or_404(
+        Lot.objects.select_related("creator").with_watchlist_status(user), pk=lot_id
+    )
+
+
+def __get_comments(user: Optional["User"], lot_id: int):
+    comments = Comment.objects.with_counts().get_latest_comments_by_id(lot_id)[:10]
+    if user:
+        comments = comments.with_user_reactions(user)
+    return comments
 
 
 def __handle_comment_form(request: HttpRequest, user: "User", lot: Lot) -> CommentForm:

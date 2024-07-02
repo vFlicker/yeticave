@@ -20,6 +20,30 @@ class CommentQuerySet(models.QuerySet):
         following_users_ids = user.following.values_list("following_id", flat=True)
         return self.filter(author__in=following_users_ids).order_by("-created_at")
 
+    def with_user_reactions(self, user: "User") -> "CommentQuerySet":
+        return self.annotate(
+            has_user_like=models.Count(
+                "reactions",
+                filter=models.Q(reactions__user=user, reactions__reaction_type="like"),
+            ),
+            has_user_dislike=models.Count(
+                "reactions",
+                filter=models.Q(
+                    reactions__user=user, reactions__reaction_type="dislike"
+                ),
+            ),
+        )
+
+    def with_counts(self) -> "CommentQuerySet":
+        return self.annotate(
+            likes_count=models.Count(
+                "reactions", filter=models.Q(reactions__reaction_type="like")
+            ),
+            dislikes_count=models.Count(
+                "reactions", filter=models.Q(reactions__reaction_type="dislike")
+            ),
+        )
+
 
 class CommentManager(models.Manager):
     def get_queryset(self) -> "CommentQuerySet":
@@ -36,3 +60,9 @@ class CommentManager(models.Manager):
 
     def get_subscriptions_comments(self, user: "User") -> "CommentQuerySet":
         return self.get_queryset().get_subscriptions_comments(user)
+
+    def with_user_reactions(self, user: "User") -> "CommentQuerySet":
+        return self.get_queryset().with_user_reactions(user)
+
+    def with_counts(self) -> "CommentQuerySet":
+        return self.get_queryset().with_counts()

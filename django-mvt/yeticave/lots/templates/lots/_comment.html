@@ -2,4 +2,32 @@
     <div class="comment__sender">{{ comment.user.username }}</div>
     <p class="comment__text">{{ comment.text }}</p>
     <time class="comment__time" datetime="{{ comment.created_at }}">{{ comment.created_at }}</time>
+
+    <div class="comment__actions">
+        <div class="comment__action">
+            {% if user.is_authenticated %}
+                <form method="post" action="{% url 'lots:lot_details' lot.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" value="comment_reaction" />
+                    <input type="hidden" name="comment_id" value="{{ comment.id }}" />
+                    <input type="hidden" name="reaction_type" value="like" />
+                    <button type="submit" {% if comment.has_user_like %}class="blue"{% endif %}>Like</button>
+                </form>
+            {% endif %}
+            {{ comment.likes_count }}
+        </div>
+
+        <div class="comment__action">
+            {% if user.is_authenticated %}
+                <form method="post" action="{% url 'lots:lot_details' lot.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" value="comment_reaction" />
+                    <input type="hidden" name="comment_id" value="{{ comment.id }}" />
+                    <input type="hidden" name="reaction_type" value="dislike" />
+                    <button type="submit" {% if comment.has_user_dislike %}class="red"{% endif %}>Dislike</button>
+                </form>
+            {% endif %}
+            {{ comment.dislikes_count }}
+        </div>
+    </div>
 </li>
