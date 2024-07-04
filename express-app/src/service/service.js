@@ -6,7 +6,7 @@ const [userCommand] = userArguments;
 
 if (!userArguments.length || !Cli[userCommand]) {
   Cli[DEFAULT_COMMAND].execute();
-  process.exit(ExitCode.success);
+  process.exit(ExitCode.SUCCESS);
 }
 
 const commandArgs = userArguments.slice(1);

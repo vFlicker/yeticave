@@ -11,11 +11,11 @@ export const helpCommand = {
       server <command>
 
       Commands:
-      --version:            outputs the version number
       --help:               prints this text
-      --generate <count>    generates the mocks.json file
+      --version:            outputs the version number
+      --server:             starts the server
     `;
 
-    console.log(chalk.gray(helpText));
+    console.log(chalk.yellow(helpText));
   },
 };

@@ -2,18 +2,18 @@
   "name": "express-app",
   "version": "1.0.0",
   "description": "YetiCave is an online auction for the sale of snowboard and ski equipment. A registered user can create his own lots for the sale of things on the terms of the auction. The buyer who offered the maximum price within the agreed timeframe receives this item.",
+  "author": "Vladyslav Sliusar",
+  "license": "ISC",
   "engines": {
     "node": ">=20.0.0"
   },
   "type": "module",
   "main": "./src/service/service.js",
   "scripts": {
-    "start": "node ./src/service/service.js",
+    "start": "node -r dotenv/config ./src/service/service.js",
     "test": "npm run eslint",
     "eslint": "eslint --ext .js src/"
   },
-  "author": "Vladyslav Sliusar",
-  "license": "ISC",
   "devDependencies": {
     "eslint": "9.6.0",
     "eslint-config-prettier": "9.1.0",
@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "chalk": "5.3.0",
+    "dotenv": "16.4.5",
     "express": "4.19.2"
   }
 }

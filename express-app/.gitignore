@@ -13,3 +13,6 @@ node_modules/
 
 # Folder with project build files
 build/
+
+# Files with environment variables
+.env
