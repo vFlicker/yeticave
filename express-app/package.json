@@ -2,10 +2,10 @@
   "name": "express-app",
   "version": "1.0.0",
   "description": "YetiCave is an online auction for the sale of snowboard and ski equipment. A registered user can create his own lots for the sale of things on the terms of the auction. The buyer who offered the maximum price within the agreed timeframe receives this item.",
-  "type": "module",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.0.0"
   },
+  "type": "module",
   "main": "./src/service/service.js",
   "scripts": {
     "start": "node ./src/service/service.js",

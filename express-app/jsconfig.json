@@ -2,5 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "checkJs": true,
+    "module": "esnext",
+    "target": "ES2022",
   }
 }
