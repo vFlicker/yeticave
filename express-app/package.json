@@ -10,7 +10,8 @@
   "type": "module",
   "main": "./src/service/service.js",
   "scripts": {
-    "start": "node -r dotenv/config ./src/service/service.js",
+    "start-back-server": "node -r dotenv/config ./src/service/service.js",
+    "start-front-server": "node -r dotenv/config ./src/express/express.js",
     "test": "npm run eslint",
     "eslint": "eslint --ext .js src/"
   },
