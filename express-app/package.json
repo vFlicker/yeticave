@@ -8,7 +8,6 @@
     "node": ">=20.0.0"
   },
   "type": "module",
-  "main": "./src/service/service.js",
   "scripts": {
     "start-back-server": "node -r dotenv/config ./src/service/service.js",
     "start-front-server": "node -r dotenv/config ./src/express/express.js",
@@ -25,6 +24,7 @@
   "dependencies": {
     "chalk": "5.3.0",
     "dotenv": "16.4.5",
+    "ejs": "3.1.10",
     "express": "4.19.2"
   }
 }
