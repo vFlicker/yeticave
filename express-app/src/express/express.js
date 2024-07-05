@@ -3,7 +3,10 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import { ExitCode, FRONT_PORT } from '../constants.js';
+import { ExitCode, FRONT_PORT, HttpCode } from '../constants.js';
+import { lotsRouter } from './routes/lots-routes.js';
+import { mainRouter } from './routes/main-routes.js';
+import { myRouter } from './routes/my-routes.js';
 
 const PUBLIC_DIR = 'public';
 const TEMPLATES_DIR = 'templates';
@@ -18,8 +21,17 @@ app.set('views', path.resolve(import.meta.dirname, TEMPLATES_DIR));
 
 app.use(express.static(path.join(__dirname, PUBLIC_DIR)));
 
-app.get('/', (req, res) => {
-  res.render('pages/index');
+app.use(`/lots`, lotsRouter);
+app.use(`/my`, myRouter);
+app.use('/', mainRouter);
+
+app.use((req, res) => {
+  res.status(HttpCode.NOT_FOUND).render('pages/errors/404');
+});
+
+app.use((err, req, res, next) => {
+  console.error(chalk.red(err.stack));
+  res.status(HttpCode.INTERNAL_SERVER_ERROR).render('pages/errors/500');
 });
 
 app.listen(FRONT_PORT, (err) => {
