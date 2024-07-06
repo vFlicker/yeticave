@@ -1,14 +1,14 @@
 /** Menu toggler */
 (() => {
-  const buttonElement = document.querySelector(".menu-toggler");
-  const actionElement = document.querySelector(".user-menu--logged-in");
+  const buttonElement = document.querySelector('.menu-toggler');
+  const actionElement = document.querySelector('.user-menu--logged-in');
 
   const onButtonClick = () => {
-    buttonElement.classList.toggle("menu-toggler--active");
-    actionElement.classList.toggle("user-menu--active");
+    buttonElement.classList.toggle('menu-toggler--active');
+    actionElement.classList.toggle('user-menu--active');
   };
 
-  if (actionElement) buttonElement.addEventListener("click", onButtonClick);
+  if (actionElement) buttonElement.addEventListener('click', onButtonClick);
 })();
 
 /** Date picker */
@@ -26,13 +26,13 @@
 
 /** Lot preview */
 (() => {
-  const FILE_TYPES = ["jpg", "jpeg", "png"];
+  const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
-  const uploaderElement = document.querySelector(".uploader");
+  const uploaderElement = document.querySelector('.uploader');
 
   if (uploaderElement) {
-    const previewElement = uploaderElement.querySelector(".uploader__image");
-    const chooseFileElement = uploaderElement.querySelector(".uploader__input");
+    const previewElement = uploaderElement.querySelector('.uploader__image');
+    const chooseFileElement = uploaderElement.querySelector('.uploader__input');
 
     const onFileChange = () => {
       const file = chooseFileElement.files[0];
@@ -43,8 +43,8 @@
       if (matches) {
         const reader = new FileReader();
 
-        reader.addEventListener("load", () => {
-          uploaderElement.classList.add("uploader__input--selected");
+        reader.addEventListener('load', () => {
+          uploaderElement.classList.add('uploader__input--selected');
           previewElement.src = reader.result;
         });
 
@@ -52,17 +52,17 @@
       }
     };
 
-    chooseFileElement.addEventListener("change", onFileChange);
+    chooseFileElement.addEventListener('change', onFileChange);
   }
 })();
 
 /** Hide message */
 (() => {
-  const messageElements = document.querySelectorAll(".messages__item");
+  const messageElements = document.querySelectorAll('.messages__item');
   if (!messageElements.length) return;
 
   for (const messageElement of messageElements) {
-    const closeButtonElement = messageElement.querySelector(".message__close");
-    closeButtonElement.addEventListener("click", () => messageElement.remove());
+    const closeButtonElement = messageElement.querySelector('.message__close');
+    closeButtonElement.addEventListener('click', () => messageElement.remove());
   }
 })();
