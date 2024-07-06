@@ -1,17 +1,14 @@
 import chalk from 'chalk';
+import fs from 'fs/promises';
 
-import { readFile } from '../../../utils/readFile.js';
-
-const packageJsonFile = await readFile(
-  '../../../../package.json',
-  import.meta.url,
-);
+const FILENAME = 'package.json';
 
 export const versionCommand = {
   name: '--version',
 
-  execute(_args) {
-    const version = packageJsonFile.version;
+  async execute(_args) {
+    const data = await fs.readFile(FILENAME);
+    const { version } = JSON.parse(data.toString());
     console.log(chalk.blue(version));
   },
 };
