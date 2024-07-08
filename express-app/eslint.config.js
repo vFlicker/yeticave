@@ -14,6 +14,7 @@ export default [
     languageOptions: {
       globals: {
         ...globals.node,
+        ...globals.vitest,
       },
     },
   },
@@ -29,6 +30,7 @@ export default [
     rules: {
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
+      'no-unused-vars': 'off',
     },
   },
 ];

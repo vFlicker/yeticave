@@ -11,15 +11,18 @@
   "scripts": {
     "start-back-server": "node -r dotenv/config ./src/service/service.js",
     "start-front-server": "node -r dotenv/config ./src/express/express.js",
-    "test": "npm run eslint",
-    "eslint": "eslint --ext .js src/"
+    "test": "npm run eslint && npm run vitest",
+    "vitest": "vitest",
+    "eslint": "eslint **.js src/"
   },
   "devDependencies": {
     "eslint": "9.6.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-prettier": "5.1.3",
     "eslint-plugin-simple-import-sort": "12.1.1",
-    "prettier": "3.3.2"
+    "prettier": "3.3.2",
+    "supertest": "7.0.0",
+    "vitest": "1.6.0"
   },
   "dependencies": {
     "chalk": "5.3.0",
