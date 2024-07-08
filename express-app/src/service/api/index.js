@@ -1,9 +1,8 @@
 import { Router } from 'express';
 
+import { mockData } from '../../mocks/mock-server-data.js';
 import { registerCategoryRoutes } from './category.js';
 
-const apiRoutes = Router();
+export const apiRoutes = Router();
 
-registerCategoryRoutes(apiRoutes);
-
-export { apiRoutes };
+registerCategoryRoutes(apiRoutes, mockData);

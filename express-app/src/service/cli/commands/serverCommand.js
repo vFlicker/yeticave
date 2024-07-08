@@ -6,10 +6,8 @@ import { apiRoutes } from '../../api/index.js';
 
 const app = express();
 
-// TODO: check non JSON body
-// app.use(express.json());
-
 app.use(API_PREFIX, apiRoutes);
+app.use(express.json());
 
 export const serverCommand = {
   name: '--server',

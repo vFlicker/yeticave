@@ -1,2 +1,4 @@
-# Categories list
+# Get all categories
 GET http://localhost:3000/api/categories HTTP/1.1
+
+###
