@@ -6,8 +6,8 @@ import { apiRoutes } from '../../api/index.js';
 
 const app = express();
 
-app.use(API_PREFIX, apiRoutes);
 app.use(express.json());
+app.use(API_PREFIX, apiRoutes);
 
 export const serverCommand = {
   name: '--server',
