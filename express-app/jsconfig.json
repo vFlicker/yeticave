@@ -2,8 +2,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "checkJs": true,
-    "moduleResolution": "nodenext",
-    "module": "NodeNext",
+    "moduleResolution": "node",
+    "module": "ESNext",
     "target": "ES2022"
   }
 }

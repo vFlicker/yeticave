@@ -4,6 +4,11 @@ export const BACK_PORT = Number.parseInt(process.env.BACK_PORT, 10) || 3000;
 
 export const DEFAULT_COMMAND = '--help';
 
+export const Env = {
+  DEVELOPMENT: 'development',
+  PRODUCTION: 'production',
+};
+
 export const ExitCode = {
   SUCCESS: 0,
   ERROR: 1,
@@ -21,5 +26,9 @@ export const HttpCode = {
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
 };
+
+export const LOG_FILE = process.env.LOG_FILE || 'logs/api.log';
+
+export const NODE_ENV = process.env.NODE_ENV || 'development';
 
 export const USER_ARGV_INDEX = 2;
