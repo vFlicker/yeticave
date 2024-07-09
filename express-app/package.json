@@ -9,7 +9,8 @@
   },
   "type": "module",
   "scripts": {
-    "start-back-server": "node -r dotenv/config ./src/service/service.js",
+    "start-back-server": "cross-env LOG_LEVEL=error node -r dotenv/config ./src/service/service.js --server",
+    "start-back-server::debug": "cross-env LOG_LEVEL=development node -r dotenv/config ./src/service/service.js --server",
     "start-front-server": "node -r dotenv/config ./src/express/express.js",
     "test": "npm run eslint && npm run vitest",
     "vitest": "vitest",
