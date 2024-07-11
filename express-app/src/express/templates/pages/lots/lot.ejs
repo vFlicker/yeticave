@@ -2,32 +2,24 @@
 
 <section class="lot-item">
   <div class="lot-item__header">
-    <h1>1</h1>
+    <h1><%= lot.title %></h1>
 
-
-    <form action="/lots/3/" method="post" class="form close-bid__form ">
-      <input type="hidden" name="csrfmiddlewaretoken" value="tFvi3jTZR6lJqR7fjM1e97dsUqwM08N5ljzkGJrhIPvxoN4EsamzNVIhrBMJjcpL">
-
+    <form action="/lots/<%= lot.id %>/" method="post" class="form close-bid__form">
       <input type="hidden" name="form_type" value="complete_auction">
-
       <button type="submit" class="button">Close bid</button>
     </form>
-
-
   </div>
 
   <div class="lot-item__content">
     <div class="lot-item__left">
-      <img src="https://letsenhance.io/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg" class="lot-item__image" width="730" height="548" alt="1" />
+      <img src="<%= lot.image %>" class="lot-item__image" width="730" height="548" alt="<%= lot.title %>" />
 
       <div class="lot-item__row">
         <p class="lot-item__category">
-          Category: <span>Boards</span>
+          Category: <span><%= lot.category.name %></span>
         </p>
 
-        <form action="/watchlist/3/" method="POST">
-          <input type="hidden" name="csrfmiddlewaretoken" value="tFvi3jTZR6lJqR7fjM1e97dsUqwM08N5ljzkGJrhIPvxoN4EsamzNVIhrBMJjcpL">
-
+        <form action="/watchlist/<%= lot.id %>/" method=" POST">
           <button type="submit" class="bookmark-button bookmark-button--active">
             <svg class="bookmark-button__icon" width="31" height="33">
               <use xlink:href="#icon-bookmark"></use>
@@ -35,235 +27,42 @@
             <span class="visually-hidden">To bookmarks</span>
           </button>
         </form>
-
-
       </div>
 
-      <p class="lot-item__description">qw</p>
+      <p class="lot-item__description"><%= lot.description %></p>
 
       <div class="lot-item__comments comments">
         <h2>Comments</h2>
-
-
-
         <ul class="comment__list">
-
+          <% lot.comments.forEach((comment) => { %>
           <li class="comment__item">
-            <div class="comment__sender"></div>
-            <p class="comment__text">lol</p>
-            <time class="comment__time" datetime="June 12, 2024, 2:45 p.m.">June 12, 2024, 2:45
-              p.m.</time>
+            <div class="comment__sender"><%= comment.user.name %></div>
+            <p class="comment__text"><%= comment.text %></p>
+            <time class="comment__time" datetime="<%= comment.createdAt %>"><%= comment.createdAt %>"</time>
 
             <div class="comment__actions">
               <div class="comment__action">
-
-                <form method="post" action="/lots/3/">
-                  <input type="hidden" name="csrfmiddlewaretoken" value="tFvi3jTZR6lJqR7fjM1e97dsUqwM08N5ljzkGJrhIPvxoN4EsamzNVIhrBMJjcpL">
+                <form method="post" action="/lots/<%= lot.id %>/">
                   <input type="hidden" name="form_type" value="comment_reaction" />
-                  <input type="hidden" name="comment_id" value="11" />
+                  <input type="hidden" name="comment_id" value="<%= comment.id %>" />
                   <input type="hidden" name="reaction_type" value="like" />
                   <button type="submit">Like</button>
                 </form>
-
                 0
               </div>
 
               <div class="comment__action">
-
-                <form method="post" action="/lots/3/">
-                  <input type="hidden" name="csrfmiddlewaretoken" value="tFvi3jTZR6lJqR7fjM1e97dsUqwM08N5ljzkGJrhIPvxoN4EsamzNVIhrBMJjcpL">
+                <form method="post" action="/lots/<%= lot.id %>/">
                   <input type="hidden" name="form_type" value="comment_reaction" />
-                  <input type="hidden" name="comment_id" value="11" />
+                  <input type="hidden" name="comment_id" value="<%= comment.id %>" />
                   <input type="hidden" name="reaction_type" value="dislike" />
                   <button type="submit">Dislike</button>
                 </form>
-
                 1
               </div>
             </div>
           </li>
-
-
-          <li class="comment__item">
-            <div class="comment__sender"></div>
-            <p class="comment__text">lol</p>
-            <time class="comment__time" datetime="June 12, 2024, 2:45 p.m.">June 12, 2024, 2:45
-              p.m.</time>
-
-            <div class="comment__actions">
-              <div class="comment__action">
-
-                <form method="post" action="/lots/3/">
-                  <input type="hidden" name="csrfmiddlewaretoken" value="tFvi3jTZR6lJqR7fjM1e97dsUqwM08N5ljzkGJrhIPvxoN4EsamzNVIhrBMJjcpL">
-                  <input type="hidden" name="form_type" value="comment_reaction" />
-                  <input type="hidden" name="comment_id" value="10" />
-                  <input type="hidden" name="reaction_type" value="like" />
-                  <button type="submit">Like</button>
-                </form>
-
-                0
-              </div>
-
-              <div class="comment__action">
-
-                <form method="post" action="/lots/3/">
-                  <input type="hidden" name="csrfmiddlewaretoken" value="tFvi3jTZR6lJqR7fjM1e97dsUqwM08N5ljzkGJrhIPvxoN4EsamzNVIhrBMJjcpL">
-                  <input type="hidden" name="form_type" value="comment_reaction" />
-                  <input type="hidden" name="comment_id" value="10" />
-                  <input type="hidden" name="reaction_type" value="dislike" />
-                  <button type="submit">Dislike</button>
-                </form>
-
-                0
-              </div>
-            </div>
-          </li>
-
-
-          <li class="comment__item">
-            <div class="comment__sender"></div>
-            <p class="comment__text">ahaha</p>
-            <time class="comment__time" datetime="June 10, 2024, 1:57 p.m.">June 10, 2024, 1:57
-              p.m.</time>
-
-            <div class="comment__actions">
-              <div class="comment__action">
-
-                <form method="post" action="/lots/3/">
-                  <input type="hidden" name="csrfmiddlewaretoken" value="tFvi3jTZR6lJqR7fjM1e97dsUqwM08N5ljzkGJrhIPvxoN4EsamzNVIhrBMJjcpL">
-                  <input type="hidden" name="form_type" value="comment_reaction" />
-                  <input type="hidden" name="comment_id" value="9" />
-                  <input type="hidden" name="reaction_type" value="like" />
-                  <button type="submit">Like</button>
-                </form>
-
-                0
-              </div>
-
-              <div class="comment__action">
-
-                <form method="post" action="/lots/3/">
-                  <input type="hidden" name="csrfmiddlewaretoken" value="tFvi3jTZR6lJqR7fjM1e97dsUqwM08N5ljzkGJrhIPvxoN4EsamzNVIhrBMJjcpL">
-                  <input type="hidden" name="form_type" value="comment_reaction" />
-                  <input type="hidden" name="comment_id" value="9" />
-                  <input type="hidden" name="reaction_type" value="dislike" />
-                  <button type="submit">Dislike</button>
-                </form>
-
-                1
-              </div>
-            </div>
-          </li>
-
-
-          <li class="comment__item">
-            <div class="comment__sender"></div>
-            <p class="comment__text">xd</p>
-            <time class="comment__time" datetime="June 10, 2024, 1:57 p.m.">June 10, 2024, 1:57
-              p.m.</time>
-
-            <div class="comment__actions">
-              <div class="comment__action">
-
-                <form method="post" action="/lots/3/">
-                  <input type="hidden" name="csrfmiddlewaretoken" value="tFvi3jTZR6lJqR7fjM1e97dsUqwM08N5ljzkGJrhIPvxoN4EsamzNVIhrBMJjcpL">
-                  <input type="hidden" name="form_type" value="comment_reaction" />
-                  <input type="hidden" name="comment_id" value="8" />
-                  <input type="hidden" name="reaction_type" value="like" />
-                  <button type="submit" class="blue">Like</button>
-                </form>
-
-                2
-              </div>
-
-              <div class="comment__action">
-
-                <form method="post" action="/lots/3/">
-                  <input type="hidden" name="csrfmiddlewaretoken" value="tFvi3jTZR6lJqR7fjM1e97dsUqwM08N5ljzkGJrhIPvxoN4EsamzNVIhrBMJjcpL">
-                  <input type="hidden" name="form_type" value="comment_reaction" />
-                  <input type="hidden" name="comment_id" value="8" />
-                  <input type="hidden" name="reaction_type" value="dislike" />
-                  <button type="submit">Dislike</button>
-                </form>
-
-                0
-              </div>
-            </div>
-          </li>
-
-
-          <li class="comment__item">
-            <div class="comment__sender"></div>
-            <p class="comment__text">I am a test</p>
-            <time class="comment__time" datetime="June 10, 2024, 1:25 p.m.">June 10, 2024, 1:25
-              p.m.</time>
-
-            <div class="comment__actions">
-              <div class="comment__action">
-
-                <form method="post" action="/lots/3/">
-                  <input type="hidden" name="csrfmiddlewaretoken" value="tFvi3jTZR6lJqR7fjM1e97dsUqwM08N5ljzkGJrhIPvxoN4EsamzNVIhrBMJjcpL">
-                  <input type="hidden" name="form_type" value="comment_reaction" />
-                  <input type="hidden" name="comment_id" value="7" />
-                  <input type="hidden" name="reaction_type" value="like" />
-                  <button type="submit" class="blue">Like</button>
-                </form>
-
-                2
-              </div>
-
-              <div class="comment__action">
-
-                <form method="post" action="/lots/3/">
-                  <input type="hidden" name="csrfmiddlewaretoken" value="tFvi3jTZR6lJqR7fjM1e97dsUqwM08N5ljzkGJrhIPvxoN4EsamzNVIhrBMJjcpL">
-                  <input type="hidden" name="form_type" value="comment_reaction" />
-                  <input type="hidden" name="comment_id" value="7" />
-                  <input type="hidden" name="reaction_type" value="dislike" />
-                  <button type="submit">Dislike</button>
-                </form>
-
-                0
-              </div>
-            </div>
-          </li>
-
-
-          <li class="comment__item">
-            <div class="comment__sender"></div>
-            <p class="comment__text">omg</p>
-            <time class="comment__time" datetime="June 10, 2024, 1:25 p.m.">June 10, 2024, 1:25
-              p.m.</time>
-
-            <div class="comment__actions">
-              <div class="comment__action">
-
-                <form method="post" action="/lots/3/">
-                  <input type="hidden" name="csrfmiddlewaretoken" value="tFvi3jTZR6lJqR7fjM1e97dsUqwM08N5ljzkGJrhIPvxoN4EsamzNVIhrBMJjcpL">
-                  <input type="hidden" name="form_type" value="comment_reaction" />
-                  <input type="hidden" name="comment_id" value="6" />
-                  <input type="hidden" name="reaction_type" value="like" />
-                  <button type="submit" class="blue">Like</button>
-                </form>
-
-                2
-              </div>
-
-              <div class="comment__action">
-
-                <form method="post" action="/lots/3/">
-                  <input type="hidden" name="csrfmiddlewaretoken" value="tFvi3jTZR6lJqR7fjM1e97dsUqwM08N5ljzkGJrhIPvxoN4EsamzNVIhrBMJjcpL">
-                  <input type="hidden" name="form_type" value="comment_reaction" />
-                  <input type="hidden" name="comment_id" value="6" />
-                  <input type="hidden" name="reaction_type" value="dislike" />
-                  <button type="submit">Dislike</button>
-                </form>
-
-                0
-              </div>
-            </div>
-          </li>
-
-
+          <% }) %>
         </ul>
       </div>
     </div>
@@ -273,11 +72,9 @@
         <div class="lot-item__cost-state">
           <div class="lot-item__rate">
             <div class="lot-item__amount">Current price</div>
-            <div class="lot-item__cost">$3.00</div>
+            <div class="lot-item__cost">$<%= lot.currentPrice %></div>
           </div>
         </div>
-
-
       </div>
 
       <div class="history">
@@ -285,25 +82,13 @@
           History of rates (<span>2</span>)
         </h2>
         <table class="history__list">
-
-
-
+          <% lot.bids.forEach((bid) => { %>
           <tr class="history__item">
-            <td class="history__name">test@mail.com</td>
-            <td class="history__price">$3.00</td>
-            <td class="history__time">June 10, 2024, 1:25 p.m.</td>
+            <td class="history__name"><%= bid.user.name %><< /td>
+            <td class="history__price">$<%= bid.amount %></td>
+            <td class="history__time"><%= bid.createdAt %></td>
           </tr>
-
-
-
-
-          <tr class="history__item">
-            <td class="history__name">vlad</td>
-            <td class="history__price">$2.00</td>
-            <td class="history__time">June 4, 2024, 4:35 p.m.</td>
-          </tr>
-
-
+          <% }) %>
         </table>
       </div>
     </div>

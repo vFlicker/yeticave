@@ -1,43 +1,13 @@
 <footer class="main-footer">
   <nav class="nav">
     <ul class="nav__list container">
-
+      <% categories.forEach((category) => { %>
       <li class="nav__item">
-        <a href="/categories/1/">
-          Boards
+        <a href="/categories/<%= category.id %>/">
+          <%= category.name %>
         </a>
       </li>
-
-      <li class="nav__item">
-        <a href="/categories/2/">
-          Attachment
-        </a>
-      </li>
-
-      <li class="nav__item">
-        <a href="/categories/3/">
-          Boots
-        </a>
-      </li>
-
-      <li class="nav__item">
-        <a href="/categories/4/">
-          Clothing
-        </a>
-      </li>
-
-      <li class="nav__item">
-        <a href="/categories/5/">
-          Tools
-        </a>
-      </li>
-
-      <li class="nav__item">
-        <a href="/categories/6/">
-          Other
-        </a>
-      </li>
-
+      <% }) %>
     </ul>
   </nav>
   <div class="main-footer__bottom container">

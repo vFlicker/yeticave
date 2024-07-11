@@ -3,45 +3,27 @@
 <form action="/sign-up/" method="post" class="form form-login ">
   <h1 class="register__heading">Sign up</h1>
 
-  <input type="hidden" name="csrfmiddlewaretoken" value="otuVky5upz80OhF8oC85KsLiMUqKrGoB3UhmgS61EPZ0YxX4C85jDrR5cNo1UDnn">
-
-
   <div class="form__item">
-    <label for="id_username">
-      Username
-      *
-    </label>
+    <label for="id_username">Username *</label>
     <input type="text" name="username" placeholder="Enter username" maxlength="150" required id="id_username">
   </div>
 
   <div class="form__item">
-    <label for="id_email">
-      Email Address
-      *
-    </label>
+    <label for="id_email">Email Address *</label>
     <input type="email" name="email" placeholder="Enter email" maxlength="254" required id="id_email">
   </div>
 
   <div class="form__item">
-    <label for="id_password">
-      Password
-      *
-    </label>
+    <label for="id_password">Password *</label>
     <input type="password" name="password" placeholder="Enter password" maxlength="128" required id="id_password">
   </div>
 
   <div class="form__item">
-    <label for="id_confirm_password">
-      Confirm password
-      *
-    </label>
+    <label for="id_confirm_password">Confirm password *</label>
     <input type="password" name="confirm_password" placeholder="Enter password again" required id="id_confirm_password">
   </div>
 
-
   <button type="submit" class="button">Sign up</button>
 
-  <p>
-    Already have an account? <a href="/login/">Log In here.</a>
-  </p>
+  <p>Already have an account? <a href="/login/">Log In here.</a></p>
 </form>
