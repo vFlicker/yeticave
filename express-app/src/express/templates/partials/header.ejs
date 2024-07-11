@@ -1,0 +1,48 @@
+<header class="main-header">
+  <div class="main-header__container container">
+    <h1 class="visually-hidden">YetiCave</h1>
+
+    <a href=/ class="main-header__logo">
+      <img src="/img/logo.svg" width="160" height="39" alt="YetiCave Logo">
+    </a>
+
+    <form method="get" action="/search/" class="main-header__search">
+      <input type="search" name="q" placeholder="Find lot by text">
+      <button class="main-header__search-btn" type="submit">
+        <span class="visually-hidden">Search</span>
+      </button>
+    </form>
+
+
+
+    <a class="main-header__add-lot button" href="/create-lot/">Create lot</a>
+
+    <div class="main-header__menu-wrapper">
+      <button class="menu-toggler">
+        <span>flicker</span>
+        <img src="/img/user.png" width="32" height="32" alt="User avatar">
+      </button>
+
+      <nav class="user-menu user-menu--logged-in">
+        <ul class="user-menu__list">
+          <li class="user-menu__item">
+            <a href="/profile/">Profile</a>
+          </li>
+          <li class="user-menu__item">
+            <a href="/subscriptions/">Subscriptions</a>
+          </li>
+          <li class="user-menu__item">
+            <a href="/my-bets/">My bets</a>
+          </li>
+          <li class="user-menu__item">
+            <a href="/watchlist/">Watchlist</a>
+          </li>
+          <li class="user-menu__item">
+            <a href="/logout/">Logout</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+  </div>
+</header>
