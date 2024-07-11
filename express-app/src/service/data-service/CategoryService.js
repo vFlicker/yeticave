@@ -8,4 +8,8 @@ export class CategoryService {
   findAll() {
     return this.#data.categories;
   }
+
+  findById(id) {
+    return this.#data.categories.find((category) => category.id === id);
+  }
 }

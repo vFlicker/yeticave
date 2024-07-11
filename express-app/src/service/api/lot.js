@@ -21,10 +21,11 @@ export const registerLotRoutes = (app, lotService) => {
     if (!lot) {
       res.status(HttpCode.NOT_FOUND);
       res.send(`Lot with id ${id} not found`);
-    } else {
-      res.status(HttpCode.OK);
-      res.json(lot);
+      return;
     }
+
+    res.status(HttpCode.OK);
+    res.json(lot);
   });
 
   router.post('/', (req, res) => {

@@ -45,3 +45,38 @@ describe('GET api/categories', () => {
     });
   });
 });
+
+describe('GET api/categories/:id', () => {
+  describe('API return a category by id', () => {
+    let response;
+
+    beforeAll(async () => {
+      response = await request(app).get('/categories/1');
+    });
+
+    test('Should have response status 200', () => {
+      expect(response.statusCode).toBe(HttpCode.OK);
+    });
+
+    test('Should have body with category name "Test category 1"', () => {
+      const { name } = response.body;
+      expect(name).toBe('Test category 1');
+    });
+  });
+
+  describe('API return 404 if category not found', () => {
+    let response;
+
+    beforeAll(async () => {
+      response = await request(app).get('/categories/3');
+    });
+
+    test('Should have response status 404', () => {
+      expect(response.statusCode).toBe(HttpCode.NOT_FOUND);
+    });
+
+    test('Should have empty body', () => {
+      expect(response.body).toEqual({});
+    });
+  });
+});

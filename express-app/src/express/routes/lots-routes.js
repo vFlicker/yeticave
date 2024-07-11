@@ -1,11 +1,13 @@
 import { Router } from 'express';
 
-import { bids, categories, comments, lots, users } from '../mock.js';
+import { defaultApi } from '../api.js';
+import { bids, comments, lots, users } from '../mock.js';
 
 export const lotsRouter = Router();
 
-lotsRouter.get('/categories/:id', (req, res) => {
+lotsRouter.get('/categories/:id', async (req, res) => {
   const categoryId = Number.parseInt(req.params.id, 10);
+  const categories = await defaultApi.getCategories();
   const currentCategory = categories.find(({ id }) => id === categoryId);
 
   const resolverLots = [];
@@ -29,13 +31,15 @@ lotsRouter.get('/categories/:id', (req, res) => {
   });
 });
 
-lotsRouter.get('/add', (req, res) => {
+lotsRouter.get('/add', async (req, res) => {
+  const categories = await defaultApi.getCategories();
   res.render('pages/lots/new-lot', { categories });
 });
 
-lotsRouter.get('/:id', (req, res) => {
+lotsRouter.get('/:id', async (req, res) => {
   const lotId = Number.parseInt(req.params.id, 10);
   const lot = lots.find(({ id }) => id === lotId);
+  const categories = await defaultApi.getCategories();
 
   const resolvedLot = {
     ...lot,
