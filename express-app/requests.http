@@ -3,8 +3,18 @@ GET http://localhost:3000/api/categories HTTP/1.1
 
 ###
 
+# Get category by id
+GET http://localhost:3000/api/categories/1 HTTP/1.1
+
+###
+
 # Get all lots
 GET http://localhost:3000/api/lots HTTP/1.1
+
+###
+
+# Get all lots by category id
+GET http://localhost:3000/api/lots/categories/1 HTTP/1.1
 
 ###
 

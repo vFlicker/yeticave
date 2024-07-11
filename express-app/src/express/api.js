@@ -20,6 +20,22 @@ export class Api {
     return this.#load('/categories');
   }
 
+  getCategory(id) {
+    return this.#load(`/categories/${id}`);
+  }
+
+  getAllLots() {
+    return this.#load('/lots');
+  }
+
+  getLotsByCategory(id) {
+    return this.#load(`/lots/categories/${id}`);
+  }
+
+  getLotById(id) {
+    return this.#load(`/lots/${id}`);
+  }
+
   async #load(url, options) {
     const response = await this.#http.request({ url, ...options });
     return response.data;

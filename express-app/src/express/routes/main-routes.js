@@ -1,50 +1,36 @@
 import { Router } from 'express';
 
 import { defaultApi } from '../api.js';
-import { lots } from '../mock.js';
 
 export const mainRouter = Router();
 
-mainRouter.get('/', async (req, res) => {
-  const categories = await defaultApi.getCategories();
+mainRouter.get('/', async (_req, res) => {
+  const [categories, lots] = await Promise.all([
+    defaultApi.getCategories(),
+    defaultApi.getAllLots(),
+  ]);
 
-  const resolverLots = lots.map((lot) => {
-    const result = {
-      ...lot,
-      category: categories.find((category) => category.id === lot.categoryId),
-    };
-
-    delete result.categoryId;
-
-    return result;
+  res.render('pages/index', {
+    categories,
+    lots,
   });
-
-  res.render('pages/index', { categories, lots: resolverLots });
 });
 
-mainRouter.get('/login', async (req, res) => {
+mainRouter.get('/login', async (_req, res) => {
   const categories = await defaultApi.getCategories();
   res.render('pages/auth/login', { categories });
 });
 
-mainRouter.get('/register', async (req, res) => {
+mainRouter.get('/register', async (_req, res) => {
   const categories = await defaultApi.getCategories();
   res.render('pages/auth/sign-up', { categories });
 });
 
-mainRouter.get('/search', async (req, res) => {
-  const categories = await defaultApi.getCategories();
+mainRouter.get('/search', async (_req, res) => {
+  const [categories, lots] = await Promise.all([
+    defaultApi.getCategories(),
+    defaultApi.getAllLots(),
+  ]);
 
-  const resolverLots = lots.map((lot) => {
-    const result = {
-      ...lot,
-      category: categories.find((category) => category.id === lot.categoryId),
-    };
-
-    delete result.categoryId;
-
-    return result;
-  });
-
-  res.render('pages/search-result', { categories, lots: resolverLots });
+  res.render('pages/search-result', { categories, lots });
 });
