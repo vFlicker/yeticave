@@ -43,6 +43,12 @@ export class Api {
     });
   }
 
+  search(query) {
+    return this.#load('/search', {
+      params: { query },
+    });
+  }
+
   async #load(url, options) {
     const response = await this.#http.request({ url, ...options });
     return response.data;

@@ -33,3 +33,9 @@ Content-Type: application/json
     "name": "Lot name 4",
     "categoryId": 2
 }
+
+###
+
+# Search lots by title
+
+GET http://localhost:3000/api/search?query=flowers HTTP/1.1

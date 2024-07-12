@@ -9,6 +9,17 @@ myRouter.get('/profile', async (_req, res) => {
   res.render('pages/my/profile', { categories });
 });
 
+myRouter.get('/search', async (req, res) => {
+  const { query = '' } = req.query;
+
+  const [categories, lots] = await Promise.all([
+    api.getCategories(),
+    api.search(query),
+  ]);
+
+  res.render('pages/my/search', { categories, lots });
+});
+
 myRouter.get('/subscriptions', (_req, res) => {
   res.render('pages/my/subscriptions');
 });

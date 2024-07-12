@@ -9,7 +9,6 @@ export const registerLotRoutes = (app, lotService) => {
 
   router.get('/', (req, res) => {
     const lots = lotService.findAll();
-    console.log(lots);
     res.status(HttpCode.OK);
     res.json(lots);
   });
