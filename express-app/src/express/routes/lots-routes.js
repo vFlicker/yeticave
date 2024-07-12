@@ -1,23 +1,29 @@
 import { Router } from 'express';
 
 import { defaultApi } from '../api.js';
+import { showPage404Middleware } from '../middlewares/show-page-404-middleware.js';
 
 export const lotsRouter = Router();
 
 lotsRouter.get('/categories/:id', async (req, res) => {
   const categoryId = Number.parseInt(req.params.id, 10);
 
-  const [categories, currentCategory, lots] = await Promise.all([
-    defaultApi.getCategories(),
-    defaultApi.getCategory(categoryId),
-    defaultApi.getLotsByCategory(categoryId),
-  ]);
+  try {
+    const [categories, currentCategory, lots] = await Promise.all([
+      defaultApi.getCategories(),
+      defaultApi.getCategory(categoryId),
+      defaultApi.getLotsByCategory(categoryId),
+    ]);
 
-  res.render('pages/lots/category', {
-    categories,
-    category: currentCategory.name,
-    lots,
-  });
+    res.render('pages/lots/category', {
+      categories,
+      category: currentCategory.name,
+      lots,
+    });
+  } catch (error) {
+    // TODO: fix this place
+    showPage404Middleware(req, res);
+  }
 });
 
 lotsRouter.get('/add', async (_req, res) => {
