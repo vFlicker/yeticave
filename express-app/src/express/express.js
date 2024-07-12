@@ -12,6 +12,7 @@ import { mainRouter } from './routes/main-routes.js';
 import { myRouter } from './routes/my-routes.js';
 
 const PUBLIC_DIR = 'public';
+const UPLOAD_DIR = 'upload';
 const TEMPLATES_DIR = 'templates';
 
 const app = express();
@@ -23,7 +24,10 @@ app.set('view engine', 'ejs');
 app.set('views', path.resolve(import.meta.dirname, TEMPLATES_DIR));
 app.use(expressLayouts);
 
-app.use(express.static(path.join(__dirname, PUBLIC_DIR)));
+app.use(express.static(path.resolve(__dirname, PUBLIC_DIR)));
+app.use(express.static(path.resolve(__dirname, UPLOAD_DIR)));
+
+app.use(express.urlencoded({ extended: false }));
 
 app.use(`/lots`, lotsRouter);
 app.use(`/my`, myRouter);

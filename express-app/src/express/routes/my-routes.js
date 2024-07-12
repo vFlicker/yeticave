@@ -1,11 +1,11 @@
 import { Router } from 'express';
 
-import { defaultApi } from '../api.js';
+import { api } from '../api.js';
 
 export const myRouter = Router();
 
 myRouter.get('/profile', async (_req, res) => {
-  const categories = await defaultApi.getCategories();
+  const categories = await api.getCategories();
   res.render('pages/my/profile', { categories });
 });
 
@@ -15,8 +15,8 @@ myRouter.get('/subscriptions', (_req, res) => {
 
 myRouter.get('/watchlist', async (_req, res) => {
   const [categories, lots] = await Promise.all([
-    defaultApi.getCategories(),
-    defaultApi.getAllLots(),
+    api.getCategories(),
+    api.getAllLots(),
   ]);
 
   res.render('pages/index', {
@@ -28,6 +28,6 @@ myRouter.get('/watchlist', async (_req, res) => {
 });
 
 myRouter.get('/bets', async (_req, res) => {
-  const categories = await defaultApi.getCategories();
+  const categories = await api.getCategories();
   res.render('pages/my/my-bets', { categories });
 });

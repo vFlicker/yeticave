@@ -36,10 +36,17 @@ export class Api {
     return this.#load(`/lots/${id}`);
   }
 
+  createLot(data) {
+    return this.#load('/lots', {
+      method: 'POST',
+      data,
+    });
+  }
+
   async #load(url, options) {
     const response = await this.#http.request({ url, ...options });
     return response.data;
   }
 }
 
-export const defaultApi = new Api(defaultUrl, TIMEOUT);
+export const api = new Api(defaultUrl, TIMEOUT);

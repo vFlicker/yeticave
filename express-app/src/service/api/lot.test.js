@@ -194,3 +194,34 @@ describe('POST api/lots', () => {
     });
   });
 });
+
+describe('POST api/lots', () => {
+  describe('API create a new lot', () => {
+    const newLot = {
+      name: 'Test lot 2',
+      categoryId: 2,
+    };
+
+    const app = createApi();
+    let response;
+
+    beforeAll(async () => {
+      response = await request(app).post('/lots').send(newLot);
+    });
+
+    test('Should have response status 201', () => {
+      expect(response.statusCode).toBe(HttpCode.CREATED);
+    });
+
+    test('Should have body with new lot', () => {
+      expect(response.body).toEqual(expect.objectContaining(newLot));
+    });
+
+    test('Should have a new lot in lots list', async () => {
+      const response = await request(app).get('/lots');
+      expect(response.body).toHaveLength(2);
+    });
+  });
+
+  test.todo('API refuses to create an offer if data is invalid');
+});

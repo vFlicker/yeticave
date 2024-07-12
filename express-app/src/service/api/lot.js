@@ -42,9 +42,9 @@ export const registerLotRoutes = (app, lotService) => {
     res.json(lot);
   });
 
+  // TODO: add body validation
   router.post('/', (req, res) => {
-    const lot = req.body;
-    const newLot = lotService.create(lot);
+    const newLot = lotService.create(req.body);
     res.status(HttpCode.CREATED);
     res.json(newLot);
   });
