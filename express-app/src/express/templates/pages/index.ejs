@@ -7,7 +7,7 @@
   <ul class="promo__list">
     <% categories.forEach((category) => { %>
     <li class="promo__item promo__item--<%= category.name.toLowerCase() %>">
-      <a class="promo__link" href="/categories/<%= category.id %>/"><%= category.name %></a>
+      <a class="promo__link" href="/lots/categories/<%= category.id %>/"><%= category.name %></a>
     </li>
     <% }) %>
   </ul>

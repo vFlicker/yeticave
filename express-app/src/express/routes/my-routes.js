@@ -27,7 +27,7 @@ myRouter.get('/watchlist', async (_req, res) => {
   res.render('pages/my/watchlist', { categories, lots });
 });
 
-myRouter.get('/my-bets', async (_req, res) => {
+myRouter.get('/bets', async (_req, res) => {
   const categories = await defaultApi.getCategories();
   res.render('pages/my/my-bets', { categories });
 });
