@@ -2,6 +2,7 @@ import chalk from 'chalk';
 import express from 'express';
 
 import { API_PREFIX, BACKEND_PORT, ExitCode } from '../../../constants.js';
+import { sequelize } from '../../../service/lib/sequelize.js';
 import { apiRoutes } from '../../api/index.js';
 import { getLogger } from '../../lib/logger.js';
 import { logNotFoundMiddleware } from '../../middlewares/log-not-found-middleware.js';
@@ -20,12 +21,31 @@ app.use(logServerErrorMiddleware(logger));
 export const serverCommand = {
   name: '--server',
 
-  execute(_args) {
+  async execute(_args) {
+    await connectToDatabase();
+
     app
       .listen(BACKEND_PORT)
       .on('listening', onListeningHandler)
       .on('error', onErrorHandler);
   },
+};
+
+const connectToDatabase = async () => {
+  try {
+    logger.info(chalk.green('Trying to connect to the database...'));
+    await sequelize.authenticate();
+  } catch (err) {
+    logger.error(
+      chalk.red('An error occurred while trying to connect to the database'),
+    );
+    logger.error(chalk.red(err.message));
+    process.exit(ExitCode.ERROR);
+  }
+
+  logger.info(
+    chalk.green('Connection to the database has been established successfully'),
+  );
 };
 
 const onListeningHandler = () => {

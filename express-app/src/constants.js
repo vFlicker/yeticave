@@ -3,6 +3,8 @@ export const API_PREFIX = '/api';
 export const BACKEND_PORT =
   Number.parseInt(process.env.BACKEND_PORT, 10) || 3000;
 
+export const DB_FILE = process.env.DB_FILE || 'yeticave.sqlite';
+
 export const DEFAULT_COMMAND = '--help';
 
 export const Env = {
