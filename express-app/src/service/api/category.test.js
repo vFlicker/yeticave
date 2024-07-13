@@ -3,7 +3,7 @@ import request from 'supertest';
 import { beforeAll, describe, expect, test } from 'vitest';
 
 import { HttpCode } from '../../constants.js';
-import { CategoryService } from '../data-service/CategoryService.js';
+import { CategoryService } from '../data-service/category-service.js';
 import { registerCategoryRoutes } from './category.js';
 
 const mockData = {

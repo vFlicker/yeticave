@@ -3,7 +3,7 @@ import request from 'supertest';
 import { beforeAll, describe, expect, test } from 'vitest';
 
 import { HttpCode } from '../../constants.js';
-import { SearchService } from '../data-service/SearchService.js';
+import { SearchService } from '../data-service/search-service.js';
 import { registerSearchRoutes } from './search.js';
 
 const mockData = {

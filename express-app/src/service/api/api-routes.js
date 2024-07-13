@@ -1,9 +1,9 @@
 import { Router } from 'express';
 
 import { mockData } from '../../mocks/mock-server-data.js';
-import { CategoryService } from '../data-service/CategoryService.js';
-import { LotService } from '../data-service/LotService.js';
-import { SearchService } from '../data-service/SearchService.js';
+import { CategoryService } from '../data-service/category-service.js';
+import { LotService } from '../data-service/lot-service.js';
+import { SearchService } from '../data-service/search-service.js';
 import { registerCategoryRoutes } from './category.js';
 import { registerLotRoutes } from './lot.js';
 import { registerSearchRoutes } from './search.js';

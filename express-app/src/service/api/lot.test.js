@@ -3,7 +3,7 @@ import request from 'supertest';
 import { beforeAll, describe, expect, test } from 'vitest';
 
 import { HttpCode } from '../../constants.js';
-import { LotService } from '../data-service/LotService.js';
+import { LotService } from '../data-service/lot-service.js';
 import { registerLotRoutes } from './lot.js';
 
 const mockData = {

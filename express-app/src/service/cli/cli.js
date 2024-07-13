@@ -1,6 +1,6 @@
-import { helpCommand } from './commands/helpCommand.js';
-import { serverCommand } from './commands/serverCommand.js';
-import { versionCommand } from './commands/versionCommand.js';
+import { helpCommand } from './commands/help-command.js';
+import { serverCommand } from './commands/server-command.js';
+import { versionCommand } from './commands/version-command.js';
 
 export const Cli = {
   [helpCommand.name]: helpCommand,

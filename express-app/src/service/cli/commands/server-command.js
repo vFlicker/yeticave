@@ -2,9 +2,9 @@ import chalk from 'chalk';
 import express from 'express';
 
 import { API_PREFIX, BACKEND_PORT, ExitCode } from '../../../constants.js';
-import { sequelize } from '../../../service/lib/sequelize.js';
-import { apiRoutes } from '../../api/index.js';
+import { apiRoutes } from '../../api/api-routes.js';
 import { getLogger } from '../../lib/logger.js';
+import { sequelize } from '../../lib/sequelize.js';
 import { logNotFoundMiddleware } from '../../middlewares/log-not-found-middleware.js';
 import { logRequestMiddleware } from '../../middlewares/log-request-middleware.js';
 import { logServerErrorMiddleware } from '../../middlewares/log-server-error-middleware.js';
