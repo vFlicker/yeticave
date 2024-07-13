@@ -3,6 +3,7 @@ import express from 'express';
 
 import { API_PREFIX, BACKEND_PORT, ExitCode } from '../../../constants.js';
 import { apiRoutes } from '../../api/api-routes.js';
+import { checkDatabaseConnect } from '../../lib/check-database-connect.js';
 import { getLogger } from '../../lib/logger.js';
 import { sequelize } from '../../lib/sequelize.js';
 import { logNotFoundMiddleware } from '../../middlewares/log-not-found-middleware.js';
@@ -22,30 +23,13 @@ export const serverCommand = {
   name: '--server',
 
   async execute(_args) {
-    await connectToDatabase();
+    await checkDatabaseConnect(sequelize, logger);
 
     app
       .listen(BACKEND_PORT)
       .on('listening', onListeningHandler)
       .on('error', onErrorHandler);
   },
-};
-
-const connectToDatabase = async () => {
-  try {
-    logger.info(chalk.green('Trying to connect to the database...'));
-    await sequelize.authenticate();
-  } catch (err) {
-    logger.error(
-      chalk.red('An error occurred while trying to connect to the database'),
-    );
-    logger.error(chalk.red(err.message));
-    process.exit(ExitCode.ERROR);
-  }
-
-  logger.info(
-    chalk.green('Connection to the database has been established successfully'),
-  );
 };
 
 const onListeningHandler = () => {
