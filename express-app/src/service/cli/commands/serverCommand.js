@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import express from 'express';
 
-import { API_PREFIX, BACK_PORT, ExitCode } from '../../../constants.js';
+import { API_PREFIX, BACKEND_PORT, ExitCode } from '../../../constants.js';
 import { apiRoutes } from '../../api/index.js';
 import { getLogger } from '../../lib/logger.js';
 import { logNotFoundMiddleware } from '../../middlewares/log-not-found-middleware.js';
@@ -22,14 +22,14 @@ export const serverCommand = {
 
   execute(_args) {
     app
-      .listen(BACK_PORT)
+      .listen(BACKEND_PORT)
       .on('listening', onListeningHandler)
       .on('error', onErrorHandler);
   },
 };
 
 const onListeningHandler = () => {
-  logger.info(chalk.blue(`Server started on http://localhost:${BACK_PORT}`));
+  logger.info(chalk.blue(`Server started on http://localhost:${BACKEND_PORT}`));
 };
 
 const onErrorHandler = (err) => {

@@ -1,6 +1,7 @@
 export const API_PREFIX = '/api';
 
-export const BACK_PORT = Number.parseInt(process.env.BACK_PORT, 10) || 3000;
+export const BACKEND_PORT =
+  Number.parseInt(process.env.BACKEND_PORT, 10) || 3000;
 
 export const DEFAULT_COMMAND = '--help';
 
@@ -14,7 +15,8 @@ export const ExitCode = {
   ERROR: 1,
 };
 
-export const FRONT_PORT = Number.parseInt(process.env.FRONT_PORT, 10) || 8080;
+export const FRONTEND_PORT =
+  Number.parseInt(process.env.FRONTEND_PORT, 10) || 8080;
 
 export const HttpCode = {
   OK: 200,

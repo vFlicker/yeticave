@@ -14,5 +14,11 @@ node_modules/
 # Folder with project build files
 build/
 
+# Folder with loaded images
+src/express/upload/img/*.*
+
+# Empty file for git to keep the folder in vesrion control system
+!src/express/upload/img/.gitkeep
+
 # Files with environment variables
 .env

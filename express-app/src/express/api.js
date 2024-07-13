@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-import { BACK_PORT } from '../constants.js';
+import { BACKEND_PORT } from '../constants.js';
 
 const TIMEOUT = 1000;
 
-const defaultUrl = `http://localhost:${BACK_PORT}/api/`;
+const defaultUrl = `http://localhost:${BACKEND_PORT}/api/`;
 
 export class Api {
   #http = null;
