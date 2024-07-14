@@ -6,7 +6,7 @@ import { initDatabase } from '../../lib/init-database.js';
 import { logger } from '../../lib/logger.js';
 import { sequelize } from '../../lib/sequelize.js';
 
-const FILE_CATEGORIES_PATH = './data/categories.json';
+const FILE_DATABASE_PATH = './data/database.json';
 
 const readContent = async (filePath) => {
   try {
@@ -24,7 +24,7 @@ export const fillDatabaseCommand = {
 
   async execute(_args) {
     await checkDatabaseConnect(sequelize, logger);
-    const categories = await readContent(FILE_CATEGORIES_PATH);
-    initDatabase(sequelize, { categories });
+    const databaseModelsData = await readContent(FILE_DATABASE_PATH);
+    initDatabase(sequelize, databaseModelsData);
   },
 };

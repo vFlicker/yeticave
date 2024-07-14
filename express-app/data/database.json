@@ -1,0 +1,103 @@
+{
+  "bids": [
+    {
+      "amount": 1050,
+      "lotId": 1,
+      "userId": 2
+    },
+    {
+      "amount": 55,
+      "lotId": 2,
+      "userId": 1
+    },
+    {
+      "amount": 170,
+      "lotId": 3,
+      "userId": 2
+    }
+  ],
+  "categories": [
+    {
+      "name": "Boards"
+    },
+    {
+      "name": "Attachment"
+    },
+    {
+      "name": "Boots"
+    },
+    {
+      "name": "Clothing"
+    },
+    {
+      "name": "Tools"
+    },
+    {
+      "name": "Other"
+    }
+  ],
+  "comments": [
+    {
+      "text": "Great product!",
+      "lotId": 1,
+      "userId": 2
+    },
+    {
+      "text": "Looking forward to reading this!",
+      "lotId": 2,
+      "userId": 1
+    },
+    {
+      "text": "Is this laptop still available?",
+      "lotId": 3,
+      "userId": 2
+    }
+  ],
+  "lots": [
+    {
+      "title": "iPhone 13",
+      "description": "Latest model of iPhone",
+      "imageUrl": "http://example.com/iphone13.jpg",
+      "startingPrice": 1000,
+      "currentPrice": 1000,
+      "isActive": true,
+      "finishedAt": "2024-12-31T23:59:59Z",
+      "categoryId": 1,
+      "userId": 1
+    },
+    {
+      "title": "Harry Potter Book Set",
+      "description": "Complete set of Harry Potter books",
+      "imageUrl": "http://example.com/harrypotter.jpg",
+      "startingPrice": 50,
+      "currentPrice": 50,
+      "isActive": true,
+      "finishedAt": "2024-12-31T23:59:59Z",
+      "categoryId": 2,
+      "userId": 2
+    },
+    {
+      "title": "Old Laptop",
+      "description": "Used laptop, still works fine",
+      "imageUrl": "http://example.com/oldlaptop.jpg",
+      "startingPrice": 200,
+      "currentPrice": 150,
+      "isActive": false,
+      "finishedAt": "2023-12-31T23:59:59Z",
+      "categoryId": 1,
+      "userId": 1
+    }
+  ],
+  "users": [
+    {
+      "email": "user1@example.com",
+      "username": "user1",
+      "passwordHash": "hashed_password1"
+    },
+    {
+      "email": "user2@example.com",
+      "username": "user2",
+      "passwordHash": "hashed_password2"
+    }
+  ]
+}
