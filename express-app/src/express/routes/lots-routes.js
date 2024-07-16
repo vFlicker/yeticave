@@ -9,6 +9,7 @@ import { showPage404Middleware } from '../middlewares/show-page-404-middleware.j
 
 const UPLOAD_DIR = `../upload/img`;
 
+// TODO: We have the same code in express.js
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);

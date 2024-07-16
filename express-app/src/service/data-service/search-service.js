@@ -6,7 +6,7 @@ export class SearchService {
   }
 
   search(searchQuery) {
-    const { lots, categories, bids, comments, users } = this.#data;
+    const { categories, bids, comments, users } = this.#data;
 
     const userMap = new Map(users.map((user) => [user.id, user]));
     const categoryMap = new Map(
