@@ -11,6 +11,7 @@ export const helpCommand = {
       server <command>
 
       Commands:
+      --fill-db:            fills the database with data
       --help:               prints this text
       --version:            outputs the version number
       --server:             starts the server

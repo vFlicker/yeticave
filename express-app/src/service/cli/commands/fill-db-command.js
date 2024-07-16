@@ -19,7 +19,7 @@ const readContent = async (filePath) => {
   }
 };
 
-export const fillDatabaseCommand = {
+export const fillDbCommand = {
   name: '--fill-db',
 
   async execute(_args) {
