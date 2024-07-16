@@ -1,39 +1,17 @@
-import express from 'express';
-import { Sequelize } from 'sequelize';
 import request from 'supertest';
 import { beforeAll, describe, expect, test } from 'vitest';
 
 import { HttpCode } from '../../constants.js';
-import {
-  mockCategories,
-  mockLots,
-  mockUsers,
-} from '../../mocks/test-mock-data.js';
 import { LotService } from '../data-service/lot-service.js';
-import { initDatabase } from '../lib/init-database.js';
+import { createTestApi } from '../test/create-test-api.js';
 import { registerLotRoutes } from './lot.js';
-
-const createApi = async () => {
-  const app = express();
-  app.use(express.json());
-
-  const mockDatabase = new Sequelize('sqlite::memory:', { logging: false });
-  await initDatabase(mockDatabase, {
-    categories: mockCategories,
-    lots: mockLots,
-    users: mockUsers,
-  });
-
-  registerLotRoutes(app, new LotService(mockDatabase));
-  return app;
-};
 
 describe('GET api/lots', () => {
   describe('API return a list of all lots', async () => {
     let response;
 
     beforeAll(async () => {
-      const app = await createApi();
+      const app = await createTestApi(registerLotRoutes, LotService);
       response = await request(app).get('/lots');
     });
 
@@ -57,7 +35,7 @@ describe('GET api/lots/categories/:id', () => {
     let response;
 
     beforeAll(async () => {
-      const app = await createApi();
+      const app = await createTestApi(registerLotRoutes, LotService);
       response = await request(app).get('/lots/categories/1');
     });
 
@@ -79,7 +57,7 @@ describe('GET api/lots/categories/:id', () => {
     let response;
 
     beforeAll(async () => {
-      const app = await createApi();
+      const app = await createTestApi(registerLotRoutes, LotService);
       response = await request(app).get('/lots/categories/3');
     });
 
@@ -98,7 +76,7 @@ describe('GET api/lots/:id', () => {
     let response;
 
     beforeAll(async () => {
-      const app = await createApi();
+      const app = await createTestApi(registerLotRoutes, LotService);
       response = await request(app).get('/lots/2');
     });
 
@@ -116,7 +94,7 @@ describe('GET api/lots/:id', () => {
     let response;
 
     beforeAll(async () => {
-      const app = await createApi();
+      const app = await createTestApi(registerLotRoutes, LotService);
       response = await request(app).get('/lots/4');
     });
 
@@ -148,7 +126,7 @@ describe('POST api/lots', () => {
     let app;
 
     beforeAll(async () => {
-      app = await createApi();
+      app = await createTestApi(registerLotRoutes, LotService);
       response = await request(app).post('/lots').send(lotData);
     });
 

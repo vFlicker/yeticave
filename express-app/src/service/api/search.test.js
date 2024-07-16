@@ -1,37 +1,17 @@
-import express from 'express';
-import { Sequelize } from 'sequelize';
 import request from 'supertest';
 import { beforeAll, describe, expect, test } from 'vitest';
 
 import { HttpCode } from '../../constants.js';
-import {
-  mockCategories,
-  mockLots,
-  mockUsers,
-} from '../../mocks/test-mock-data.js';
 import { SearchService } from '../data-service/search-service.js';
-import { initDatabase } from '../lib/init-database.js';
+import { createTestApi } from '../test/create-test-api.js';
 import { registerSearchRoutes } from './search.js';
-
-const mockDatabase = new Sequelize('sqlite::memory:', { logging: false });
-
-const app = express();
-app.use(express.json());
-
-beforeAll(async () => {
-  await initDatabase(mockDatabase, {
-    categories: mockCategories,
-    lots: mockLots,
-    users: mockUsers,
-  });
-  registerSearchRoutes(app, new SearchService(mockDatabase));
-});
 
 describe('GET api/search', () => {
   describe('API returns search results for the query', () => {
     let response = null;
 
     beforeAll(async () => {
+      const app = await createTestApi(registerSearchRoutes, SearchService);
       response = await request(app).get('/search?query=iPhone 13');
     });
 
@@ -53,6 +33,7 @@ describe('GET api/search', () => {
     let response = null;
 
     beforeAll(async () => {
+      const app = await createTestApi(registerSearchRoutes, SearchService);
       response = await request(app).get('/search');
     });
 
@@ -69,6 +50,7 @@ describe('GET api/search', () => {
     let response = null;
 
     beforeAll(async () => {
+      const app = await createTestApi(registerSearchRoutes, SearchService);
       response = await request(app).get('/search?query=Wrong Query');
     });
 

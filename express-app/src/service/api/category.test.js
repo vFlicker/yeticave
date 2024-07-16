@@ -1,37 +1,17 @@
-import express from 'express';
-import { Sequelize } from 'sequelize';
 import request from 'supertest';
 import { beforeAll, describe, expect, test } from 'vitest';
 
 import { HttpCode } from '../../constants.js';
-import {
-  mockCategories,
-  mockLots,
-  mockUsers,
-} from '../../mocks/test-mock-data.js';
 import { CategoryService } from '../data-service/category-service.js';
-import { initDatabase } from '../lib/init-database.js';
+import { createTestApi } from '../test/create-test-api.js';
 import { registerCategoryRoutes } from './category.js';
-
-const mockDatabase = new Sequelize('sqlite::memory:', { logging: false });
-
-const app = express();
-app.use(express.json());
-
-beforeAll(async () => {
-  await initDatabase(mockDatabase, {
-    categories: mockCategories,
-    lots: mockLots,
-    users: mockUsers,
-  });
-  registerCategoryRoutes(app, new CategoryService(mockDatabase));
-});
 
 describe('GET api/categories', () => {
   describe('API return a list of all categories', () => {
     let response;
 
     beforeAll(async () => {
+      const app = await createTestApi(registerCategoryRoutes, CategoryService);
       response = await request(app).get('/categories');
     });
 
@@ -61,6 +41,7 @@ describe('POST api/categories/count', () => {
     let response;
 
     beforeAll(async () => {
+      const app = await createTestApi(registerCategoryRoutes, CategoryService);
       response = await request(app).get('/categories/count');
     });
 
@@ -94,6 +75,7 @@ describe('GET api/categories/:id', () => {
     let response;
 
     beforeAll(async () => {
+      const app = await createTestApi(registerCategoryRoutes, CategoryService);
       response = await request(app).get('/categories/1');
     });
 
@@ -111,6 +93,7 @@ describe('GET api/categories/:id', () => {
     let response;
 
     beforeAll(async () => {
+      const app = await createTestApi(registerCategoryRoutes, CategoryService);
       response = await request(app).get('/categories/3');
     });
 
