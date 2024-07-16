@@ -11,7 +11,7 @@ export const defineModels = (sequelize) => {
   const Lot = defineLot(sequelize);
   const User = defineUser(sequelize);
 
-  Category.hasOne(Lot, { foreignKey: 'categoryId', as: 'lot' });
+  Category.hasMany(Lot, { foreignKey: 'categoryId', as: 'lots' });
   Lot.belongsTo(Category, {
     foreignKey: {
       name: 'categoryId',

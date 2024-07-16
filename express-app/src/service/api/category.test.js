@@ -1,30 +1,30 @@
 import express from 'express';
+import { Sequelize } from 'sequelize';
 import request from 'supertest';
 import { beforeAll, describe, expect, test } from 'vitest';
 
 import { HttpCode } from '../../constants.js';
 import { CategoryService } from '../data-service/category-service.js';
+import { initDatabase } from '../lib/init-database.js';
 import { registerCategoryRoutes } from './category.js';
 
-const mockData = {
-  categories: [
-    {
-      id: 1,
-      name: 'Test category 1',
-    },
-    {
-      id: 2,
-      name: 'Test category 2',
-    },
-  ],
-};
+const mockCategories = [
+  { id: 1, name: 'Boards' },
+  { id: 2, name: 'Attachment' },
+];
+
+const mockDatabase = new Sequelize('sqlite::memory:', { logging: false });
 
 const app = express();
 app.use(express.json());
-registerCategoryRoutes(app, new CategoryService(mockData));
+
+beforeAll(async () => {
+  await initDatabase(mockDatabase, { categories: mockCategories });
+  registerCategoryRoutes(app, new CategoryService(mockDatabase));
+});
 
 describe('GET api/categories', () => {
-  describe('API return a lost of all categories', () => {
+  describe('API return a list of all categories', () => {
     let response;
 
     beforeAll(async () => {
@@ -58,9 +58,9 @@ describe('GET api/categories/:id', () => {
       expect(response.statusCode).toBe(HttpCode.OK);
     });
 
-    test('Should have body with category name "Test category 1"', () => {
+    test('Should have body with category name "Boards"', () => {
       const { name } = response.body;
-      expect(name).toBe('Test category 1');
+      expect(name).toBe('Boards');
     });
   });
 

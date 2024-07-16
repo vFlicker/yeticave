@@ -7,15 +7,15 @@ export const registerCategoryRoutes = (app, categoryService) => {
 
   app.use('/categories', router);
 
-  router.get('/', (req, res) => {
-    const categories = categoryService.findAll();
+  router.get('/', async (_req, res) => {
+    const categories = await categoryService.findAll();
     res.status(HttpCode.OK);
     res.json(categories);
   });
 
-  router.get('/:id', (req, res) => {
+  router.get('/:id', async (req, res) => {
     const { id } = req.params;
-    const category = categoryService.findById(Number.parseInt(id, 10));
+    const category = await categoryService.findById(Number.parseInt(id, 10));
 
     if (!category) {
       res.status(HttpCode.NOT_FOUND);

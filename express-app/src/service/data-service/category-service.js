@@ -1,15 +1,15 @@
 export class CategoryService {
-  #data = null;
+  #Category = null;
 
-  constructor(data) {
-    this.#data = data;
+  constructor(sequelize) {
+    this.#Category = sequelize.models.Category;
   }
 
-  findAll() {
-    return this.#data.categories;
+  async findAll() {
+    return this.#Category.findAll();
   }
 
-  findById(id) {
-    return this.#data.categories.find((category) => category.id === id);
+  async findById(id) {
+    return this.#Category.findByPk(id);
   }
 }

@@ -2,7 +2,7 @@ import { defineModels } from '../models/define-models.js';
 
 export const initDatabase = async (
   sequelize,
-  { bids, categories, comments, lots, users },
+  { bids = [], categories = [], comments = [], lots = [], users = [] },
 ) => {
   const { Bid, Category, Comment, Lot, User } = defineModels(sequelize);
 
