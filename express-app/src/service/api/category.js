@@ -13,6 +13,15 @@ export const registerCategoryRoutes = (app, categoryService) => {
     res.json(categories);
   });
 
+  router.get('/count', async (_req, res) => {
+    const categories = await categoryService.findAllWithCount();
+
+    console.log({ categories });
+
+    res.status(HttpCode.OK);
+    res.json(categories);
+  });
+
   router.get('/:id', async (req, res) => {
     const { id } = req.params;
     const category = await categoryService.findById(Number.parseInt(id, 10));

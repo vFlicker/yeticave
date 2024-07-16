@@ -5,6 +5,11 @@ GET http://localhost:3000/api/categories HTTP/1.1
 
 ###
 
+## Get all categories with lots count
+GET http://localhost:3000/api/categories/count HTTP/1.1
+
+###
+
 ## Get category by id
 GET http://localhost:3000/api/categories/1 HTTP/1.1
 
