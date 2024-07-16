@@ -7,15 +7,15 @@ export const registerLotRoutes = (app, lotService) => {
 
   app.use('/lots', router);
 
-  router.get('/', (req, res) => {
-    const lots = lotService.findAll();
+  router.get('/', async (_req, res) => {
+    const lots = await lotService.findAll();
     res.status(HttpCode.OK);
     res.json(lots);
   });
 
-  router.get('/categories/:id', (req, res) => {
+  router.get('/categories/:id', async (req, res) => {
     const { id } = req.params;
-    const lots = lotService.findAllByCategory(Number.parseInt(id, 10));
+    const lots = await lotService.findAllByCategory(Number.parseInt(id, 10));
 
     if (lots.length === 0) {
       res.status(HttpCode.NOT_FOUND);
@@ -27,9 +27,9 @@ export const registerLotRoutes = (app, lotService) => {
     res.json(lots);
   });
 
-  router.get('/:id', (req, res) => {
+  router.get('/:id', async (req, res) => {
     const { id } = req.params;
-    const lot = lotService.findOne(Number.parseInt(id, 10));
+    const lot = await lotService.findOne(Number.parseInt(id, 10));
 
     if (!lot) {
       res.status(HttpCode.NOT_FOUND);
@@ -42,8 +42,8 @@ export const registerLotRoutes = (app, lotService) => {
   });
 
   // TODO: add body validation
-  router.post('/', (req, res) => {
-    const newLot = lotService.create(req.body);
+  router.post('/', async (req, res) => {
+    const newLot = await lotService.create(req.body);
     res.status(HttpCode.CREATED);
     res.json(newLot);
   });

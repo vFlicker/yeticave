@@ -1,76 +1,39 @@
 import express from 'express';
+import { Sequelize } from 'sequelize';
 import request from 'supertest';
 import { beforeAll, describe, expect, test } from 'vitest';
 
 import { HttpCode } from '../../constants.js';
+import {
+  mockCategories,
+  mockLots,
+  mockUsers,
+} from '../../mocks/test-mock-data.js';
 import { LotService } from '../data-service/lot-service.js';
+import { initDatabase } from '../lib/init-database.js';
 import { registerLotRoutes } from './lot.js';
 
-const mockData = {
-  users: [
-    {
-      id: 1,
-      name: 'Test user 1',
-      email: 'test-email@mail.com',
-    },
-  ],
-  categories: [
-    {
-      id: 1,
-      name: 'Test category 1',
-    },
-    {
-      id: 2,
-      name: 'Test category 2',
-    },
-  ],
-  bids: [
-    {
-      id: 1,
-      amount: 100,
-      userId: 1,
-      lotId: 1,
-      createdAt: '2021-06-10T13:25:00',
-    },
-  ],
-  comments: [
-    {
-      id: 1,
-      userId: 1,
-      lotId: 1,
-      text: 'Test comment 1',
-      createdAt: '2021-06-10T13:25:00',
-    },
-  ],
-  lots: [
-    {
-      id: 1,
-      categoryId: 1,
-      title: 'Test lot 1',
-      description: 'Test description 1',
-      image: 'https://test-image.com',
-      startingPrice: 1,
-      currentPrice: 100,
-      bidsIds: [1],
-      commentsIds: [1],
-    },
-  ],
-};
-
-const createApi = () => {
+const createApi = async () => {
   const app = express();
-  const clonedData = JSON.parse(JSON.stringify(mockData));
   app.use(express.json());
-  registerLotRoutes(app, new LotService(clonedData));
+
+  const mockDatabase = new Sequelize('sqlite::memory:', { logging: false });
+  await initDatabase(mockDatabase, {
+    categories: mockCategories,
+    lots: mockLots,
+    users: mockUsers,
+  });
+
+  registerLotRoutes(app, new LotService(mockDatabase));
   return app;
 };
 
 describe('GET api/lots', () => {
-  describe('API return a list of all lots', () => {
-    const app = createApi();
+  describe('API return a list of all lots', async () => {
     let response;
 
     beforeAll(async () => {
+      const app = await createApi();
       response = await request(app).get('/lots');
     });
 
@@ -78,23 +41,23 @@ describe('GET api/lots', () => {
       expect(response.statusCode).toBe(HttpCode.OK);
     });
 
-    test('Should have body with one lot', () => {
-      expect(response.body).toHaveLength(1);
+    test('Should have body with two lots', () => {
+      expect(response.body).toHaveLength(2);
     });
 
-    test('The first item should have id 1', () => {
-      const { id: firstItemId } = response.body[0];
-      expect(firstItemId).toBe(1);
+    test('The first item should have title "iPhone 13"', () => {
+      const { title: firstItemTitle } = response.body[0];
+      expect(firstItemTitle).toBe('iPhone 13');
     });
   });
 });
 
 describe('GET api/lots/categories/:id', () => {
   describe('API return a list of lots with given category id', () => {
-    const app = createApi();
     let response;
 
     beforeAll(async () => {
+      const app = await createApi();
       response = await request(app).get('/lots/categories/1');
     });
 
@@ -102,21 +65,21 @@ describe('GET api/lots/categories/:id', () => {
       expect(response.statusCode).toBe(HttpCode.OK);
     });
 
-    test('Should have body with one lot', () => {
-      expect(response.body).toHaveLength(1);
+    test('Should have body with two lots', () => {
+      expect(response.body).toHaveLength(2);
     });
 
-    test('The first item should have id 1', () => {
-      const { id: firstItemId } = response.body[0];
-      expect(firstItemId).toBe(1);
+    test('The first item should have title "iPhone 13"', () => {
+      const { title: firstItemTitle } = response.body[0];
+      expect(firstItemTitle).toBe('iPhone 13');
     });
   });
 
   describe('API return 404 if lots not found', () => {
-    const app = createApi();
     let response;
 
     beforeAll(async () => {
+      const app = await createApi();
       response = await request(app).get('/lots/categories/3');
     });
 
@@ -131,28 +94,29 @@ describe('GET api/lots/categories/:id', () => {
 });
 
 describe('GET api/lots/:id', () => {
-  describe('API return an offer with given id', () => {
-    const app = createApi();
+  describe('API return a lot with given id', () => {
     let response;
 
     beforeAll(async () => {
-      response = await request(app).get('/lots/1');
+      const app = await createApi();
+      response = await request(app).get('/lots/2');
     });
 
     test('Should have response status 200', () => {
       expect(response.statusCode).toBe(HttpCode.OK);
     });
 
-    test('Should have body with one lot', () => {
-      expect(response.body.id).toBe(1);
+    test('The item should have title "Harry Potter Book Set"', () => {
+      const { title: firstItemTitle } = response.body;
+      expect(firstItemTitle).toBe('Harry Potter Book Set');
     });
   });
 
   describe('API return 404 if offer not found', () => {
-    const app = createApi();
     let response;
 
     beforeAll(async () => {
+      const app = await createApi();
       response = await request(app).get('/lots/4');
     });
 
@@ -168,16 +132,24 @@ describe('GET api/lots/:id', () => {
 
 describe('POST api/lots', () => {
   describe('API create a new lot', () => {
-    const newLot = {
-      name: 'Test lot 2',
+    const lotData = {
+      title: 'Test lot',
+      description: 'Test lot description',
+      imageUrl: 'http://example.com/test.jpg',
+      startingPrice: 100,
+      currentPrice: 100,
+      isActive: true,
+      finishedAt: '2024-12-31T23:59:59.000Z',
       categoryId: 2,
+      userId: 1,
     };
 
-    const app = createApi();
     let response;
+    let app;
 
     beforeAll(async () => {
-      response = await request(app).post('/lots').send(newLot);
+      app = await createApi();
+      response = await request(app).post('/lots').send(lotData);
     });
 
     test('Should have response status 201', () => {
@@ -185,43 +157,16 @@ describe('POST api/lots', () => {
     });
 
     test('Should have body with new lot', () => {
-      expect(response.body).toEqual(expect.objectContaining(newLot));
+      expect(response.body).toEqual(expect.objectContaining(lotData));
     });
 
-    test('Should have a new lot in lots list', async () => {
-      const response = await request(app).get('/lots');
-      expect(response.body).toHaveLength(2);
-    });
-  });
-});
-
-describe('POST api/lots', () => {
-  describe('API create a new lot', () => {
-    const newLot = {
-      name: 'Test lot 2',
-      categoryId: 2,
-    };
-
-    const app = createApi();
-    let response;
-
-    beforeAll(async () => {
-      response = await request(app).post('/lots').send(newLot);
-    });
-
-    test('Should have response status 201', () => {
-      expect(response.statusCode).toBe(HttpCode.CREATED);
-    });
-
-    test('Should have body with new lot', () => {
-      expect(response.body).toEqual(expect.objectContaining(newLot));
-    });
-
-    test('Should have a new lot in lots list', async () => {
-      const response = await request(app).get('/lots');
-      expect(response.body).toHaveLength(2);
+    test('Should increase lots count', async () => {
+      const updatedResponse = await request(app).get('/lots');
+      expect(updatedResponse.body).toHaveLength(3);
     });
   });
 
-  test.todo('API refuses to create an offer if data is invalid');
+  describe('POST api/lots', () => {
+    test.todo('API refuses to create an offer if data is invalid');
+  });
 });

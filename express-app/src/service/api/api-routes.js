@@ -1,6 +1,5 @@
 import { Router } from 'express';
 
-import { mockData } from '../../mocks/mock-server-data.js';
 import { CategoryService } from '../data-service/category-service.js';
 import { LotService } from '../data-service/lot-service.js';
 import { SearchService } from '../data-service/search-service.js';
@@ -15,5 +14,5 @@ export const apiRoutes = Router();
 defineModels(sequelize);
 
 registerCategoryRoutes(apiRoutes, new CategoryService(sequelize));
-registerLotRoutes(apiRoutes, new LotService(mockData));
-registerSearchRoutes(apiRoutes, new SearchService(mockData));
+registerLotRoutes(apiRoutes, new LotService(sequelize));
+registerSearchRoutes(apiRoutes, new SearchService(sequelize));
