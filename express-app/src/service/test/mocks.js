@@ -25,6 +25,32 @@ export const mockLots = [
   },
 ];
 
+export const mockBids = [
+  {
+    amount: 1050,
+    lotId: 1,
+    userId: 2,
+  },
+  {
+    amount: 55,
+    lotId: 2,
+    userId: 1,
+  },
+];
+
+export const mockComments = [
+  {
+    text: 'Great product!',
+    lotId: 1,
+    userId: 2,
+  },
+  {
+    text: 'Looking forward to reading this!',
+    lotId: 2,
+    userId: 1,
+  },
+];
+
 export const mockUsers = [
   {
     email: 'user1@example.com',

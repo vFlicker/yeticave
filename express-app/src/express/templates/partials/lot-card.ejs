@@ -1,10 +1,12 @@
 <li class="lot lots__item">
   <div class="lot__image">
-    <img src="/img/<%= lot.image %>" width="350" height="260" alt="<%= lot.title %>" />
+    <img src="/img/<%= lot.imageUrl %>" width="350" height="260" alt="<%= lot.title %>" />
   </div>
   <div class="lot__info">
     <div class="lot__header">
-      <span class="lot__category"><%= lot.category.name %></span>
+      <span class="lot__category">
+        <%= lot.category.name %>
+      </span>
       <form action="/watchlist/<%= lot.id %>/" method="POST">
         <button type="submit" class="bookmark-button">
           <svg class="bookmark-button__icon" width="18" height="19">
@@ -15,7 +17,9 @@
       </form>
     </div>
     <h3 class="lot__title">
-      <a class="text-link" href="/lots/<%= lot.id %>/"><%= lot.title %></a>
+      <a class="text-link" href="/lots/<%= lot.id %>/">
+        <%= lot.title %>
+      </a>
     </h3>
 
     <div class="lot__state">

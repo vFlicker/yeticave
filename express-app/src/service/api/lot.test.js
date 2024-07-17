@@ -4,6 +4,7 @@ import { beforeAll, describe, expect, test } from 'vitest';
 import { HttpCode } from '../../constants.js';
 import { LotService } from '../data-service/lot-service.js';
 import { createTestApi } from '../test/create-test-api.js';
+import { mockUsers } from '../test/mocks.js';
 import { registerLotRoutes } from './lot.js';
 
 describe('GET api/lots', () => {
@@ -26,6 +27,12 @@ describe('GET api/lots', () => {
     test('The first item should have title "iPhone 13"', () => {
       const { title: firstItemTitle } = response.body[0];
       expect(firstItemTitle).toBe('iPhone 13');
+    });
+
+    test('Should have category "Boards" in the first item', () => {
+      const { category } = response.body[0];
+      const { name: categoryName } = category;
+      expect(categoryName).toBe('Boards');
     });
   });
 });
@@ -50,6 +57,12 @@ describe('GET api/lots/categories/:id', () => {
     test('The first item should have title "iPhone 13"', () => {
       const { title: firstItemTitle } = response.body[0];
       expect(firstItemTitle).toBe('iPhone 13');
+    });
+
+    test('Should have category "Boards" in the first item', () => {
+      const { category } = response.body[0];
+      const { name: categoryName } = category;
+      expect(categoryName).toBe('Boards');
     });
   });
 
@@ -87,6 +100,29 @@ describe('GET api/lots/:id', () => {
     test('The item should have title "Harry Potter Book Set"', () => {
       const { title: firstItemTitle } = response.body;
       expect(firstItemTitle).toBe('Harry Potter Book Set');
+    });
+
+    test('Should have category "Boards" in the item', () => {
+      const { category } = response.body;
+      const { name: categoryName } = category;
+      expect(categoryName).toBe('Boards');
+    });
+
+    test('Should have bids', () => {
+      console.log({ body: response.body });
+      const { bids } = response.body;
+      expect(bids).toHaveLength(1);
+    });
+
+    test('Should have comments', () => {
+      const { comments } = response.body;
+      expect(comments).toHaveLength(1);
+    });
+
+    test('Should have user', () => {
+      const { user } = response.body;
+      const secondMockUser = mockUsers[1];
+      expect(user).toEqual(expect.objectContaining(secondMockUser));
     });
   });
 

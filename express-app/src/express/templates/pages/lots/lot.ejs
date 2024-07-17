@@ -1,96 +1,114 @@
 <%- contentFor('content') %>
 
-<section class="lot-item">
-  <div class="lot-item__header">
-    <h1><%= lot.title %></h1>
+  <section class="lot-item">
+    <div class="lot-item__header">
+      <h1>
+        <%= lot.title %>
+      </h1>
 
-    <form action="/lots/<%= lot.id %>/" method="post" class="form close-bid__form">
-      <input type="hidden" name="form_type" value="complete_auction">
-      <button type="submit" class="button">Close bid</button>
-    </form>
-  </div>
-
-  <div class="lot-item__content">
-    <div class="lot-item__left">
-      <img src="/img/<%= lot.image %>" class="lot-item__image" width="730" height="548" alt="<%= lot.title %>" />
-
-      <div class="lot-item__row">
-        <p class="lot-item__category">
-          Category: <span><%= lot.category.name %></span>
-        </p>
-
-        <form action="/watchlist/<%= lot.id %>/" method=" POST">
-          <button type="submit" class="bookmark-button bookmark-button--active">
-            <svg class="bookmark-button__icon" width="31" height="33">
-              <use xlink:href="#icon-bookmark"></use>
-            </svg>
-            <span class="visually-hidden">To bookmarks</span>
-          </button>
-        </form>
-      </div>
-
-      <p class="lot-item__description"><%= lot.description %></p>
-
-      <div class="lot-item__comments comments">
-        <h2>Comments</h2>
-        <ul class="comment__list">
-          <% lot.comments.forEach((comment) => { %>
-          <li class="comment__item">
-            <div class="comment__sender"><%= comment.user.name %></div>
-            <p class="comment__text"><%= comment.text %></p>
-            <time class="comment__time" datetime="<%= comment.createdAt %>"><%= comment.createdAt %>"</time>
-
-            <div class="comment__actions">
-              <div class="comment__action">
-                <form method="post" action="/lots/<%= lot.id %>/">
-                  <input type="hidden" name="form_type" value="comment_reaction" />
-                  <input type="hidden" name="comment_id" value="<%= comment.id %>" />
-                  <input type="hidden" name="reaction_type" value="like" />
-                  <button type="submit">Like</button>
-                </form>
-                0
-              </div>
-
-              <div class="comment__action">
-                <form method="post" action="/lots/<%= lot.id %>/">
-                  <input type="hidden" name="form_type" value="comment_reaction" />
-                  <input type="hidden" name="comment_id" value="<%= comment.id %>" />
-                  <input type="hidden" name="reaction_type" value="dislike" />
-                  <button type="submit">Dislike</button>
-                </form>
-                1
-              </div>
-            </div>
-          </li>
-          <% }) %>
-        </ul>
-      </div>
+      <form action="/lots/<%= lot.id %>/" method="post" class="form close-bid__form">
+        <input type="hidden" name="form_type" value="complete_auction">
+        <button type="submit" class="button">Close bid</button>
+      </form>
     </div>
 
-    <div class="lot-item__right">
-      <div class="bet">
-        <div class="lot-item__cost-state">
-          <div class="lot-item__rate">
-            <div class="lot-item__amount">Current price</div>
-            <div class="lot-item__cost">$<%= lot.currentPrice %></div>
-          </div>
+    <div class="lot-item__content">
+      <div class="lot-item__left">
+        <img src="/img/<%= lot.imageUrl %>" class="lot-item__image" width="730" height="548" alt="<%= lot.title %>" />
+
+        <div class="lot-item__row">
+          <p class="lot-item__category">
+            Category: <span>
+              <%= lot.category.name %>
+            </span>
+          </p>
+
+          <form action="/watchlist/<%= lot.id %>/" method=" POST">
+            <button type="submit" class="bookmark-button bookmark-button--active">
+              <svg class="bookmark-button__icon" width="31" height="33">
+                <use xlink:href="#icon-bookmark"></use>
+              </svg>
+              <span class="visually-hidden">To bookmarks</span>
+            </button>
+          </form>
+        </div>
+
+        <p class="lot-item__description">
+          <%= lot.description %>
+        </p>
+
+        <div class="lot-item__comments comments">
+          <h2>Comments</h2>
+          <ul class="comment__list">
+            <% lot.comments.forEach((comment)=> { %>
+              <li class="comment__item">
+                <div class="comment__sender">
+                  <%= comment.user.name %>
+                </div>
+                <p class="comment__text">
+                  <%= comment.text %>
+                </p>
+                <time class="comment__time" datetime="<%= comment.createdAt %>">
+                  <%= comment.createdAt %>"
+                </time>
+
+                <div class="comment__actions">
+                  <div class="comment__action">
+                    <form method="post" action="/lots/<%= lot.id %>/">
+                      <input type="hidden" name="form_type" value="comment_reaction" />
+                      <input type="hidden" name="comment_id" value="<%= comment.id %>" />
+                      <input type="hidden" name="reaction_type" value="like" />
+                      <button type="submit">Like</button>
+                    </form>
+                    0
+                  </div>
+
+                  <div class="comment__action">
+                    <form method="post" action="/lots/<%= lot.id %>/">
+                      <input type="hidden" name="form_type" value="comment_reaction" />
+                      <input type="hidden" name="comment_id" value="<%= comment.id %>" />
+                      <input type="hidden" name="reaction_type" value="dislike" />
+                      <button type="submit">Dislike</button>
+                    </form>
+                    1
+                  </div>
+                </div>
+              </li>
+              <% }) %>
+          </ul>
         </div>
       </div>
 
-      <div class="history">
-        <h2>
-          History of rates (<span>2</span>)
-        </h2>
-        <table class="history__list">
-          <% lot.bids.forEach((bid) => { %>
-          <tr class="history__item">
-            <td class="history__name"><%= bid.user.name %><< /td>
-            <td class="history__price">$<%= bid.amount %></td>
-            <td class="history__time"><%= bid.createdAt %></td>
-          </tr>
-          <% }) %>
-        </table>
+      <div class="lot-item__right">
+        <div class="bet">
+          <div class="lot-item__cost-state">
+            <div class="lot-item__rate">
+              <div class="lot-item__amount">Current price</div>
+              <div class="lot-item__cost">$<%= lot.currentPrice %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="history">
+          <h2>
+            History of rates (<span>2</span>)
+          </h2>
+          <table class="history__list">
+            <% lot.bids.forEach((bid)=> { %>
+              <tr class="history__item">
+                <td class="history__name">
+                  <%= bid.user.name %>
+                    << /td>
+                <td class="history__price">$<%= bid.amount %>
+                </td>
+                <td class="history__time">
+                  <%= bid.createdAt %>
+                </td>
+              </tr>
+              <% }) %>
+          </table>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>

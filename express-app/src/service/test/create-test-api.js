@@ -2,7 +2,13 @@ import express from 'express';
 import { Sequelize } from 'sequelize';
 
 import { initDatabase } from '../lib/init-database.js';
-import { mockCategories, mockLots, mockUsers } from './mocks.js';
+import {
+  mockBids,
+  mockCategories,
+  mockComments,
+  mockLots,
+  mockUsers,
+} from './mocks.js';
 
 export const createTestApi = async (routeRegister, Service) => {
   const app = express();
@@ -12,6 +18,8 @@ export const createTestApi = async (routeRegister, Service) => {
   await initDatabase(mockDatabase, {
     categories: mockCategories,
     lots: mockLots,
+    bids: mockBids,
+    comments: mockComments,
     users: mockUsers,
   });
 

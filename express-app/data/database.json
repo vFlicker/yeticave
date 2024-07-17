@@ -9,11 +9,6 @@
       "amount": 55,
       "lotId": 2,
       "userId": 1
-    },
-    {
-      "amount": 170,
-      "lotId": 3,
-      "userId": 2
     }
   ],
   "categories": [
@@ -46,11 +41,6 @@
       "text": "Looking forward to reading this!",
       "lotId": 2,
       "userId": 1
-    },
-    {
-      "text": "Is this laptop still available?",
-      "lotId": 3,
-      "userId": 2
     }
   ],
   "lots": [

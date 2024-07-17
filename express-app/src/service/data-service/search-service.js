@@ -15,6 +15,7 @@ export class SearchService {
         },
       },
       order: [['createdAt', 'DESC']],
+      include: 'category',
     });
 
     return data;

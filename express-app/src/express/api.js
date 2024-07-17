@@ -16,34 +16,34 @@ export class Api {
     });
   }
 
-  getCategories() {
+  async getCategories() {
     return this.#load('/categories');
   }
 
-  getCategory(id) {
+  async getCategory(id) {
     return this.#load(`/categories/${id}`);
   }
 
-  getAllLots() {
+  async getAllLots() {
     return this.#load('/lots');
   }
 
-  getLotsByCategory(id) {
+  async getLotsByCategory(id) {
     return this.#load(`/lots/categories/${id}`);
   }
 
-  getLotById(id) {
+  async getLotById(id) {
     return this.#load(`/lots/${id}`);
   }
 
-  createLot(data) {
+  async createLot(data) {
     return this.#load('/lots', {
       method: 'POST',
       data,
     });
   }
 
-  search(query) {
+  async search(query) {
     return this.#load('/search', {
       params: { query },
     });

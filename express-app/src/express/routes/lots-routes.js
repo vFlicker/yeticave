@@ -16,7 +16,7 @@ const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
 
 const storage = multer.diskStorage({
   destination: uploadDirAbsolute,
-  filename: (req, file, cb) => {
+  filename: (_req, file, cb) => {
     const uniqueName = nanoid(10);
     const extension = file.originalname.split('.').pop();
     cb(null, `${uniqueName}.${extension}`);
@@ -57,17 +57,14 @@ lotsRouter.post('/add', upload.single('lot-photo'), async (req, res) => {
   const { body, file } = req;
 
   const lotData = {
-    id: 3,
-    categoryId: 1,
-    bidsIds: [],
-    commentsIds: [],
     title: body.title,
     description: body.description,
-    image: file.filename,
+    imageUrl: file.filename,
     startingPrice: body.startingPrice,
     currentPrice: body.startingPrice,
-    createdAt: new Date().toISOString(),
-    finished_at: body.finishedAt,
+    finishedAt: body.finishedAt,
+    categoryId: body.categoryId,
+    userId: 1,
   };
 
   try {

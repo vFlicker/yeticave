@@ -9,19 +9,9 @@ myRouter.get('/profile', async (_req, res) => {
   res.render('pages/my/profile', { categories });
 });
 
-myRouter.get('/search', async (req, res) => {
-  const { query = '' } = req.query;
-
-  const [categories, lots] = await Promise.all([
-    api.getCategories(),
-    api.search(query),
-  ]);
-
-  res.render('pages/my/search', { categories, lots });
-});
-
-myRouter.get('/subscriptions', (_req, res) => {
-  res.render('pages/my/subscriptions');
+myRouter.get('/subscriptions', async (_req, res) => {
+  const categories = await api.getCategories();
+  res.render('pages/my/subscriptions', { categories });
 });
 
 myRouter.get('/watchlist', async (_req, res) => {
@@ -30,12 +20,10 @@ myRouter.get('/watchlist', async (_req, res) => {
     api.getAllLots(),
   ]);
 
-  res.render('pages/index', {
+  res.render('pages/my/watchlist', {
     categories,
     lots,
   });
-
-  res.render('pages/my/watchlist', { categories, lots });
 });
 
 myRouter.get('/bets', async (_req, res) => {

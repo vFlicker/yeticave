@@ -27,6 +27,12 @@ describe('GET api/search', () => {
       const { title: firstItemTitle } = response.body[0];
       expect(firstItemTitle).toBe('iPhone 13');
     });
+
+    test('Should have category "Boards" in the first item', () => {
+      const { category } = response.body[0];
+      const { name: categoryName } = category;
+      expect(categoryName).toBe('Boards');
+    });
   });
 
   describe('API returns 400 Bad Request when search query is not provided', () => {

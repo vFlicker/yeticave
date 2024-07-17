@@ -6,15 +6,36 @@ export class LotService {
   }
 
   async findAll() {
-    return this.#Lot.findAll();
+    return this.#Lot.findAll({
+      include: 'category',
+    });
   }
 
   async findAllByCategory(id) {
-    return this.#Lot.findAll({ where: { categoryId: id } });
+    return this.#Lot.findAll({
+      where: { categoryId: id },
+      include: 'category',
+    });
   }
 
   async findOne(id) {
-    return this.#Lot.findByPk(id);
+    // TODO: Refactor this.
+    // We should't use associations in the service layer.
+    return this.#Lot.findOne({
+      where: { id },
+      include: [
+        'category',
+        'user',
+        {
+          association: 'bids',
+          include: 'user',
+        },
+        {
+          association: 'comments',
+          include: 'user',
+        },
+      ],
+    });
   }
 
   async create(lot) {
