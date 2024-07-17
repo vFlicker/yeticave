@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { BACKEND_PORT } from '../constants.js';
+import { BACKEND_PORT, HttpMethod } from '../constants.js';
 
 const TIMEOUT = 1000;
 
@@ -38,7 +38,7 @@ export class Api {
 
   async createLot(data) {
     return this.#load('/lots', {
-      method: 'POST',
+      method: HttpMethod.POST,
       data,
     });
   }

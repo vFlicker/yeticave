@@ -31,6 +31,13 @@ export const HttpCode = {
   INTERNAL_SERVER_ERROR: 500,
 };
 
+export const HttpMethod = {
+  GET: 'GET',
+  POST: 'POST',
+  PUT: 'PUT',
+  DELETE: 'DELETE',
+};
+
 export const LOG_FILE = process.env.LOG_FILE || 'logs/api.log';
 
 export const NODE_ENV = process.env.NODE_ENV || 'development';
