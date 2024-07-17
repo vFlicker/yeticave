@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import { HttpCode } from '../../constants.js';
+import { routeParamsValidation } from '../middlewares/route-params-validator.js';
 
 export const registerCategoryRoutes = (app, categoryService) => {
   const router = Router();
@@ -15,16 +16,16 @@ export const registerCategoryRoutes = (app, categoryService) => {
 
   router.get('/count', async (_req, res) => {
     const categories = await categoryService.findAllWithCount();
-
-    console.log({ categories });
-
     res.status(HttpCode.OK);
     res.json(categories);
   });
 
-  router.get('/:id', async (req, res) => {
-    const { id } = req.params;
-    const category = await categoryService.findById(Number.parseInt(id, 10));
+  router.get('/:categoryId', routeParamsValidation, async (req, res) => {
+    const { categoryId } = req.params;
+
+    const category = await categoryService.findById(
+      Number.parseInt(categoryId, 10),
+    );
 
     if (!category) {
       res.status(HttpCode.NOT_FOUND);

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import { HttpCode } from '../../constants.js';
+import { routeParamsValidation } from '../middlewares/route-params-validator.js';
 
 export const registerLotRoutes = (app, lotService) => {
   const router = Router();
@@ -13,27 +14,33 @@ export const registerLotRoutes = (app, lotService) => {
     res.json(lots);
   });
 
-  router.get('/categories/:id', async (req, res) => {
-    const { id } = req.params;
-    const lots = await lotService.findAllByCategory(Number.parseInt(id, 10));
+  router.get(
+    '/categories/:categoryId',
+    routeParamsValidation,
+    async (req, res) => {
+      const { categoryId } = req.params;
+      const lots = await lotService.findAllByCategory(
+        Number.parseInt(categoryId, 10),
+      );
 
-    if (lots.length === 0) {
-      res.status(HttpCode.NOT_FOUND);
-      res.send(`Lots with category id ${id} not found`);
-      return;
-    }
+      if (lots.length === 0) {
+        res.status(HttpCode.NOT_FOUND);
+        res.send(`Lots with category id ${categoryId} not found`);
+        return;
+      }
 
-    res.status(HttpCode.OK);
-    res.json(lots);
-  });
+      res.status(HttpCode.OK);
+      res.json(lots);
+    },
+  );
 
-  router.get('/:id', async (req, res) => {
-    const { id } = req.params;
-    const lot = await lotService.findOne(Number.parseInt(id, 10));
+  router.get('/:lotId', routeParamsValidation, async (req, res) => {
+    const { lotId } = req.params;
+    const lot = await lotService.findOne(Number.parseInt(lotId, 10));
 
     if (!lot) {
       res.status(HttpCode.NOT_FOUND);
-      res.send(`Lot with id ${id} not found`);
+      res.send(`Lot with id ${lotId} not found`);
       return;
     }
 

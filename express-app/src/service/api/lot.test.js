@@ -109,7 +109,6 @@ describe('GET api/lots/:id', () => {
     });
 
     test('Should have bids', () => {
-      console.log({ body: response.body });
       const { bids } = response.body;
       expect(bids).toHaveLength(1);
     });
