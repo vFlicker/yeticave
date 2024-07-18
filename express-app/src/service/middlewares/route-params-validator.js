@@ -11,9 +11,8 @@ export const routeParamsValidation = (req, res, next) => {
   const { error } = schema.validate(req.params);
 
   if (error) {
-    const errorText = error.details.map((err) => err.message).join(`\n`);
-    res.status(HttpCode.BAD_REQUEST).json(errorText);
-    return;
+    const errorMessages = error.details.map((err) => err.message).join(`\n`);
+    return res.status(HttpCode.BAD_REQUEST).json(errorMessages);
   }
 
   next();

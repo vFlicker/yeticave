@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import { HttpCode } from '../../constants.js';
+import { lotValidator } from '../middlewares/lot-validator.js';
 import { routeParamsValidation } from '../middlewares/route-params-validator.js';
 
 export const registerLotRoutes = (app, lotService) => {
@@ -48,8 +49,7 @@ export const registerLotRoutes = (app, lotService) => {
     res.json(lot);
   });
 
-  // TODO: add body validation
-  router.post('/', async (req, res) => {
+  router.post('/', lotValidator, async (req, res) => {
     const newLot = await lotService.create(req.body);
     res.status(HttpCode.CREATED);
     res.json(newLot);

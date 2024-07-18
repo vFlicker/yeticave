@@ -39,8 +39,14 @@ POST http://localhost:3000/api/lots HTTP/1.1
 Content-Type: application/json
 
 {
-    "name": "Lot name 4",
-    "categoryId": 2
+  "title": "Test lot",
+  "description": "Test lot description",
+  "imageUrl": "http://example.com/test.jpg",
+  "startingPrice": 100,
+  "currentPrice": 100,
+  "finishedAt": "2024-12-31T23:59:59.000Z",
+  "categoryId": 2,
+  "userId": 1
 }
 
 ###
