@@ -53,11 +53,21 @@ Content-Type: application/json
 
 # --- Comments ---
 
-## TODO: Get all comment
+## Get all comment
+
+GET http://localhost:3000/api/lots/1/comments HTTP/1.1
 
 ###
 
-## TODO: Add a new comment
+## Add a new comment
+
+POST http://localhost:3000/api/lots/1/comments HTTP/1.1
+
+{
+  "text": "Test comment",
+  "userId": 1,
+  "lotId": 1
+}
 
 # --- Search ---
 

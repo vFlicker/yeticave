@@ -154,11 +154,6 @@ describe('GET api/lots/:id', () => {
       expect(bids).toHaveLength(1);
     });
 
-    test('Should have comments', () => {
-      const { comments } = response.body;
-      expect(comments).toHaveLength(1);
-    });
-
     test('Should have user', () => {
       const { user } = response.body;
       const secondMockUser = mockUsers[1];

@@ -21,8 +21,8 @@ export class LotService {
   }
 
   async findOne(id) {
-    // TODO: Refactor this.
-    // We should't use associations in the service layer.
+    // TODO: exclude hashPassword from the user
+    // TODO: show last 10 bids
     return this.#Lot.findOne({
       where: { id },
       include: [
@@ -30,10 +30,6 @@ export class LotService {
         'user',
         {
           association: 'bids',
-          include: 'user',
-        },
-        {
-          association: 'comments',
           include: 'user',
         },
       ],

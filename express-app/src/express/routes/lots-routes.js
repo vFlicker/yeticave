@@ -78,10 +78,11 @@ lotsRouter.post('/add', upload.single('lot-photo'), async (req, res) => {
 lotsRouter.get('/:id', async (req, res) => {
   const lotId = +req.params.id;
 
-  const [categories, lot] = await Promise.all([
+  const [categories, lot, comments] = await Promise.all([
     api.getCategories(),
     api.getLotById(lotId),
+    api.getCommentsByLotId(lotId),
   ]);
 
-  res.render('pages/lots/lot', { categories, lot });
+  res.render('pages/lots/lot', { categories, lot, comments });
 });

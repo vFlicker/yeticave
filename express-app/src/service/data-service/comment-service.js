@@ -18,8 +18,11 @@ export class CommentService {
   async findByLotId(lotId) {
     return this.#Comment.findAll({
       where: { lotId },
-      // TODO: look at the raw data
-      // raw: true,
+      attributes: ['text', 'createdAt'],
+      include: {
+        association: 'user',
+        attributes: ['username'],
+      },
     });
   }
 }

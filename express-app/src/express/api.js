@@ -43,6 +43,10 @@ export class Api {
     });
   }
 
+  async getCommentsByLotId(id) {
+    return this.#load(`/lots/${id}/comments`);
+  }
+
   async search(query) {
     return this.#load('/search', {
       params: { query },

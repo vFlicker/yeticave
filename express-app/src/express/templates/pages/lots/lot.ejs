@@ -40,10 +40,10 @@
         <div class="lot-item__comments comments">
           <h2>Comments</h2>
           <ul class="comment__list">
-            <% lot.comments.forEach((comment)=> { %>
+            <% comments.forEach((comment)=> { %>
               <li class="comment__item">
                 <div class="comment__sender">
-                  <%= comment.user.name %>
+                  <%= comment.user.username %>
                 </div>
                 <p class="comment__text">
                   <%= comment.text %>
