@@ -2,6 +2,7 @@ import request from 'supertest';
 import { beforeAll, describe, expect, test } from 'vitest';
 
 import { HttpCode } from '../../constants.js';
+import { CommentService } from '../data-service/comment-service.js';
 import { LotService } from '../data-service/lot-service.js';
 import { createTestApi } from '../test/create-test-api.js';
 import { mockUsers } from '../test/mocks.js';
@@ -34,6 +35,46 @@ describe('GET api/lots', () => {
       const { name: categoryName } = category;
       expect(categoryName).toBe('Boards');
     });
+  });
+});
+
+describe('POST api/lots', () => {
+  describe('API create a new lot', () => {
+    const lotData = {
+      title: 'Test lot',
+      description: 'Test lot description',
+      imageUrl: 'http://example.com/test.jpg',
+      startingPrice: 100,
+      currentPrice: 100,
+      finishedAt: '2024-12-31T23:59:59.000Z',
+      categoryId: 2,
+      userId: 1,
+    };
+
+    let response;
+    let app;
+
+    beforeAll(async () => {
+      app = await createTestApi(registerLotRoutes, LotService);
+      response = await request(app).post('/lots').send(lotData);
+    });
+
+    test('Should have response status 201', () => {
+      expect(response.statusCode).toBe(HttpCode.CREATED);
+    });
+
+    test('Should have body with new lot', () => {
+      expect(response.body).toEqual(expect.objectContaining(lotData));
+    });
+
+    test('Should increase lots count', async () => {
+      const updatedResponse = await request(app).get('/lots');
+      expect(updatedResponse.body).toHaveLength(3);
+    });
+  });
+
+  describe('POST api/lots', () => {
+    test.todo('API refuses to create an offer if data is invalid');
   });
 });
 
@@ -143,42 +184,59 @@ describe('GET api/lots/:id', () => {
   });
 });
 
-describe('POST api/lots', () => {
-  describe('API create a new lot', () => {
-    const lotData = {
-      title: 'Test lot',
-      description: 'Test lot description',
-      imageUrl: 'http://example.com/test.jpg',
-      startingPrice: 100,
-      currentPrice: 100,
-      finishedAt: '2024-12-31T23:59:59.000Z',
-      categoryId: 2,
-      userId: 1,
+describe('GET api/lots/:id/comments', () => {
+  describe('API return a list of comments for lot with given id', () => {
+    let response;
+
+    beforeAll(async () => {
+      const app = await createTestApi(
+        registerLotRoutes,
+        LotService,
+        CommentService,
+      );
+      response = await request(app).get('/lots/1/comments');
+    });
+
+    test('Should have response status 200', () => {
+      expect(response.statusCode).toBe(HttpCode.OK);
+    });
+
+    test('Should have body with two comments', () => {
+      expect(response.body).toHaveLength(2);
+    });
+
+    test('The first comment should have text "Great product!"', () => {
+      const { text: firstCommentText } = response.body[0];
+      expect(firstCommentText).toBe('Great product!');
+    });
+  });
+});
+
+describe('POST api/lots/:id/comments', () => {
+  describe('API create a new comment for lot with given id', () => {
+    const commentData = {
+      text: 'Test comment',
     };
 
     let response;
     let app;
 
     beforeAll(async () => {
-      app = await createTestApi(registerLotRoutes, LotService);
-      response = await request(app).post('/lots').send(lotData);
+      app = await createTestApi(registerLotRoutes, LotService, CommentService);
+      response = await request(app).post('/lots/1/comments').send(commentData);
     });
 
     test('Should have response status 201', () => {
       expect(response.statusCode).toBe(HttpCode.CREATED);
     });
 
-    test('Should have body with new lot', () => {
-      expect(response.body).toEqual(expect.objectContaining(lotData));
+    test('Should have body with new comment', () => {
+      expect(response.body).toEqual(expect.objectContaining(commentData));
     });
 
-    test('Should increase lots count', async () => {
-      const updatedResponse = await request(app).get('/lots');
+    test('Should increase comments count', async () => {
+      const updatedResponse = await request(app).get('/lots/1/comments');
       expect(updatedResponse.body).toHaveLength(3);
     });
-  });
-
-  describe('POST api/lots', () => {
-    test.todo('API refuses to create an offer if data is invalid');
   });
 });

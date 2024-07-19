@@ -23,9 +23,7 @@ export const registerCategoryRoutes = (app, categoryService) => {
   router.get('/:categoryId', routeParamsValidation, async (req, res) => {
     const { categoryId } = req.params;
 
-    const category = await categoryService.findById(
-      Number.parseInt(categoryId, 10),
-    );
+    const category = await categoryService.findById(+categoryId);
 
     if (!category) {
       res.status(HttpCode.NOT_FOUND);

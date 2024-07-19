@@ -8,6 +8,7 @@ export class LotService {
   async findAll() {
     return this.#Lot.findAll({
       include: 'category',
+      order: [['createdAt', 'DESC']],
     });
   }
 
@@ -15,6 +16,7 @@ export class LotService {
     return this.#Lot.findAll({
       where: { categoryId: id },
       include: 'category',
+      order: [['createdAt', 'DESC']],
     });
   }
 

@@ -28,7 +28,7 @@ const upload = multer({ storage });
 export const lotsRouter = Router();
 
 lotsRouter.get('/categories/:id', async (req, res) => {
-  const categoryId = Number.parseInt(req.params.id, 10);
+  const categoryId = +req.params.id;
 
   try {
     const [categories, currentCategory, lots] = await Promise.all([
@@ -76,7 +76,7 @@ lotsRouter.post('/add', upload.single('lot-photo'), async (req, res) => {
 });
 
 lotsRouter.get('/:id', async (req, res) => {
-  const lotId = Number.parseInt(req.params.id, 10);
+  const lotId = +req.params.id;
 
   const [categories, lot] = await Promise.all([
     api.getCategories(),

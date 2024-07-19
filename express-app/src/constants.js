@@ -1,7 +1,6 @@
 export const API_PREFIX = '/api';
 
-export const BACKEND_PORT =
-  Number.parseInt(process.env.BACKEND_PORT, 10) || 3000;
+export const BACKEND_PORT = +process.env.BACKEND_PORT || 3000;
 
 export const DB_FILE = process.env.DB_FILE || 'yeticave.sqlite';
 
@@ -17,8 +16,7 @@ export const ExitCode = {
   ERROR: 1,
 };
 
-export const FRONTEND_PORT =
-  Number.parseInt(process.env.FRONTEND_PORT, 10) || 8080;
+export const FRONTEND_PORT = +process.env.FRONTEND_PORT || 8080;
 
 export const HttpCode = {
   OK: 200,

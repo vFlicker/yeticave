@@ -45,6 +45,11 @@ export const mockComments = [
     userId: 2,
   },
   {
+    text: 'This is a great book set!',
+    lotId: 1,
+    userId: 1,
+  },
+  {
     text: 'Looking forward to reading this!',
     lotId: 2,
     userId: 1,

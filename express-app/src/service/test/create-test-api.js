@@ -10,7 +10,7 @@ import {
   mockUsers,
 } from './mocks.js';
 
-export const createTestApi = async (routeRegister, Service) => {
+export const createTestApi = async (routeRegister, ...services) => {
   const app = express();
   app.use(express.json());
 
@@ -23,6 +23,6 @@ export const createTestApi = async (routeRegister, Service) => {
     users: mockUsers,
   });
 
-  routeRegister(app, new Service(mockDatabase));
+  routeRegister(app, ...services.map((Service) => new Service(mockDatabase)));
   return app;
 };
