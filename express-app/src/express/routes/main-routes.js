@@ -1,18 +1,28 @@
 import { Router } from 'express';
 
 import { api } from '../api.js';
+import { Paginator } from '../utils/paginator.js';
 
 export const mainRouter = Router();
 
-mainRouter.get('/', async (_req, res) => {
-  const [categories, lots] = await Promise.all([
+mainRouter.get('/', async (req, res) => {
+  const uri = req.originalUrl;
+  const { page } = req.query;
+
+  const paginator = new Paginator(+page, 1);
+  const { limit, offset } = paginator.getPagination();
+
+  const [categories, data] = await Promise.all([
     api.getCategories(),
-    api.getAllLots(),
+    api.getAllLots({ limit, offset }),
   ]);
+
+  paginator.setData(data).setUri(uri);
 
   res.render('pages/index', {
     categories,
-    lots,
+    lots: paginator.items,
+    paginator: paginator,
   });
 });
 

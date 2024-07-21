@@ -1,0 +1,35 @@
+<%
+  const {
+    currentPage,
+    totalPages,
+    hasPrev,
+    hasNext,
+    prevPage,
+    nextPage,
+  } = paginator.pagingData;
+
+  const getItemClass = (page) => {
+    let className = 'pagination-item';
+
+    if (page === currentPage) {
+      className += ' pagination-item--active';
+    };
+
+    return className;
+  };
+
+  const linkPrevClass = hasPrev ? 'link' : 'link link--disabled';
+  const linkNextClass = hasNext ? 'link': 'link link--disabled';
+  const prevUrl = hasPrev ? paginator.getUrl(prevPage) : '';
+  const nextUrl = hasNext ? paginator.getUrl(nextPage) : '';
+%>
+
+<ul class="pagination">
+  <a href="<%= prevUrl %>" class="<%= linkPrevClass %>">Previous</a>
+  <% for (let i = 1; i <= totalPages; i++) { %>
+  <li class="<%= getItemClass(i) %>">
+    <a href="<%= paginator.getUrl(i) %>"><%= i %></a>
+  </li>
+  <% } %>
+  <a href="<%= nextUrl %>" class="<%= linkNextClass %>">Next</a>
+</ul>

@@ -12,6 +12,15 @@ export class LotService {
     });
   }
 
+  async findPage({ limit, offset }) {
+    return this.#Lot.findAndCountAll({
+      limit,
+      offset,
+      include: 'category',
+      order: [['createdAt', 'DESC']],
+    });
+  }
+
   async findAllByCategory(id) {
     return this.#Lot.findAll({
       where: { categoryId: id },

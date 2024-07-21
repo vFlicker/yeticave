@@ -9,8 +9,16 @@ export const registerLotRoutes = (app, lotService, commentService) => {
 
   app.use('/lots', router);
 
-  router.get('/', async (_req, res) => {
-    const lots = await lotService.findAll();
+  router.get('/', async (req, res) => {
+    const { limit, offset } = req.query;
+    let lots;
+
+    if (limit || offset) {
+      lots = await lotService.findPage({ limit: +limit, offset: +offset });
+    } else {
+      lots = await lotService.findAll();
+    }
+
     res.status(HttpCode.OK);
     res.json(lots);
   });

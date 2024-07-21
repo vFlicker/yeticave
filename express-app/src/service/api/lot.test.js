@@ -36,6 +36,34 @@ describe('GET api/lots', () => {
       expect(categoryName).toBe('Boards');
     });
   });
+
+  describe('API return a list of lots with pagination', async () => {
+    let response;
+
+    beforeAll(async () => {
+      const app = await createTestApi(registerLotRoutes, LotService);
+      response = await request(app).get('/lots?limit=1&offset=0');
+    });
+
+    test('Should have response status 200', () => {
+      expect(response.statusCode).toBe(HttpCode.OK);
+    });
+
+    test('Should have body with rows and count', () => {
+      expect(response.body).toEqual(
+        expect.objectContaining({ rows: expect.any(Array), count: 2 }),
+      );
+    });
+
+    test('Should have one item in rows', () => {
+      expect(response.body.rows).toHaveLength(1);
+    });
+
+    test('The first item should have title "iPhone 13"', () => {
+      const { title: firstItemTitle } = response.body.rows[0];
+      expect(firstItemTitle).toBe('iPhone 13');
+    });
+  });
 });
 
 describe('POST api/lots', () => {
