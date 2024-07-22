@@ -32,7 +32,7 @@ export const registerLotRoutes = (app, lotService, commentService) => {
 
       if (lots.length === 0) {
         res.status(HttpCode.NOT_FOUND);
-        res.send(`Lots with category id ${categoryId} not found`);
+        res.json({ message: `Lots with category id ${categoryId} not found` });
         return;
       }
 
@@ -47,7 +47,7 @@ export const registerLotRoutes = (app, lotService, commentService) => {
 
     if (!lot) {
       res.status(HttpCode.NOT_FOUND);
-      res.send(`Lot with id ${lotId} not found`);
+      res.json({ message: `Lot with id ${lotId} not found` });
       return;
     }
 

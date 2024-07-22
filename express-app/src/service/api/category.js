@@ -27,7 +27,7 @@ export const registerCategoryRoutes = (app, categoryService) => {
 
     if (!category) {
       res.status(HttpCode.NOT_FOUND);
-      res.json({});
+      res.json({ message: 'Category not found' });
       return;
     }
 

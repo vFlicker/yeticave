@@ -148,7 +148,8 @@ describe('GET api/lots/categories/:id', () => {
     });
 
     test('Should have body with error message', () => {
-      expect(response.text).toBe('Lots with category id 3 not found');
+      const expected = { message: 'Lots with category id 3 not found' };
+      expect(response.text).toBe(JSON.stringify(expected));
     });
   });
 });
@@ -202,7 +203,8 @@ describe('GET api/lots/:id', () => {
     });
 
     test('Should have body with error message', () => {
-      expect(response.text).toBe('Lot with id 4 not found');
+      const expected = { message: 'Lot with id 4 not found' };
+      expect(response.text).toBe(JSON.stringify(expected));
     });
   });
 });
