@@ -4,11 +4,13 @@ import { CategoryService } from '../data-service/category-service.js';
 import { CommentService } from '../data-service/comment-service.js';
 import { LotService } from '../data-service/lot-service.js';
 import { SearchService } from '../data-service/search-service.js';
+import { UserService } from '../data-service/user-service.js';
 import { sequelize } from '../lib/sequelize.js';
 import { defineModels } from '../models/define-models.js';
 import { registerCategoryRoutes } from './category.js';
 import { registerLotRoutes } from './lot.js';
 import { registerSearchRoutes } from './search.js';
+import { registerUserRoutes } from './user.js';
 
 export const apiRoutes = Router();
 
@@ -21,3 +23,4 @@ registerLotRoutes(
   new CommentService(sequelize),
 );
 registerSearchRoutes(apiRoutes, new SearchService(sequelize));
+registerUserRoutes(apiRoutes, new UserService(sequelize));

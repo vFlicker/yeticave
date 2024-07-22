@@ -82,3 +82,32 @@ POST http://localhost:3000/api/lots/1/comments HTTP/1.1
 ## Search all lots by title
 
 GET http://localhost:3000/api/search?query=iPhone 13 HTTP/1.1
+
+###
+
+# --- Users ---
+
+## Create a new user
+
+POST http://localhost:3000/api/user HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "User",
+  "email": "my-user@mail.com",
+  "password": "123456",
+  "passwordConfirm": "123456"
+}
+
+###
+
+## Login
+
+POST http://localhost:3000/api/user/auth HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "my-user@mail.com",
+  "password": "123456"
+}
+

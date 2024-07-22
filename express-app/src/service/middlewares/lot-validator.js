@@ -49,7 +49,10 @@ export const lotValidator = (req, res, next) => {
   const { error } = schema.validate(lotData, { abortEarly: false });
 
   if (error) {
-    const errorMessages = error.details.map((err) => err.message);
+    const errorMessages = error.details.map((err) => ({
+      [err.context.key]: err.message,
+    }));
+
     return res.status(HttpCode.BAD_REQUEST).json(errorMessages);
   }
 

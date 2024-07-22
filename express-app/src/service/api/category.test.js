@@ -102,7 +102,9 @@ describe('GET api/categories/:id', () => {
     });
 
     test('Should have empty body', () => {
-      expect(response.body).toEqual({});
+      expect(response.body).toEqual({
+        message: 'Category not found',
+      });
     });
   });
 });
