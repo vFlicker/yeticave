@@ -1,29 +1,8 @@
 import { Router } from 'express';
-import multer from 'multer';
-import { nanoid } from 'nanoid';
-import path from 'path';
-import { fileURLToPath } from 'url';
 
 import { api } from '../api.js';
 import { showPage404Middleware } from '../middlewares/show-page-404-middleware.js';
-
-const UPLOAD_DIR = `../upload/img`;
-
-// TODO: We have the same code in express.js
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
-
-const storage = multer.diskStorage({
-  destination: uploadDirAbsolute,
-  filename: (_req, file, cb) => {
-    const uniqueName = nanoid(10);
-    const extension = file.originalname.split('.').pop();
-    cb(null, `${uniqueName}.${extension}`);
-  },
-});
-
-const upload = multer({ storage });
+import { upload } from '../middlewares/upload.js';
 
 export const lotsRouter = Router();
 

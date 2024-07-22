@@ -2,7 +2,6 @@ import chalk from 'chalk';
 import express from 'express';
 import expressLayouts from 'express-ejs-layouts';
 import path from 'path';
-import { fileURLToPath } from 'url';
 
 import { ExitCode, FRONTEND_PORT } from '../constants.js';
 import { showPage404Middleware } from './middlewares/show-page-404-middleware.js';
@@ -10,6 +9,7 @@ import { showPage500Middleware } from './middlewares/show-page-500-middleware.js
 import { lotsRouter } from './routes/lots-routes.js';
 import { mainRouter } from './routes/main-routes.js';
 import { myRouter } from './routes/my-routes.js';
+import { getDirname } from './utils/get-dirname.js';
 
 const PUBLIC_DIR = 'public';
 const UPLOAD_DIR = 'upload';
@@ -17,8 +17,7 @@ const TEMPLATES_DIR = 'templates';
 
 const app = express();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = getDirname(import.meta.url);
 
 app.set('view engine', 'ejs');
 app.set('views', path.resolve(import.meta.dirname, TEMPLATES_DIR));
