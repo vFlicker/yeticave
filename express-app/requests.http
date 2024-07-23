@@ -110,4 +110,3 @@ Content-Type: application/json
   "email": "my-user@mail.com",
   "password": "123456"
 }
-

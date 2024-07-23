@@ -82,12 +82,12 @@
     {
       "email": "user1@example.com",
       "username": "user1",
-      "passwordHash": "hashed_password1"
+      "passwordHash": "$2b$10$Uybf6j51pXHXu.ocEq5KoO7Q6WicJxEI8zRCTrF8WeT85Z2tyagZW"
     },
     {
       "email": "user2@example.com",
       "username": "user2",
-      "passwordHash": "hashed_password2"
+      "passwordHash": "$2b$10$WFISsRx0xeoTivyl5/v2sOXOT7FSq.2DQTy0oIjf2c/AERzcnJTa."
     }
   ]
 }

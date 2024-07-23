@@ -12,12 +12,9 @@ const ErrorRegisterMessages = {
 };
 
 const schema = Joi.object({
-  username: Joi.string()
-    .pattern(/[^0-9$&+,:;=?@#|'<>.^*()%!]+$/)
-    .required()
-    .messages({
-      'string.pattern.base': ErrorRegisterMessages.USERNAME,
-    }),
+  username: Joi.string().required().messages({
+    'any.required': ErrorRegisterMessages.USERNAME,
+  }),
   email: Joi.string().email().required().messages({
     'string.email': ErrorRegisterMessages.EMAIL_INVALID,
   }),

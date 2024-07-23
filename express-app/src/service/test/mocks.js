@@ -1,3 +1,5 @@
+import { passwordHasher } from '../lib/password-hasher.js';
+
 export const mockCategories = [{ name: 'Boards' }, { name: 'Attachment' }];
 
 export const mockLots = [
@@ -60,11 +62,11 @@ export const mockUsers = [
   {
     email: 'user1@example.com',
     username: 'user1',
-    passwordHash: 'hashed_password1',
+    passwordHash: passwordHasher.hashSync('password1'),
   },
   {
     email: 'user2@example.com',
     username: 'user2',
-    passwordHash: 'hashed_password2',
+    passwordHash: passwordHasher.hashSync('password2'),
   },
 ];
