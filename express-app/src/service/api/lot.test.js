@@ -8,6 +8,23 @@ import { createTestApi } from '../test/create-test-api.js';
 import { mockUsers } from '../test/mocks.js';
 import { registerLotRoutes } from './lot.js';
 
+const validLotData = {
+  title: 'Test lot',
+  description: 'Test lot description',
+  imageUrl: 'http://example.com/test.jpg',
+  startingPrice: 100,
+  currentPrice: 100,
+  finishedAt: '2024-12-31T23:59:59.000Z',
+  categoryId: 2,
+  userId: 1,
+};
+
+const validCommentData = {
+  text: 'Test comment that have at least 20 characters',
+  userId: 1,
+  lotId: 1,
+};
+
 describe('GET api/lots', () => {
   describe('API return a list of all lots', async () => {
     let response;
@@ -68,23 +85,12 @@ describe('GET api/lots', () => {
 
 describe('POST api/lots', () => {
   describe('API create a new lot', () => {
-    const lotData = {
-      title: 'Test lot',
-      description: 'Test lot description',
-      imageUrl: 'http://example.com/test.jpg',
-      startingPrice: 100,
-      currentPrice: 100,
-      finishedAt: '2024-12-31T23:59:59.000Z',
-      categoryId: 2,
-      userId: 1,
-    };
-
     let response;
     let app;
 
     beforeAll(async () => {
       app = await createTestApi(registerLotRoutes, LotService);
-      response = await request(app).post('/lots').send(lotData);
+      response = await request(app).post('/lots').send(validLotData);
     });
 
     test('Should have response status 201', () => {
@@ -92,7 +98,7 @@ describe('POST api/lots', () => {
     });
 
     test('Should have body with new lot', () => {
-      expect(response.body).toEqual(expect.objectContaining(lotData));
+      expect(response.body).toEqual(expect.objectContaining(validLotData));
     });
 
     test('Should increase lots count', async () => {
@@ -101,8 +107,80 @@ describe('POST api/lots', () => {
     });
   });
 
-  describe('POST api/lots', () => {
-    test.todo('API refuses to create an offer if data is invalid');
+  describe('API refuses to create a lot if data is invalid', () => {
+    const invalidLotData = {
+      title: '',
+      description: '',
+      imageUrl: '',
+      startingPrice: 0,
+      currentPrice: 0,
+      finishedAt: '',
+      categoryId: 0,
+      userId: 0,
+    };
+
+    let response;
+
+    beforeAll(async () => {
+      const app = await createTestApi(registerLotRoutes, LotService);
+      response = await request(app).post('/lots').send(invalidLotData);
+    });
+
+    test('Should have response status 400', () => {
+      expect(response.statusCode).toBe(HttpCode.BAD_REQUEST);
+    });
+
+    test('Should have body with error message', () => {
+      expect(response.body).toEqual([
+        { title: '"title" is not allowed to be empty' },
+        { description: '"description" is not allowed to be empty' },
+        { imageUrl: 'Image is not selected or type is not valid' },
+        { startingPrice: '"startingPrice" must be greater than or equal to 1' },
+        { currentPrice: '"currentPrice" must be greater than or equal to 1' },
+        { finishedAt: 'Date is not selected or type is not valid' },
+        { categoryId: '"categoryId" must be a positive number' },
+        { categoryId: '"categoryId" must be greater than or equal to 1' },
+        { userId: '"userId" must be a positive number' },
+        { userId: '"userId" must be greater than or equal to 1' },
+      ]);
+    });
+  });
+
+  describe('API refuses to create a lot if field types are invalid', () => {
+    const invalidLotData = {
+      title: 123,
+      description: 123,
+      imageUrl: 'invalid-url',
+      startingPrice: 'invalid-price',
+      currentPrice: 'invalid-price',
+      finishedAt: 'invalid-date',
+      categoryId: 'invalid-category',
+      userId: 'invalid-user',
+    };
+
+    let response;
+
+    beforeAll(async () => {
+      const app = await createTestApi(registerLotRoutes, LotService);
+      response = await request(app).post('/lots').send(invalidLotData);
+    });
+
+    test('Should have response status 400', () => {
+      expect(response.statusCode).toBe(HttpCode.BAD_REQUEST);
+    });
+
+    test('Should have body with error message', () => {
+      expect(response.body).toEqual([
+        { title: '"title" must be a string' },
+        { description: '"description" must be a string' },
+        { imageUrl: '"imageUrl" must be a valid uri' },
+        { startingPrice: 'Starting price must be at least 1' },
+        { currentPrice: 'Current price must be at least 1' },
+        { finishedAt: 'Date is not selected or type is not valid' },
+        { categoryId: 'Category is not selected' },
+        { userId: 'User is not selected' },
+      ]);
+    });
   });
 });
 
@@ -148,8 +226,9 @@ describe('GET api/lots/categories/:id', () => {
     });
 
     test('Should have body with error message', () => {
-      const expected = { message: 'Lots with category id 3 not found' };
-      expect(response.text).toBe(JSON.stringify(expected));
+      expect(response.body).toEqual({
+        message: 'Lots with category id 3 not found',
+      });
     });
   });
 });
@@ -183,10 +262,12 @@ describe('GET api/lots/:id', () => {
       expect(bids).toHaveLength(1);
     });
 
-    test('Should have user', () => {
+    test('Should have user without passwordHash', () => {
       const { user } = response.body;
-      const secondMockUser = mockUsers[1];
-      expect(user).toEqual(expect.objectContaining(secondMockUser));
+      const { passwordHash, ...secondUserWithoutPasswordHash } = mockUsers[1];
+      expect(user).toEqual(
+        expect.objectContaining(secondUserWithoutPasswordHash),
+      );
     });
   });
 
@@ -203,8 +284,7 @@ describe('GET api/lots/:id', () => {
     });
 
     test('Should have body with error message', () => {
-      const expected = { message: 'Lot with id 4 not found' };
-      expect(response.text).toBe(JSON.stringify(expected));
+      expect(response.body).toEqual({ message: 'Lot with id 4 not found' });
     });
   });
 });
@@ -235,20 +315,40 @@ describe('GET api/lots/:id/comments', () => {
       expect(firstCommentText).toBe('Great product!');
     });
   });
+
+  describe('API return 404 if comments not found', () => {
+    let response;
+
+    beforeAll(async () => {
+      const app = await createTestApi(
+        registerLotRoutes,
+        LotService,
+        CommentService,
+      );
+
+      response = await request(app).get('/lots/3/comments');
+    });
+
+    test('Should have response status 404', () => {
+      expect(response.statusCode).toBe(HttpCode.NOT_FOUND);
+    });
+
+    test('Should have body with error message', () => {
+      expect(response.body).toEqual({ message: 'Lot with id 3 not found' });
+    });
+  });
 });
 
 describe('POST api/lots/:id/comments', () => {
   describe('API create a new comment for lot with given id', () => {
-    const commentData = {
-      text: 'Test comment',
-    };
-
     let response;
     let app;
 
     beforeAll(async () => {
       app = await createTestApi(registerLotRoutes, LotService, CommentService);
-      response = await request(app).post('/lots/1/comments').send(commentData);
+      response = await request(app)
+        .post('/lots/1/comments')
+        .send(validCommentData);
     });
 
     test('Should have response status 201', () => {
@@ -256,12 +356,66 @@ describe('POST api/lots/:id/comments', () => {
     });
 
     test('Should have body with new comment', () => {
-      expect(response.body).toEqual(expect.objectContaining(commentData));
+      expect(response.body).toEqual(expect.objectContaining(validCommentData));
     });
 
     test('Should increase comments count', async () => {
       const updatedResponse = await request(app).get('/lots/1/comments');
       expect(updatedResponse.body).toHaveLength(3);
+    });
+  });
+
+  describe('API refuses to create a comment if data is invalid', () => {
+    const invalidCommentData = {
+      text: 'Short comment',
+      userId: 1,
+      lotId: 1,
+    };
+
+    let response;
+
+    beforeAll(async () => {
+      const app = await createTestApi(
+        registerLotRoutes,
+        LotService,
+        CommentService,
+      );
+      response = await request(app)
+        .post('/lots/1/comments')
+        .send(invalidCommentData);
+    });
+
+    test('Should have response status 400', () => {
+      expect(response.statusCode).toBe(HttpCode.BAD_REQUEST);
+    });
+
+    test('Should have body with error message', () => {
+      expect(response.body).toEqual([
+        { text: 'Comment must be at least 20 characters long' },
+      ]);
+    });
+  });
+
+  describe('API refuses to create a comment if lot not found', () => {
+    let response;
+
+    beforeAll(async () => {
+      const app = await createTestApi(
+        registerLotRoutes,
+        LotService,
+        CommentService,
+      );
+      response = await request(app)
+        .post('/lots/333/comments')
+        .send(validCommentData);
+    });
+
+    test('Should have response status 404', () => {
+      expect(response.statusCode).toBe(HttpCode.NOT_FOUND);
+    });
+
+    test('Should have body with error message', () => {
+      expect(response.body).toEqual({ message: 'Lot with id 333 not found' });
     });
   });
 });

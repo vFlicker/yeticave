@@ -1,8 +1,10 @@
 export class LotService {
   #Lot = null;
+  #User = null;
 
   constructor(sequelize) {
     this.#Lot = sequelize.models.Lot;
+    this.#User = sequelize.models.User;
   }
 
   async findAll() {
@@ -30,16 +32,27 @@ export class LotService {
   }
 
   async findOne(id) {
-    // TODO: exclude hashPassword from the user
     // TODO: show last 10 bids
     return this.#Lot.findOne({
       where: { id },
       include: [
         'category',
-        'user',
+        {
+          model: this.#User,
+          as: 'user',
+          attributes: {
+            exclude: ['passwordHash'],
+          },
+        },
         {
           association: 'bids',
-          include: 'user',
+          include: {
+            model: this.#User,
+            as: 'user',
+            attributes: {
+              exclude: ['passwordHash'],
+            },
+          },
         },
       ],
     });

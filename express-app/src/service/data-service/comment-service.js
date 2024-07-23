@@ -1,8 +1,10 @@
 export class CommentService {
   #Comment = null;
+  #User = null;
 
   constructor(sequelize) {
     this.#Comment = sequelize.models.Comment;
+    this.#User = sequelize.models.User;
   }
 
   async create(userId, lotId, comment) {
@@ -15,13 +17,16 @@ export class CommentService {
     return this.#Comment.create(commentData);
   }
 
-  async findByLotId(lotId) {
+  async findAllByLotId(lotId) {
     return this.#Comment.findAll({
       where: { lotId },
       attributes: ['text', 'createdAt'],
       include: {
-        association: 'user',
-        attributes: ['username'],
+        model: this.#User,
+        as: 'user',
+        attributes: {
+          exclude: ['passwordHash'],
+        },
       },
     });
   }

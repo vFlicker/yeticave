@@ -1,6 +1,8 @@
 import { Router } from 'express';
 
 import { HttpCode } from '../../constants.js';
+import { commentValidator } from '../middlewares/comment-validator.js';
+import { lotExist } from '../middlewares/lot-exist.js';
 import { lotValidator } from '../middlewares/lot-validator.js';
 import { routeParamsValidation } from '../middlewares/route-params-validator.js';
 
@@ -21,6 +23,12 @@ export const registerLotRoutes = (app, lotService, commentService) => {
 
     res.status(HttpCode.OK);
     res.json(lots);
+  });
+
+  router.post('/', lotValidator, async (req, res) => {
+    const newLot = await lotService.create(req.body);
+    res.status(HttpCode.CREATED);
+    res.json(newLot);
   });
 
   router.get(
@@ -55,29 +63,29 @@ export const registerLotRoutes = (app, lotService, commentService) => {
     res.json(lot);
   });
 
-  // TODO: add lotExist middleware
-  router.get('/:lotId/comments', routeParamsValidation, async (req, res) => {
-    const { lotId } = req.params;
-    const comments = await commentService.findByLotId(+lotId);
+  router.get(
+    '/:lotId/comments',
+    [routeParamsValidation, lotExist(lotService)],
+    async (req, res) => {
+      const { lotId } = req.params;
+      const comments = await commentService.findAllByLotId(+lotId);
 
-    res.status(HttpCode.OK);
-    res.json(comments);
-  });
+      res.status(HttpCode.OK);
+      res.json(comments);
+    },
+  );
 
-  router.post('/', lotValidator, async (req, res) => {
-    const newLot = await lotService.create(req.body);
-    res.status(HttpCode.CREATED);
-    res.json(newLot);
-  });
+  router.post(
+    '/:lotId/comments',
+    [routeParamsValidation, lotExist(lotService), commentValidator],
+    async (req, res) => {
+      const { lotId } = req.params;
+      const { text } = req.body;
 
-  // TODO: add lotExist middleware
-  router.post('/:lotId/comments', async (req, res) => {
-    const { lotId } = req.params;
-    const { text } = req.body;
+      const newComment = await commentService.create(1, +lotId, text);
 
-    const newComment = await commentService.create(1, +lotId, text);
-
-    res.status(HttpCode.CREATED);
-    res.json(newComment);
-  });
+      res.status(HttpCode.CREATED);
+      res.json(newComment);
+    },
+  );
 };

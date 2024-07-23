@@ -2,17 +2,17 @@ import Joi from 'joi';
 
 import { HttpCode } from '../../constants.js';
 
-const ErrorAuthMessages = {
+const ErrorMessage = {
   EMAIL_INVALID: 'Email must be a valid email',
   PASSWORD: 'Password is required',
 };
 
 const schema = Joi.object({
   email: Joi.string().email().required().messages({
-    'string.email': ErrorAuthMessages.EMAIL_INVALID,
+    'string.email': ErrorMessage.EMAIL_INVALID,
   }),
   password: Joi.string().min(6).required().messages({
-    'string.min': ErrorAuthMessages.PASSWORD,
+    'string.min': ErrorMessage.PASSWORD,
   }),
 });
 

@@ -2,7 +2,7 @@ import Joi from 'joi';
 
 import { HttpCode } from '../../constants.js';
 
-const ErrorRegisterMessages = {
+const ErrorMessage = {
   USERNAME: 'Username is required',
   EMAIL_INVALID: 'Email must be a valid email',
   EMAIL_EXIST: 'User with this email already exists',
@@ -13,17 +13,17 @@ const ErrorRegisterMessages = {
 
 const schema = Joi.object({
   username: Joi.string().required().messages({
-    'any.required': ErrorRegisterMessages.USERNAME,
+    'any.required': ErrorMessage.USERNAME,
   }),
   email: Joi.string().email().required().messages({
-    'string.email': ErrorRegisterMessages.EMAIL_INVALID,
+    'string.email': ErrorMessage.EMAIL_INVALID,
   }),
   password: Joi.string().min(6).required().messages({
-    'string.min': ErrorRegisterMessages.MIN_PASSWORD_LENGTH,
-    'any.required': ErrorRegisterMessages.PASSWORD,
+    'string.min': ErrorMessage.MIN_PASSWORD_LENGTH,
+    'any.required': ErrorMessage.PASSWORD,
   }),
   passwordConfirm: Joi.string().valid(Joi.ref('password')).required().messages({
-    'any.only': ErrorRegisterMessages.PASSWORD_CONFIRM,
+    'any.only': ErrorMessage.PASSWORD_CONFIRM,
   }),
 });
 
@@ -43,7 +43,7 @@ export const userValidator = (userService) => async (req, res, next) => {
   if (foundUser) {
     return res
       .status(HttpCode.BAD_REQUEST)
-      .json({ message: ErrorRegisterMessages.EMAIL_EXIST });
+      .json({ message: ErrorMessage.EMAIL_EXIST });
   }
 
   next();
