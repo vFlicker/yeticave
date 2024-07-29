@@ -24,7 +24,7 @@ const schema = Joi.object({
     'string.min': ErrorMessage.DESCRIPTION_MIN,
     'string.max': ErrorMessage.DESCRIPTION_MAX,
   }),
-  imageUrl: Joi.string().uri().required().messages({
+  imageUrl: Joi.string().required().messages({
     'string.empty': ErrorMessage.IMAGE,
   }),
   startingPrice: Joi.number().min(1).required().messages({

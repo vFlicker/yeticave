@@ -43,12 +43,12 @@ mainRouter.post('/login', async (req, res) => {
     const user = await api.auth({ email, password });
     req.session.user = user;
     req.session.save(() => res.redirect('/'));
-  } catch (errors) {
+  } catch (error) {
     const { user } = req.session;
     res.render('pages/auth/login', {
       categories,
       user,
-      errors: prepareErrors(errors),
+      errors: prepareErrors(error),
     });
   }
 });
@@ -70,12 +70,12 @@ mainRouter.post('/register', async (req, res) => {
   try {
     await api.createUser({ username, email, password, passwordConfirm });
     res.redirect('/login');
-  } catch (errors) {
+  } catch (error) {
     const { user } = req.session;
     res.render('pages/auth/sign-up', {
       user,
       categories,
-      errors: prepareErrors(errors),
+      errors: prepareErrors(error),
     });
   }
 });
