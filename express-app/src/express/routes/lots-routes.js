@@ -48,7 +48,6 @@ lotsRouter.post('/add', upload.single('lot-photo'), async (req, res) => {
 
   try {
     await api.createLot(lotData);
-    console.log('Successfully created lot');
   } catch (error) {
     console.error('Error creating lot', error);
   }

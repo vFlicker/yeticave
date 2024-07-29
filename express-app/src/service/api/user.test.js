@@ -32,8 +32,6 @@ describe('POST api/user', () => {
     });
 
     test('Should return user without password', () => {
-      console.log({ body: response.body });
-
       expect(response.body.username).toBe(validCreateUserData.username);
       expect(response.body.email).toBe(validCreateUserData.email);
       expect(response.body.password).toBeUndefined();

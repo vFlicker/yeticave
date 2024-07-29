@@ -55,6 +55,20 @@ export class Api {
     });
   }
 
+  async createUser(data) {
+    return this.#load('/user', {
+      method: HttpMethod.POST,
+      data,
+    });
+  }
+
+  async auth(data) {
+    return this.#load('/user/auth', {
+      method: HttpMethod.POST,
+      data,
+    });
+  }
+
   async #load(url, options) {
     const response = await this.#http.request({ url, ...options });
     return response.data;

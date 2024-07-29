@@ -15,7 +15,7 @@ export class Paginator {
   #uri = null;
 
   constructor(page, limit = ITEMS_PER_PAGE) {
-    this.#page = page;
+    this.#page = page || 1;
     this.#limit = limit;
   }
 

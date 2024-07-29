@@ -1,6 +1,6 @@
 <%- contentFor('content') %>
 
-<form action="/sign-up/" method="post" class="form form-login ">
+<form action="/register/" method="post" class="form form-login ">
   <h1 class="register__heading">Sign up</h1>
 
   <div class="form__item">
@@ -20,10 +20,12 @@
 
   <div class="form__item">
     <label for="id_confirm_password">Confirm password *</label>
-    <input type="password" name="confirm_password" placeholder="Enter password again" required id="id_confirm_password">
+    <input type="password" name="passwordConfirm" placeholder="Enter password again" required id="id_confirm_password">
   </div>
 
   <button type="submit" class="button">Sign up</button>
 
   <p>Already have an account? <a href="/login/">Log In here.</a></p>
+
+  <%- include("../../partials/error-messages", { errors }) %>
 </form>

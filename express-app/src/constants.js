@@ -40,4 +40,6 @@ export const LOG_FILE = process.env.LOG_FILE || 'logs/api.log';
 
 export const NODE_ENV = process.env.NODE_ENV || 'development';
 
+export const SESSION_SECRET = process.env.SESSION_SECRET;
+
 export const USER_ARGV_INDEX = 2;

@@ -1737,3 +1737,11 @@ input::-webkit-inner-spin-button {
 .blue {
   color: #45abde;
 }
+
+.server-error {
+  border-radius: 10px;
+  color: white;
+  background-color: red;
+  margin: 20px 0;
+  padding: 10px;
+}

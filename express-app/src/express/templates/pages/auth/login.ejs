@@ -5,7 +5,7 @@
 
   <div class="form__item">
     <label for="id_username">Email Address *</label>
-    <input type="text" name="username" autofocus autocapitalize="none" autocomplete="username" maxlength="254" required id="id_username">
+    <input type="email" name="email" autofocus autocapitalize="none" autocomplete="username" maxlength="254" required id="id_username">
   </div>
 
   <div class="form__item">
@@ -16,4 +16,6 @@
   <button type="submit" class="button">Login</button>
 
   <p>Don't have an account? <a href="/register/">Register here.</a></p>
+
+  <%- include("../../partials/error-messages", { errors }) %>
 </form>
