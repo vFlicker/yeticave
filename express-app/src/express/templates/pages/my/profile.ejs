@@ -3,7 +3,7 @@
 <section class="profile">
   <div class="profile__header">
     <div class="header__left">
-      <h1 class="profile__title">Flicker</h1>
+      <h1 class="profile__title"><%- user.username %></h1>
 
       <small class="profile__follower-wrapper">
         <span>Followers: 0</span>
@@ -19,7 +19,7 @@
   <div class="profile__info">
     <h2>Profile info</h2>
     <ul class="profile__info-list">
-      <li class="profile__info-item">Email: flicker@mail.com</li>
+      <li class="profile__info-item">Email: <%- user.email %></li>
     </ul>
   </div>
 
@@ -43,19 +43,11 @@
         </div>
       </div>
 
-
-
       <div class="pagination">
         <span class="pagination__step-links">
-
-
           <span class="pagination__current">Page 1 of 1.</span>
-
-
         </span>
       </div>
-
-
     </div>
   </div>
 
