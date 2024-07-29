@@ -13,6 +13,7 @@
       </button>
     </form>
 
+    <% if (user) { %>
     <a class="main-header__add-lot button" href="/lots/add/">Create lot</a>
 
     <div class="main-header__menu-wrapper">
@@ -41,6 +42,17 @@
         </ul>
       </nav>
     </div>
-
+    <% } else { %>
+    <nav class="user-menu">
+      <ul class="user-menu__list">
+        <li class="user-menu__item">
+          <a href="/login/">Login</a>
+        </li>
+        <li class="user-menu__item">
+          <a href="/register/">Register</a>
+        </li>
+      </ul>
+    </nav>
+    <% } %>
   </div>
 </header>
