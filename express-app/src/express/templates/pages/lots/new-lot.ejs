@@ -1,6 +1,8 @@
 <%- contentFor('content') %>
 
 <form action="/lots/add/" method="post" enctype="multipart/form-data" class="form form--lot">
+  <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>" />
+
   <h1>Create a new lot</h1>
 
   <div class="form__container">

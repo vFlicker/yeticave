@@ -1,4 +1,1 @@
-1. Валідація коментарю (перевірка на зайві ключі) comment-validator.js
-1. Валідація лоту (перевірка на існування лоту) offer-exists.js
-
-1. Додати CommentService (отримання всіх коментарів користувача)
+https://github.com/pillarjs/understanding-csrf

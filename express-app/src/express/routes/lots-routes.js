@@ -1,3 +1,4 @@
+import csrf from 'csurf';
 import { Router } from 'express';
 
 import { api } from '../api.js';
@@ -7,6 +8,8 @@ import { upload } from '../middlewares/upload.js';
 import { prepareErrors } from '../utils/prepare-errors.js';
 
 export const lotsRouter = Router();
+
+const csrfProtection = csrf();
 
 lotsRouter.get('/categories/:id', async (req, res) => {
   const categoryId = +req.params.id;
@@ -31,17 +34,24 @@ lotsRouter.get('/categories/:id', async (req, res) => {
   }
 });
 
-lotsRouter.get('/add', auth, async (req, res) => {
+lotsRouter.get('/add', [auth, csrfProtection], async (req, res) => {
   const { user } = req.session;
   const categories = await api.getCategories();
-  res.render('pages/lots/new-lot', { user, categories, errors: [] });
+  console.log({ csrfToken: req.csrfToken() });
+  res.render('pages/lots/new-lot', {
+    user,
+    categories,
+    csrfToken: req.csrfToken(),
+    errors: [],
+  });
 });
 
 lotsRouter.post(
   '/add',
-  [auth, upload.single('lot-photo')],
+  [auth, upload.single('lot-photo'), csrfProtection],
   async (req, res) => {
     const { body, file } = req;
+    console.log({ csrfToken: req.csrfToken() });
 
     const lotData = {
       title: body.title,
@@ -64,6 +74,7 @@ lotsRouter.post(
       res.render('pages/lots/new-lot', {
         user,
         categories,
+        csrfToken: req.csrfToken(),
         errors: prepareErrors(error),
       });
     }

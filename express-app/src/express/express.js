@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 import connectSessionSequelize from 'connect-session-sequelize';
+import cookieParser from 'cookie-parser';
 import express from 'express';
 import expressLayouts from 'express-ejs-layouts';
 import session from 'express-session';
