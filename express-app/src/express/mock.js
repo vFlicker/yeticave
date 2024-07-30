@@ -59,7 +59,7 @@ export const lots = [
     startingPrice: 1.0,
     currentPrice: 3.0,
     createdAt: '2024-06-10T13:25:00',
-    finished_at: '2024-06-17T13:25:00',
+    finishedAt: '2024-06-17T13:25:00',
   },
   {
     id: 2,
@@ -74,6 +74,6 @@ export const lots = [
     startingPrice: 2.0,
     currentPrice: 2.0,
     createdAt: '2024-06-04T16:35:00',
-    finished_at: '2024-06-10T13:25:00',
+    finishedAt: '2024-06-10T13:25:00',
   },
 ];

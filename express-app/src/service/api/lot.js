@@ -27,8 +27,10 @@ export const registerLotRoutes = (app, lotService, commentService) => {
 
   router.post('/', lotValidator, async (req, res) => {
     const newLot = await lotService.create(req.body);
-    res.status(HttpCode.CREATED);
-    res.json(newLot);
+    const foundLot = await lotService.findOne(newLot.id);
+    const socket = req.app.locals.io;
+    socket.emit('lot:created', foundLot);
+    res.status(HttpCode.CREATED).json(foundLot);
   });
 
   router.get(

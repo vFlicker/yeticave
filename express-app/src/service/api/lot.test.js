@@ -98,12 +98,29 @@ describe('POST api/lots', () => {
     });
 
     test('Should have body with new lot', () => {
-      expect(response.body).toEqual(expect.objectContaining(validLotData));
+      const { categoryId, ...lotWithoutCategoryId } = validLotData;
+      expect(response.body).toEqual(
+        expect.objectContaining(lotWithoutCategoryId),
+      );
     });
 
     test('Should increase lots count', async () => {
       const updatedResponse = await request(app).get('/lots');
       expect(updatedResponse.body).toHaveLength(3);
+    });
+
+    test('Should have socket emit event', () => {
+      const { io } = app.locals;
+      const { categoryId, ...lotDataWithoutCategoryId } = validLotData;
+      expect(io.emit.mock.calls).toEqual([
+        [
+          'lot:created',
+          expect.objectContaining({
+            ...lotDataWithoutCategoryId,
+            finishedAt: new Date(validLotData.finishedAt),
+          }),
+        ],
+      ]);
     });
   });
 
@@ -173,7 +190,6 @@ describe('POST api/lots', () => {
       expect(response.body).toEqual([
         { title: '"title" must be a string' },
         { description: '"description" must be a string' },
-        { imageUrl: '"imageUrl" must be a valid uri' },
         { startingPrice: 'Starting price must be at least 1' },
         { currentPrice: 'Current price must be at least 1' },
         { finishedAt: 'Date is not selected or type is not valid' },

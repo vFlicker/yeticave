@@ -1,5 +1,6 @@
 import express from 'express';
 import { Sequelize } from 'sequelize';
+import { vi } from 'vitest';
 
 import { initDatabase } from '../lib/init-database.js';
 import {
@@ -12,6 +13,7 @@ import {
 
 export const createTestApi = async (routeRegister, ...services) => {
   const app = express();
+  app.locals.io = { emit: vi.fn() };
   app.use(express.json());
 
   const mockDatabase = new Sequelize('sqlite::memory:', { logging: false });

@@ -1,5 +1,4 @@
-const ITEMS_PER_PAGE = 6;
-const DEFAULT_OFFSET = 0;
+const ITEMS_PER_PAGE = 3;
 
 class PaginatorError extends Error {
   constructor(message) {

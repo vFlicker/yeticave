@@ -24,9 +24,9 @@ export class Api {
     return this.#load(`/categories/${id}`);
   }
 
-  async getAllLots({ limit, offset }) {
+  async getAllLots(params) {
     return this.#load('/lots', {
-      params: { limit, offset },
+      params: params,
     });
   }
 

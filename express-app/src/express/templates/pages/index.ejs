@@ -17,7 +17,7 @@
   <div class="lots__header">
     <h2>Active lots</h2>
   </div>
-  <ul class="lots__list">
+  <ul class="lots__list lots__index">
     <% lots.forEach((lot) => { %>
     <%- include("../partials/lot-card", { lot }) %>
     <% }) %>

@@ -47,6 +47,7 @@
     "nanoid": "5.0.7",
     "pino": "9.2.0",
     "sequelize": "6.37.3",
+    "socket.io": "4.7.5",
     "sqlite3": "5.1.7"
   }
 }

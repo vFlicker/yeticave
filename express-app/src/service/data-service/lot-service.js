@@ -14,7 +14,7 @@ export class LotService {
     });
   }
 
-  async findPage({ limit, offset }) {
+  async findPage({ limit = 3, offset = 0 }) {
     return this.#Lot.findAndCountAll({
       limit,
       offset,
@@ -35,6 +35,9 @@ export class LotService {
     // TODO: show last 10 bids
     return this.#Lot.findOne({
       where: { id },
+      attributes: {
+        exclude: ['categoryId'], // Вказуємо, що categoryId потрібно виключити
+      },
       include: [
         'category',
         {
