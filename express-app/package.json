@@ -9,6 +9,8 @@
   },
   "type": "module",
   "scripts": {
+    "start": "npm run start-servers",
+    "start-servers": "concurrently \"npm run start-backend-server -- --server\" \"npm run start-frontend-server\"",
     "start-backend-server": "cross-env LOG_LEVEL=error node -r dotenv/config ./src/service/service.js",
     "start-backend-server::debug": "cross-env LOG_LEVEL=development node -r dotenv/config ./src/service/service.js",
     "start-frontend-server": "node -r dotenv/config ./src/express/express.js",
@@ -30,6 +32,7 @@
     "axios": "1.7.2",
     "bcrypt": "5.1.1",
     "chalk": "5.3.0",
+    "concurrently": "8.2.2",
     "connect-session-sequelize": "7.1.7",
     "cookie-parser": "1.4.6",
     "cross-env": "7.0.3",
