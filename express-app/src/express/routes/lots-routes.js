@@ -37,7 +37,6 @@ lotsRouter.get('/categories/:id', async (req, res) => {
 lotsRouter.get('/add', [auth, csrfProtection], async (req, res) => {
   const { user } = req.session;
   const categories = await api.getCategories();
-  console.log({ csrfToken: req.csrfToken() });
   res.render('pages/lots/new-lot', {
     user,
     categories,
@@ -51,7 +50,6 @@ lotsRouter.post(
   [auth, upload.single('lot-photo'), csrfProtection],
   async (req, res) => {
     const { body, file } = req;
-    console.log({ csrfToken: req.csrfToken() });
 
     const lotData = {
       title: body.title,
