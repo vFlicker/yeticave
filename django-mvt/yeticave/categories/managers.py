@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 
 
 class CategoryQuerySet(models.QuerySet):
-    def get_category_by_id(self, category_id: int) -> "Category":
+    def find_category_by_id(self, category_id: int) -> "Category":
         return self.get(id=category_id)
 
 
@@ -15,5 +15,5 @@ class CategoryManager(models.Manager):
     def get_queryset(self) -> CategoryQuerySet:
         return CategoryQuerySet(self.model, using=self._db)
 
-    def get_category_by_id(self, category_id: int) -> "Category":
-        return self.get_queryset().get_category_by_id(category_id)
+    def find_category_by_id(self, category_id: int) -> "Category":
+        return self.get_queryset().find_category_by_id(category_id)

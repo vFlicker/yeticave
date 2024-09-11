@@ -63,7 +63,8 @@ def __get_lot(user: Optional["User"], lot_id: int) -> Lot:
     if user is None:
         return get_object_or_404(Lot, pk=lot_id)
     return get_object_or_404(
-        Lot.objects.select_related("creator").with_watchlist_status(user), pk=lot_id
+        Lot.objects.select_related("creator").with_watchlist_status(user),
+        pk=lot_id,
     )
 
 

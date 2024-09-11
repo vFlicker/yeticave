@@ -15,7 +15,7 @@ User = get_user_model()
 @require_http_methods(["POST"])
 def toggle_follow(request: AuthenticatedHttpRequest, username: str) -> HttpResponse:
     current_user = request.user
-    user_to_follow = get_object_or_404(User, username=username)
+    user_to_follow = get_object_or_404(User.objects.find_by_username(username))
 
     if current_user != user_to_follow:
         FollowService.toggle_follow(current_user, user_to_follow)

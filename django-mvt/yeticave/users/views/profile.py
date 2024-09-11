@@ -15,7 +15,7 @@ def profile(request: HttpRequest, username: str) -> HttpResponse:
     COMMENTS_PER_PAGE = 5
     DEFAULT_PAGE = 1
 
-    profile_user = get_object_or_404(User, username=username)
+    profile_user = get_object_or_404(User.objects.find_by_username(username))
     is_followed = False
 
     if auth_user := get_authenticated_user(request):

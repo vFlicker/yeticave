@@ -12,7 +12,7 @@ from .models import Category
 def category(request: HttpRequest, category_id: int) -> HttpResponse:
     TEMPLATE = "categories/categories.html"
 
-    category = Category.objects.get_category_by_id(category_id)
+    category = Category.objects.find_category_by_id(category_id)
 
     lots = Lot.objects.get_all_by_category(category_id)
 

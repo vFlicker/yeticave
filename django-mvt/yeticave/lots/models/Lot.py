@@ -1,6 +1,5 @@
 from django.db import models
 
-from yeticave.categories.choices import DEFAULT_CATEGORY
 from yeticave.categories.models import Category
 from yeticave.core.utils import get_user_model
 
@@ -22,11 +21,7 @@ class Lot(models.Model):
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     finished_at = models.DateTimeField()
-    category = models.ForeignKey(
-        Category,
-        on_delete=models.CASCADE,
-        default=DEFAULT_CATEGORY,
-    )
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
 
     objects: LotManager = LotManager()

@@ -30,7 +30,6 @@ class CommentReaction(models.Model):
     def __str__(self):
         return f"{self.user} {self.reaction_type} {self.comment}"
 
-    # TODO: add type for reaction_type
     def set_reaction(self, reaction_type: str):
         self.reaction_type = reaction_type
         self.save()

@@ -1,4 +1,7 @@
-#1. (HTMX) Редагувати допис.
+#1. Тестування
+https://jairvercosa.medium.com/business-logic-in-django-projects-7fe700db9b0a
+
+#2. (HTMX) Редагувати допис.
 
 https://github.com/danjac/realworld/blob/main/realworld/articles/views.py
 
@@ -19,9 +22,5 @@ https://github.com/danjac/realworld/blob/main/realworld/articles/views.py
       та надсилати повідомлення про перемогу.
     - Відправляти повідомлення переможцю.
 
-#3. Тестування
-- СS50 7 та 8 лекції
 
-
-
-
+- СS50 7 (частина 2) та 8 лекції
